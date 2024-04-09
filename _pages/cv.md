@@ -1,13 +1,15 @@
 ---
 layout: archive
-title: "CV"
-permalink: /cv/
+title: "Resume"
+permalink: /resume/
 author_profile: true
 redirect_from:
   - /resume
 ---
 
 {% include base_path %}
+
+You can also find my PDF resume [here](files/resume.pdf).
 
 Education
 ======
