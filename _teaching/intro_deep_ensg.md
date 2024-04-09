@@ -3,7 +3,7 @@ title: "Introduction to Deep Learning"
 collection: teaching
 type: "Master course"
 venue: "ENSG"
-date: 2024
+date: 2024-01-01
 location: "Marne la Vallée, France"
 ---
 
