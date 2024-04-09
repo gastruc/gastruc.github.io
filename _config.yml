@@ -81,7 +81,7 @@ analytics:
 # Site Author
 author:
   name             : "Guillaume Astruc"
-  avatar           : "profile.png"
+  avatar           : "Photo-CV.jpg"
   bio              : "PhD Student at Imagine - ENPC/IGN/CNES, Working on Cross-modal self-supervised geospatial learning"
   location         : "Paris, France"
   employer         :
