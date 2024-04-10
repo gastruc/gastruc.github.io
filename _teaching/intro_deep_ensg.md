@@ -9,6 +9,7 @@ location: "Marne la Vallée, France"
 
 Tds on Deep Learning for Remote Sensing:
 
+- Intro to Deep Learning
 - Deep Learning for Multispectral Images
-- Deep Learning for Raster Data
 - Deep Learning for 3D Data
+- Deep Learning for Temporal Data
