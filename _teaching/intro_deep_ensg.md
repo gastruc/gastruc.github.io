@@ -1,5 +1,5 @@
 ---
-title: "Introduction to Deep Learning"
+title: "Deep Learning pour Remote Sensing"
 collection: teaching
 type: "Master course"
 venue: "ENSG"
@@ -7,7 +7,7 @@ date: 2024-01-01
 location: "Marne la Vallée, France"
 ---
 
-Tds on introduction to Deep Learning on geospatial data:
+Tds on Deep Learning for Remote Sensing:
 
 - Deep Learning for Multispectral Images
 - Deep Learning for Raster Data
