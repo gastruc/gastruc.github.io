@@ -86,7 +86,7 @@ author:
   location         : "Paris, France"
   employer         :
   pubmed           : #"https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
-  googlescholar    : "http://yourfullgooglescholarurl.com"
+  googlescholar    : "https://scholar.google.com/citations?hl=fr&user=t9u0QSEAAAAJ&view_op=list_works&gmla=ABOlHixKUxll6OeRLzm5PM5KtKKL3LJbqDvFPIGLOzFrJelk6rCfJCDhGx8oEnDf0VLMXtPKJexrOYOdPtQ9auOx7t7jXU6gtcco5s1KGCF7hk_hd5gvwhx6vpQlVzvgl4Md8vHasCuBejqL1P6gyMkVP0eINsc"
   email            :
   researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
   uri              :
