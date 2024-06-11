@@ -18,6 +18,7 @@ For more details and results, please check out our [paper](https://arxiv.org/abs
 
 ![benchmark.png](./images/benchmark.png)
 
+
 ### Citing 💫
 
 ```bibtex
