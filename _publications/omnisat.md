@@ -60,5 +60,5 @@ F1 Score results on 100% of the training data with only S2 data available:
 We report the best performance of different models between TreeSatAI and TreeSatAI-TS, with pre-training and fine-tuning using 100% of labels. The area of the markers is proportional to the training time, broken down in pre-training and fine-tuning when applicable
 
 <p align="center">
-   <img src="images/Efficiency.png" width="350" height="250">
+   <img src="http://gastruc.github.io/images/Efficiency.png" width="350" height="250">
 </p>
