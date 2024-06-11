@@ -8,7 +8,7 @@ venue: 'CVPR'
 paperurl: 'http://academicpages.github.io/files/osv5m.pdf'
 ---
 
-![teaser.png](./.media/teaser.png)
+![teaser.png](./images/teaser.png)
 # OpenStreetView-5M <br><sub>The Many Roads to Global Visual Geolocation 📍🌍</sub>
 
 OpenStreetView-5M is the first large-scale open geolocation benchmark of streetview images.  
@@ -16,6 +16,7 @@ To get a sense of the difficulty of the benchmark, you can play our [demo](https
 Our dataset was used in an extensive benchmark of which we provide the best model.  
 For more details and results, please check out our [paper](https://arxiv.org/abs/2404.18873) and [project page](https://imagine.enpc.fr/~ioannis.siglidis/osv5m/).  
 
+![benchmark.png](./images/benchmark.png)
 
 ### Citing 💫
 
