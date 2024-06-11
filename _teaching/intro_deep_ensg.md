@@ -7,7 +7,7 @@ date: 2024-01-01
 location: "Marne la Vallée, France"
 ---
 
-Tds on Deep Learning for Remote Sensing:
+Tds on Deep Learning for Remote Sensing
 
 - Intro to Deep Learning
 - Deep Learning for Multispectral Images
