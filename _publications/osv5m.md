@@ -17,18 +17,3 @@ Our dataset was used in an extensive benchmark of which we provide the best mode
 For more details and results, please check out our [paper](https://arxiv.org/abs/2404.18873) and [project page](https://imagine.enpc.fr/~ioannis.siglidis/osv5m/).  
 
 ![benchmark.png](./images/benchmark.png)
-
-
-### Citing 💫
-
-'''bibtex
-@article{osv5m,
-    title = {{OpenStreetView-5M}: {T}he Many Roads to Global Visual Geolocation},
-    author = {Astruc, Guillaume and Dufour, Nicolas and Siglidis, Ioannis
-      and Aronssohn, Constantin and Bouia, Nacim and Fu, Stephanie and Loiseau, Romain
-      and Nguyen, Van Nguyen and Raude, Charles and Vincent, Elliot and Xu, Lintao
-      and Zhou, Hongyu and Landrieu, Loic},
-    journal = {CVPR},
-    year = {2024},
-  }
-'''
