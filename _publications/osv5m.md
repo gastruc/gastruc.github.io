@@ -21,7 +21,7 @@ For more details and results, please check out our [paper](https://arxiv.org/abs
 
 ### Citing 💫
 
-```bibtex
+'''bibtex
 @article{osv5m,
     title = {{OpenStreetView-5M}: {T}he Many Roads to Global Visual Geolocation},
     author = {Astruc, Guillaume and Dufour, Nicolas and Siglidis, Ioannis
@@ -31,4 +31,4 @@ For more details and results, please check out our [paper](https://arxiv.org/abs
     journal = {CVPR},
     year = {2024},
   }
-```
+'''
