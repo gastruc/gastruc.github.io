@@ -1,0 +1,5 @@
+{% if post.link %}
+  <a href="{{ post.link }}">{{ post.title }}</a>
+{% else %}
+  <a href="{{ base_path }}{{ post.url }}">{{ post.title }}</a>
+{% endif %}
