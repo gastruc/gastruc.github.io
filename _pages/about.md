@@ -10,9 +10,10 @@ I am currently in my first year of pursuing a PhD at [Imagine Institute](https:/
 
 News
 ======
+- Osv has been accepted to CVPR 2024
 
 Publications
 ======
   <ul>{% for post in site.publications reversed %}
-    {% include archive-custom-publication.html %}
+    {% include archive-custom-publications.html %}
   {% endfor %}</ul>
