@@ -9,14 +9,14 @@ redirect_from:
 
 {% include base_path %}
 
-You can also find my PDF resume [here](files/resume.pdf).
+<!-- You can also find my PDF resume [here](files/resume.pdf).
 
 Education
 ======
 
 
 Work experience
-======
+====== -->
 
 
 Publications
