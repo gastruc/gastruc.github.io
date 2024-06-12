@@ -12,14 +12,14 @@
   <meta property="og:image:width" content="600">
   <meta property="og:image:height" content="400">
   <meta property="og:type" content="website"/>
-  <meta property="og:url" content="https://imagine.enpc.fr/~monniert/DTIClustering/"/>
-  <meta property="og:title" content="DTI Clustering"/>
-  <meta property="og:description" content="Project page for Deep Transformation-Invariant Clustering."/>
+  <meta property="og:url" content="https://gastruc.github.io/projects/omnisat.html/"/>
+  <meta property="og:title" content="OmniSat"/>
+  <meta property="og:description" content="Project page for OmniSat: Self-Supervised Modality Fusion for Earth Observation."/>
 
   <!--Twitter preview-->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="DTI Clustering" />
-  <meta name="twitter:description" content="Project page for Deep Transformation-Invariant Clustering."/>
+  <meta name="twitter:title" content="OmniSat: Self-Supervised Modality Fusion for Earth Observation" />
+  <meta name="twitter:description" content="Project page for OmniSat: Self-Supervised Modality Fusion for Earth Observation."/>
   <meta name="twitter:image" content="https://imagine.enpc.fr/~monniert/DTIClustering/thumbnail_twitter.png">
 
   <!--Style-->
@@ -34,26 +34,30 @@
 
 <div class="container" style="text-align:center; padding:2rem 15px">
   <div class="row" style="text-align:center">
-    <h1>Deep Transformation-Invariant Clustering</h1>
-    <h4>NeurIPS 2020 (oral presentation)</h4>
+    <h1>OmniSat: Self-Supervised Modality Fusion for Earth Observation</h1>
+    <h4>Arxiv Preprint 2024</h4>
   </div>
   <div class="row" style="text-align:center">
     <div class="col-xs-0 col-md-3"></div>
     <div class="col-xs-12 col-md-6">
       <h4>
-        <a href="https://imagine.enpc.fr/~monniert/"><nobr>Tom Monnier</nobr></a> &emsp;
-        <a href="https://imagine.enpc.fr/~groueixt/"><nobr>Thibault Groueix</nobr></a> &emsp;
-        <a href="https://imagine.enpc.fr/~aubrym/"><nobr>Mathieu Aubry</nobr></a>
+        <a href="https://gastruc.github.io/"><nobr>Guillaume Astruc</nobr></a> &emsp;
+        <a href="https://ngonthier.github.io/"><nobr>Nicolas Gonthier</nobr></a> &emsp;
+        <a href="https://www.umr-lastig.fr/clement-mallet/"><nobr>Clément Mallet</nobr></a> &emsp;
+        <a href="https://loiclandrieu.com/"><nobr>Loic Landrieu</nobr></a>
       </h4>
       LIGM, <nobr>&Eacute;cole des Ponts</nobr>, <nobr>Univ Gustave Eiffel</nobr>, CNRS,
       <nobr>Marne-la-Vall&eacute;e, France</nobr>
+      Univ Gustave Eiffel, IGN, ENSG, LASTIG, France
+      IGN, France
+      CNES, France
     </div>
     <div class="hidden-xs hidden-sm col-md-1" style="text-align:left; margin-left:0px; margin-right:0px">
       <a href="https://arxiv.org/pdf/2006.11132.pdf" style="color:inherit">
         <i class="fa fa-file-pdf-o fa-4x"></i></a> 
     </div>
     <div class="hidden-xs hidden-sm col-md-2" style="text-align:left; margin-left:0px;">
-      <a href="https://github.com/monniert/dti-clustering" style="color:inherit">
+      <a href="https://github.com/gastruc/OmniSat" style="color:inherit">
         <i class="fa fa-github fa-4x"></i></a>
     </div>
   </div>
@@ -62,11 +66,9 @@
 <div class="container" style="text-align:center; padding:1rem">
   <img src="https://github.com/gastruc/OmniSat/assets/1902679/9fc20951-1cac-4891-b67f-53ed5e0675ad" alt="teaser.jpg" class="text-center" style="width: 100%; max-width: 1100px">
   <h3 style="text-align:center; padding-top:1rem">
-    <a class="label label-info" href="https://arxiv.org/abs/2006.11132">Paper</a>
-    <a class="label label-info" href="https://github.com/monniert/dti-clustering">Code</a>
-    <a class="label label-info" href="https://www.youtube.com/embed/j20MBc1hWGQ">Video</a>
-    <a class="label label-info" href="resrc/dtic_long.pptx">Slides</a>
-    <a class="label label-info" href="resrc/ref.bib">BibTeX</a>
+    <a class="label label-info" href="https://arxiv.org/pdf/2404.08351">Paper</a>
+    <a class="label label-info" href="https://github.com/gastruc/OmniSat">Code</a>
+    <!-- <a class="label label-info" href="resrc/ref.bib">BibTeX</a> -->
   </h3>
 </div>
 
@@ -74,23 +76,18 @@
   <h3>Abstract</h3>
   <hr/>
   <p>
-    Recent advances in image clustering typically focus on learning better deep 
-    representations. In contrast, we present an orthogonal approach that does not rely on 
-    abstract features but instead learns to <b>predict image transformations</b> and directly performs 
-    <b>clustering in pixel space</b>. This learning process naturally fits in the 
-    gradient-based training of K-means and Gaussian mixture model, without requiring any 
-    additional loss or hyper-parameters. It leads us to two new deep transformation-invariant
-    clustering frameworks, which <b>jointly learn prototypes and transformations</b>. More 
-    specifically, we use deep learning modules that enable us to resolve invariance to spatial, 
-    color and morphological transformations. Our approach is conceptually simple and comes with 
-    several advantages, including the possibility to easily adapt the desired invariance to the 
-    task and a <b>strong interpretability</b> of both cluster centers and assignments to clusters.  We 
-    demonstrate that our novel approach yields <b>competitive and highly promising results</b> on 
-    standard image clustering benchmarks. Finally, we showcase its robustness and the 
-    advantages of its improved interpretability by visualizing clustering results over real 
-    photograph collections.
+    The field of Earth Observations (EO) offers a wealth of data from diverse sensors,
+    presenting a great opportunity for advancing self-supervised multimodal learning.
+    However, current multimodal EO datasets and models focus on a single data type,
+    either mono-date images or time series, which limits their expressivity. 
+    We introduce OmniSat, a novel architecture that exploits the spatial alignment between
+    multiple EO modalities to learn </b>expressive multimodal representations</b> without
+    labels. To demonstrate the advantages of combining modalities of different natures, we augment two existing datasets with new modalities.
+    As demonstrated on three downstream tasks — forestry, land cover classification, and crop mapping— OmniSat can learn rich representations in 
+    an unsupervised manner, leading to improved performance in the semi- and fully-supervised settings, </b>even when only
+    one modality is available for inference</b>.
   </p>
-
+<!-- 
   <h3>Video</h3>
   <hr/>
   <div class="row" style="text-align:center">
@@ -111,7 +108,7 @@
           style="width:100%; clip-path:inset(1px 1px);" allowfullscreen></iframe>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <h3>Approach</h3>
   <hr/>
@@ -198,20 +195,14 @@
     <div class="col-xs-0 col-lg-0"></div>
     <div class="col-xs-4 col-lg-4">
       <h4>Paper</h4>
-      <a href="https://arxiv.org/abs/2006.11132" style="color:inherit">
-        <img src="resrc/paper.jpg" alt="paper.jpg" class="text-center" style="max-width:70%; border:0.15em solid;
+      <a href="https://arxiv.org/pdf/2404.08351" style="color:inherit">
+        <img src="images/paper.jpg" alt="paper.jpg" class="text-center" style="max-width:70%; border:0.15em solid;
         border-radius:0.5em;"></a>
     </div>
     <div class="col-xs-4 col-lg-4">
       <h4>Code</h4>
       <a href="https://github.com/monniert/dti-clustering" style="color:inherit;">
-        <img src="resrc/github_repo.png" alt="github_repo.png" class="text-center"
-             style="max-width:70%; border:0.15em solid;border-radius:0.5em;"></a>
-    </div>
-    <div class="col-xs-4 col-lg-4">
-      <h4>Slides</h4>
-      <a href="dtic_long.pptx" style="color:inherit;">
-        <img src="resrc/slides.png" alt="slides.png" class="text-center"
+        <img src="images/GitHub_Logo.svg" alt="github_repo.png" class="text-center"
              style="max-width:70%; border:0.15em solid;border-radius:0.5em;"></a>
     </div>
     <div class="col-xs-0 col-lg-0"></div>
@@ -221,51 +212,26 @@
     <div class="card">
       <div class="card-block">
         <pre class="card-text clickselect">
-@inproceedings{monnier2020dticlustering,
-  title={{Deep Transformation-Invariant Clustering}},
-  author={Monnier, Tom and Groueix, Thibault and Aubry, Mathieu},
-  booktitle={NeurIPS},
-  year={2020},
-}</pre>
+          @article{astruc2024omnisat,
+            title={OmniSat: Self-Supervised Modality Fusion for Earth Observation},
+            author={Astruc, Guillaume and Gonthier, Nicolas and Mallet, Clement and Landrieu, Loic},
+            journal={arXiv preprint arXiv:2404.08351},
+            year={2024}
+          }</pre>
       </div>
     </div>
 
   <h3>Further information</h3>
   <hr/>
-  If you like this project, please check out other related works from our group:
-  <h4>Follow-ups</h4>
-  <ul>
-    <li>
-      <a href="https://arxiv.org/abs/2104.14575">Monnier et al. - Unsupervised Layered Image Decomposition into Object
-        Prototypes (arXiv 2021)</a>
-    </li>
-  </ul>
-
-  <h4>Previous works on deep transformations</h4>
-  <ul>
-    <li>
-      <a href="https://arxiv.org/abs/1908.04725">Deprelle et al. - Learning elementary structures for 3D shape
-        generation and matching (NeurIPS 2019)</a>
-    </li>
-    <li>
-      <a href="https://arxiv.org/abs/1806.05228">Groueix et al. - 3D-CODED: 3D Correspondences by Deep Deformation (ECCV
-        2018)</a>
-    </li>
-    <li>
-      <a href="https://arxiv.org/abs/1802.05384">Groueix et al. - AtlasNet: A Papier-Mache Approach to Learning 3D
-        Surface Generation (CVPR 2018)</a>
-    </li>
-  </ul>
-
-
   <h3>Acknowledgements</h3>
   <hr/>
   <p>
-    This work was supported in part by <a href="https://enherit.enpc.fr/">ANR project EnHerit</a> ANR-17-CE23-0008,
-    project Rapid Tabasco, gifts  from  Adobe and HPC resources from GENCI-IDRIS (Grant 2020-AD011011697). We thank 
-    Bryan Russell, Vladimir Kim, Matthew Fisher, Fran&#231;ois Darmon, Simon Roburin, David Picard, Michael 
-    Ramamonjisoa, Vincent Lepetit, Elliot Vincent, Jean Ponce, William Peebles and Alexei Efros for inspiring 
-    discussions and valuable feedback.
+    This work was supported by ANR project READY3D ANR-19-CE23-0007,
+  and was granted access to the HPC resources of IDRIS under the allocation AD011014719 made
+  by GENCI. We thank Anatol Garioud and Sebastien Giordano for their help on the creation of ´
+  TreeSatAI-TS and PASTIS-HD datasets. The SPOT images are opendata thanks to the Dataterra
+  Dinamis initiative in the case of the "<a href="https://dinamis.data-terra.org/opendata/">Couverture France DINAMIS</a> program. We thank Jordi
+  Inglada for inspiring discussions and valuable feedback.
   </p>
 </div>
 
