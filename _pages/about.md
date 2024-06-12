@@ -15,6 +15,6 @@ News
 
 Publications
 ======
-  <ul>{% for post in site.publications reversed %}
+  <ul>{% for post in site.publications %}
     {% include archive-custom-publications-cv.html %}
   {% endfor %}</ul>
