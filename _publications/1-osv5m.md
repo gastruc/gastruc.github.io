@@ -7,6 +7,7 @@ date: 2024-04-29
 venue: 'CVPR'
 paperurl: 'http://gastruc.github.io/files/osv5m.pdf'
 projectpage: 'https://imagine.enpc.fr/~ioannis.siglidis/osv5m/'
+teaser: 'teaser.png'
 ---
 
 ![teaser.png](http://gastruc.github.io/images/teaser.png)
