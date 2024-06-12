@@ -82,8 +82,8 @@ analytics:
 author:
   name             : "Guillaume Astruc"
   avatar           : "Photo-CV.jpg"
-  bio              : "PhD Student at Imagine - ENPC/IGN/CNES
-                      Working on Cross-modal self-supervised geospatial learning"
+  bio              : "PhD Student at Imagine - ENPC/IGN/CNES"
+  work             : "Working on Cross-modal self-supervised geospatial learning"
   location         : "Paris, France"
   employer         :
   pubmed           : #"https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
