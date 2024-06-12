@@ -6,6 +6,7 @@ excerpt: 'The field of Earth Observations (EO) offers a wealth of data from dive
 date: 2024-04-12
 venue: 'Arxiv preprint'
 paperurl: 'http://gastruc.github.io/files/omnisat.pdf'
+teaser: 'https://github.com/gastruc/OmniSat/assets/1902679/9fc20951-1cac-4891-b67f-53ed5e0675ad'
 ---
 
 # OmniSat: Self-Supervised Modality Fusion for Earth Observation
