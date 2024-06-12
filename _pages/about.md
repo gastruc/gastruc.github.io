@@ -10,7 +10,7 @@ I am currently in my first year of pursuing a PhD at [Imagine Institute](https:/
 
 News
 ======
-- Osv has been accepted to CVPR 2024
+- [OpenStreetView-5M](https://imagine.enpc.fr/~ioannis.siglidis/osv5m/) has been accepted to CVPR 2024
 
 Publications
 ======
