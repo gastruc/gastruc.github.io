@@ -10,6 +10,7 @@ I am currently in my first year of pursuing a PhD at [Imagine Institute](https:/
 
 News
 ======
+- **07/24** [OmniSat](https://gastruc.github.io/publication/omnisat) has been accepted to ECCV 2024!
 - **04/24** Preprint, code and data for [OmniSat](https://gastruc.github.io/publication/omnisat) now available!
 - **02/24** [OpenStreetView-5M](https://imagine.enpc.fr/~ioannis.siglidis/osv5m/) has been accepted to CVPR 2024!
 

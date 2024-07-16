@@ -154,6 +154,79 @@
   </div> -->
 
   <h3>Results</h3>
+    <p>We perform experiments with 100% and 10-20% of labels. See below, the F1 Score results on 100% of the training data with all modalities available:</p>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>F1 Score</th>
+          <th>UT&T</th>
+          <th>Scale-MAE</th>
+          <th>OmniSat (no pretraining)</th>
+          <th>OmniSat (with pretraining)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>PASTIS-HD</td>
+          <td>53.5</td>
+          <td>42.2</td>
+          <td>59.1</td>
+          <td style="font-weight: bold;">69.9</td>
+        </tr>
+        <tr>
+          <td>TreeSatAI-TS</td>
+          <td>56.7</td>
+          <td>60.4</td>
+          <td>73.3</td>
+          <td style="font-weight: bold;">74.2</td>
+        </tr>
+        <tr>
+          <td>FLAIR</td>
+          <td>48.8</td>
+          <td>70.0</td>
+          <td>70.0</td>
+          <td style="font-weight: bold;">73.4</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <p>OmniSat also improves performance even when only one modality is available for inference. F1 Score results on 100% of the training data with only S2 data available:</p>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>F1 Score</th>
+          <th>UT&T</th>
+          <th>Scale-MAE</th>
+          <th>OmniSat (no pretraining)</th>
+          <th>OmniSat (with pretraining)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>PASTIS-HD</td>
+          <td>61.3</td>
+          <td>46.1</td>
+          <td>60.1</td>
+          <td style="font-weight: bold;">70.8</td>
+        </tr>
+        <tr>
+          <td>TreeSatAI-TS</td>
+          <td>57.0</td>
+          <td>31.5</td>
+          <td>49.7</td>
+          <td style="font-weight: bold;">62.9</td>
+        </tr>
+        <tr>
+          <td>FLAIR</td>
+          <td>62.0</td>
+          <td>61.0</td>
+          <td style="font-weight: bold;">65.4</td>
+          <td style="font-weight: bold;">65.4</td>
+        </tr>
+      </tbody>
+    </table>
   <!-- <hr/>
   <div class="row" style="text-align: center; padding-left:1rem; padding-right:1rem; padding-bottom:1rem;">
     <h4><u>Standard image clustering benchmarks</u></h4>
