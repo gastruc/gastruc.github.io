@@ -35,7 +35,7 @@
 <div class="container" style="text-align:center; padding:2rem 15px">
   <div class="row" style="text-align:center">
     <h1>OmniSat: Self-Supervised Modality Fusion for Earth Observation</h1>
-    <h4>Arxiv Preprint 2024</h4>
+    <h4>ECCV 2024</h4>
   </div>
   <div class="row" style="text-align:center">
     <div class="col-xs-0 col-md-3"></div>
@@ -89,12 +89,36 @@
   </p>
 
   <h3>Datasets</h3>
-    | Dataset name  |             Modalities                   |      Labels         |     Link      
-    | ------------- | ---------------------------------------- | ------------------- | ------------------- |
-    | PASTIS-HD     | **SPOT 6-7 (1m)** + S1/S2 (30-140 / year)| Crop mapping (0.2m) |    [huggingface](https://huggingface.co/datasets/IGNF/PASTIS-HD) or [zenodo](https://zenodo.org/records/10908628) |
-    | TreeSatAI-TS  | Aerial (0.2m) + **S1/S2 (10-70 / year)** |   Forestry (60m)    |   [huggingface](https://huggingface.co/datasets/IGNF/TreeSatAI-Time-Series) |
-    | FLAIR         |   aerial (0.2m) + S2 (20-114 / year)     |  Land cover (0.2m)  |  [huggingface](https://huggingface.co/datasets/IGNF/FLAIR) |
-
+    <table>
+      <thead>
+        <tr>
+          <th>Dataset name</th>
+          <th>Modalities</th>
+          <th>Labels</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>PASTIS-HD</td>
+          <td>**SPOT 6-7 (1m)** + S1/S2 (30-140 / year)</td>
+          <td>Crop mapping (0.2m)</td>
+          <td><a href="https://huggingface.co/datasets/IGNF/PASTIS-HD">huggingface</a> or <a href="https://zenodo.org/records/10908628">zenodo</a></td>
+        </tr>
+        <tr>
+          <td>TreeSatAI-TS</td>
+          <td>Aerial (0.2m) + **S1/S2 (10-70 / year)**</td>
+          <td>Forestry (60m)</td>
+          <td><a href="https://huggingface.co/datasets/IGNF/TreeSatAI-Time-Series">huggingface</a></td>
+        </tr>
+        <tr>
+          <td>FLAIR</td>
+          <td>aerial (0.2m) + S2 (20-114 / year)</td>
+          <td>Land cover (0.2m)</td>
+          <td><a href="https://huggingface.co/datasets/IGNF/FLAIR">huggingface</a></td>
+        </tr>
+      </tbody>
+    </table>
 
     <p align="center">
       <img src="https://github.com/gastruc/OmniSat/assets/1902679/289c8ca5-c0fa-4c35-8a91-af827dac0509" width="500" height="250">
