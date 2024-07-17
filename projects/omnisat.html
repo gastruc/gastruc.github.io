@@ -142,71 +142,6 @@
     <p align="center">
       <img src="https://github.com/user-attachments/assets/18acbb19-6c90-4c9a-be05-0af24ded2052" width="700" height="350">
     </p>
-<!-- 
-  <h3>Video</h3>
-  <hr/>
-  <div class="row" style="text-align:center">
-    <div class="col-xs-6 text-center">
-      <h4><u>Short presentation</u> (3min)</h4>
-      <div class="embed-responsive embed-responsive-16by9" style="text-align:center">
-        <iframe class="embed-responsive-item text-center" src="https://www.youtube.com/embed/j20MBc1hWGQ" frameborder="0"
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          style="width:100%; clip-path:inset(1px 1px);" allowfullscreen></iframe>
-      </div>
-    </div>
-
-    <div class="col-xs-6 text-center">
-      <h4><u>Long presentation</u> (11min)</h4>
-      <div class="embed-responsive embed-responsive-16by9" style="text-align:center">
-        <iframe class="embed-responsive-item text-center" src="https://www.youtube.com/embed/xhLUOh5PKBA" frameborder="0"
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          style="width:100%; clip-path:inset(1px 1px);" allowfullscreen></iframe>
-      </div>
-    </div>
-  </div> -->
-
-  <!-- <h3>Approach</h3> -->
-  <!-- <hr/>
-  <div class="row" style="text-align: center">
-    <div class="col-xs-6">
-      <h4 style="margin-right: 20%"><u>DTI framework</u></h4>
-    </div>
-    <div class="col-xs-6">
-      <h4><u>Deep transformation module 
-          <img src="http://latex.codecogs.com/svg.latex?\mathcal{T}_{f_{k}}" alt="T_f_k" border="0"/></u></h4>
-    </div>
-  </div>
-  <div class="row" style="text-align: center">
-    <div class="col-xs-6">
-      <img src="resrc/dti.png" alt="dti.png" class="text-center" style="width: 100%; max-width: 900px">
-    </div>
-    <div class="col-xs-6">
-      <img src="resrc/deep_tsf.png" alt="deep_tsf.png" class="text-center" style="width: 90%; max-width: 900px; margin-top:
-      10px">
-    </div>
-  </div>
-  <div class="row" style="text-align: center">
-    <div class="col-xs-6">
-      <div style="width: 90%; max-width: 900px; padding-top:10px">
-      <p>Given a sample <img src="http://latex.codecogs.com/svg.latex?x_i" alt="x_i" border="0"/> and prototypes 
-      <img src="http://latex.codecogs.com/svg.latex?c_1" alt="c_1" border="0"/> and 
-      <img src="http://latex.codecogs.com/svg.latex?c_2" alt="c_2" border="0"/>, standard clustering such as K-means 
-      assigns the sample to the closest prototype. Our DTI clustering first aligns prototypes to the sample using a
-      family of parametric transformations - here rotations - then picks the prototype whose alignment yields the 
-      smallest distance.</p>
-      </div>
-    </div>
-    <div class="col-xs-6">
-      <div style="width: 100%; max-width: 900px; padding-top:10px">
-        <p>We predict alignment with deep learning. Given an image 
-      <img src="http://latex.codecogs.com/svg.latex?x_i" alt="x_i" border="0"/>, each deep parameter predictor 
-      <img src="http://latex.codecogs.com/svg.latex?f_k" alt="f_k" border="0"/> predicts 
-      parameters for a sequence of transformations - here affine, morphological and thin plate spline transformations -
-      to align the prototype <img src="http://latex.codecogs.com/svg.latex?c_k" alt="c_k" border="0"/>
-      to the query image <img src="http://latex.codecogs.com/svg.latex?x_i" alt="x_i" border="0"/>.</p>
-      </div>
-    </div>
-  </div> -->
 
   <h3>Results</h3>
     <p>We perform experiments with 100% and 10-20% of labels. When using all modalities, OmniSat outperforms all competing methods. 
@@ -288,7 +223,7 @@
         </tr>
       </tbody>
     </table>
-  
+    <hr/>
     Our pre-training scheme had a smaller impact on FLAIR than on the TreeSatAI-TS experiment. We attribute this to the fact that only two modalities are 
     available, which decreases the supervisory power of our cross-modal contrastive objective and our multimodal reconstruction loss.
 
