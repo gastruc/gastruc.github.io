@@ -58,6 +58,7 @@
 }
 
 .dark-mode-toggle {
+  display: inline-block !important;
   padding: 0.5em;
   margin-right: 1em;
   background: transparent;
@@ -65,8 +66,28 @@
   cursor: pointer;
   color: inherit;
   font-size: 1.2em;
+  position: relative;
+  z-index: 20;
   
   &:hover {
     opacity: 0.8;
+  }
+
+  i {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+  }
+}
+
+// Ensure proper positioning in the navigation
+.greedy-nav {
+  position: relative;
+  
+  .dark-mode-toggle {
+    position: absolute;
+    right: 4rem;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
