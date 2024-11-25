@@ -5,11 +5,13 @@
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
         <a class="site-title" href="{{ base_path }}/">{{ site.title }}</a>
-        <ul class="visible-links">
+        <ul class="visible-links" style="display: flex; align-items: center;">
           {% for link in site.data.navigation.main %}
-            <li class="masthead__menu-item"><a href="{{ domain }}{{ link.url }}">{{ link.title }}</a></li>
+            <li class="masthead__menu-item" style="display: flex; align-items: center;">
+              <a href="{{ domain }}{{ link.url }}">{{ link.title }}</a>
+            </li>
           {% endfor %}
-          <li class="masthead__menu-item">
+          <li class="masthead__menu-item" style="display: flex; align-items: center;">
             <a href="#" onclick="toggleDarkMode(); return false;">
               <i class="fas fa-moon"></i>
             </a>
