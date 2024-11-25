@@ -1,15 +1,25 @@
 function toggleDarkMode() {
-  document.body.classList.toggle('dark-mode');
-  const icon = document.querySelector('.fa-moon');
+  const body = document.body;
+  const icon = document.querySelector('.fa-moon, .fa-sun');
+  
+  body.classList.toggle('dark-mode');
+  
   if (icon) {
-    icon.classList.toggle('fa-moon');
-    icon.classList.toggle('fa-sun');
+    if (body.classList.contains('dark-mode')) {
+      icon.classList.replace('fa-moon', 'fa-sun');
+    } else {
+      icon.classList.replace('fa-sun', 'fa-moon');
+    }
   }
-  localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+  
+  localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (localStorage.getItem('darkMode') === 'true') {
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const storedTheme = localStorage.getItem('darkMode');
+  
+  if (storedTheme !== null ? storedTheme === 'true' : prefersDark) {
     document.body.classList.add('dark-mode');
     const icon = document.querySelector('.fa-moon');
     if (icon) {

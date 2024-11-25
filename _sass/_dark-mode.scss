@@ -6,9 +6,47 @@ body.dark-mode {
 .dark-mode {
   .masthead {
     background: #2d2d2d;
+    border-bottom: 1px solid #404040;
   }
   
   a {
     color: #66b3ff;
+    
+    &:hover {
+      color: lighten(#66b3ff, 15%);
+    }
+  }
+
+  .greedy-nav {
+    background: #2d2d2d;
+    
+    a {
+      color: #e6e6e6;
+      
+      &:hover {
+        color: #ffffff;
+      }
+    }
+
+    .visible-links {
+      a:before {
+        background: #66b3ff;
+      }
+    }
+
+    .hidden-links {
+      background: #2d2d2d;
+      border: 1px solid #404040;
+      
+      a:hover {
+        background: #404040;
+      }
+    }
+  }
+
+  .navicon,
+  .navicon:before,
+  .navicon:after {
+    background: #e6e6e6;
   }
 } 
