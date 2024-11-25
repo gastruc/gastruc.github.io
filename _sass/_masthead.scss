@@ -56,3 +56,17 @@
     font-weight: 700;
   }
 }
+
+.dark-mode-toggle {
+  padding: 0.5em;
+  margin-right: 1em;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  font-size: 1.2em;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}
