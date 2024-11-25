@@ -58,36 +58,30 @@
 }
 
 .dark-mode-toggle {
+  position: relative !important;
   display: inline-block !important;
-  padding: 0.5em;
-  margin-right: 1em;
+  padding: 0.5rem;
+  margin: 0 1rem;
   background: transparent;
-  border: none;
-  cursor: pointer;
-  color: inherit;
-  font-size: 1.2em;
-  position: relative;
+  border: 0;
+  color: $masthead-link-color;
   z-index: 20;
-  
+  height: auto !important;
+  right: auto !important;
+
   &:hover {
-    opacity: 0.8;
+    color: $masthead-link-color-hover;
   }
 
   i {
-    display: inline-block;
-    width: 1em;
-    height: 1em;
+    font-size: 1.2em;
   }
 }
 
-// Ensure proper positioning in the navigation
+// Override greedy-nav button styles for dark mode toggle
 .greedy-nav {
-  position: relative;
-  
   .dark-mode-toggle {
-    position: absolute;
-    right: 4rem;
-    top: 50%;
-    transform: translateY(-50%);
+    position: relative;
+    background: transparent;
   }
 }
