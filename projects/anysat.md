@@ -28,8 +28,8 @@ buttons:
   #   text: Video
   #   url: https://www.youtube.com/watch?v=1JUoog7CWDs
 
-abstract: Geospatial models must adapt to the diversity of Earth observation data in terms of resolutions, scales, and modalities. However, existing approaches expect fixed input configurations, which limits their practical applicability. We propose AnySat, a multimodal model based on joint embedding predictive architecture (JEPA) and resolution-adaptive spatial encoders, allowing us to train a single model on highly heterogeneous data in a <b>self-supervised manner</b>. To demonstrate the advantages of this unified approach, we compile GeoPlex, a collection of 5 multimodal datasets with varying characteristics and 11 distinct sensors. We then train a single powerful model on these diverse datasets <b>simultaneously</b>.
-Once fine-tuned, we achieve better or near <b>state-of-the-art results</b> on the datasets of GeoPlex and 3 additional ones for 4 environment monitoring tasks: land cover mapping, crop type classification, change detection, and forest analysis.
+# abstract: Geospatial models must adapt to the diversity of Earth observation data in terms of resolutions, scales, and modalities. However, existing approaches expect fixed input configurations, which limits their practical applicability. We propose AnySat, a multimodal model based on joint embedding predictive architecture (JEPA) and resolution-adaptive spatial encoders, allowing us to train a single model on highly heterogeneous data in a <b>self-supervised manner</b>. To demonstrate the advantages of this unified approach, we compile GeoPlex, a collection of 5 multimodal datasets with varying characteristics and 11 distinct sensors. We then train a single powerful model on these diverse datasets <b>simultaneously</b>.
+# Once fine-tuned, we achieve better or near <b>state-of-the-art results</b> on the datasets of GeoPlex and 3 additional ones for 4 environment monitoring tasks: land cover mapping, crop type classification, change detection, and forest analysis.
 
 # poster:
 #     url: /assets/publications/omnisat/omni.pdf
@@ -43,108 +43,148 @@ bibtex: ""
 #   Dinamis initiative in the case of the "<a href="https://dinamis.data-terra.org/opendata/">Couverture France DINAMIS</a>" program. We thank Jordi Inglada for inspiring discussions and valuable feedback.
 ---
 
-<div class="section">
-    <h2 id="Key-Features">Key Features</h2>
-    <p>
-        AnySat introduces several key innovations for Earth Observation:
-    </p>
-    
-    <ul>
-        <li><b>Resolution Flexibility:</b> A single model that can process satellite imagery at any resolution (from 0.2m to 60m) without retraining</li>
-        
-        <li><b>Scale Adaptability:</b> Seamlessly handles both local (city-scale) and global coverage without compromising performance</li>
-        
-        <li><b>Modality Fusion:</b> Effectively combines multiple data sources (optical, radar, aerial imagery) in a unified architecture</li>
-        
-        <li><b>Memory Efficiency:</b> Novel attention mechanism that scales linearly with image size, enabling processing of large-scale imagery</li>
-        
-        <li><b>Zero-Shot Generalization:</b> Can adapt to new geographic regions and resolutions without additional training</li>
-    </ul>
+<div class="content-wrapper">
+    <section id="model-overview" class="feature-section">
+        <div class="section-icon">🛰️</div>
+        <h2>Introducing AnySat</h2>
+        <div class="feature-content">
+            <p class="highlight-text">
+                AnySat is a multimodal model based on joint embedding predictive architecture (JEPA) and resolution-adaptive spatial encoders, allowing us in a <b>self-supervised manner</b> to handle:
+            </p>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h3>Multiple Scales</h3>
+                    <p>From local to global observations</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Various Resolutions</h3>
+                    <p>Spatial, spectral, and temporal</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Different Modalities</h3>
+                    <p>Multiple sensor combinations</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <p>
-        These capabilities make AnySat particularly valuable for:
-    </p>
-    
-    <ul>
-        <li>Large-scale land monitoring applications requiring multi-resolution analysis</li>
-        <li>Applications that need to combine data from different satellites and sensors</li>
-        <li>Deployment scenarios where computational efficiency is crucial</li>
-        <li>Projects requiring flexible adaptation to new regions or data sources</li>
-    </ul>
+    <section id="training-approach" class="feature-section">
+        <div class="section-icon">🌍</div>
+        <h2>Datasets</h2>
+        <div class="feature-content">
+            <p class="highlight-text">
+                We compile GeoPlex, a collection of multimodal datasets with varying characteristics to a single powerful model on these diverse datasets <b>simultaneously</b>. We argue quality and diversity over quantity.
+            </p>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">Diverse Datasets</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">11</span>
+                    <span class="stat-label">Distinct Sensors</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">0.2-250m</span>
+                    <span class="stat-label">Resolution Range</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">0.4-16ha</span>
+                    <span class="stat-label">Sample Areas</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="results" class="feature-section">
+        <div class="section-icon">🏆</div>
+        <h2>State-of-the-Art Results</h2>
+        <div class="feature-content">
+            <div class="results-highlights">
+                <div class="result-item">
+                    <h3>6 Datasets</h3>
+                    <p>State-of-the-art performance</p>
+                </div>
+                <div class="result-item">
+                    <h3>4 Tasks</h3>
+                    <p>Comprehensive geospatial analysis</p>
+                </div>
+                <div class="result-item">
+                    <h3>Linear Probing</h3>
+                    <p>Excellence in semantic segmentation</p>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 
-<div class="section">
-    <h2 id="Results">Results</h2>
-    
-    <h3>Multi-Resolution Performance</h3>
-    <p>
-        AnySat demonstrates robust performance across different spatial resolutions:
-    </p>
-    <table>
-      <tbody>
-        <tr>
-          <th>Resolution</th>
-          <th>SOTA</th>
-          <th>AnySat</th>
-          <th>Improvement</th>
-        </tr>
-        <tr>
-          <td>Very High (0.2m)</td>
-          <td>75.2</td>
-          <td style="font-weight: bold;">78.9</td>
-          <td>+3.7</td>
-        </tr>
-        <tr>
-          <td>High (1.5m)</td>
-          <td>73.8</td>
-          <td style="font-weight: bold;">77.4</td>
-          <td>+3.6</td>
-        </tr>
-        <tr>
-          <td>Medium (10m)</td>
-          <td>71.5</td>
-          <td style="font-weight: bold;">74.8</td>
-          <td>+3.3</td>
-        </tr>
-      </tbody>
-    </table>
+<style>
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
 
-    <h3>Cross-Dataset Generalization</h3>
-    <p>
-        Key experimental findings demonstrate AnySat's versatility:
-    </p>
-    <ul>
-        <li><b>Zero-Shot Transfer:</b> Maintains 92% of its performance when applied to new geographic regions without fine-tuning</li>
-        <li><b>Resolution Adaptation:</b> Successfully processes images at previously unseen resolutions with only 5% performance drop</li>
-        <li><b>Multi-Modal Fusion:</b> Achieves 15% improvement over single-modality baselines when combining optical and radar data</li>
-    </ul>
+.feature-section {
+    margin-bottom: 3rem;
+    padding: 2rem;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
 
-    <h3>Computational Efficiency</h3>
-    <p>
-        AnySat achieves significant computational improvements:
-    </p>
-    <ul>
-        <li>Linear memory scaling with image size (O(n)) compared to quadratic scaling (O(n²)) in traditional transformers</li>
-        <li>3x faster inference time compared to resolution-specific models</li>
-        <li>80% reduction in model parameters while maintaining or improving performance</li>
-    </ul>
+.section-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
 
-    <h3>Ablation Studies</h3>
-    <p>
-        Key architectural components contribute to performance:
-    </p>
-    <ul>
-        <li>Resolution-aware positional encoding: +4.2% accuracy</li>
-        <li>Cross-scale attention mechanism: +3.8% accuracy</li>
-        <li>Multi-modal fusion strategy: +5.1% accuracy</li>
-    </ul>
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
 
-    <figure style="width:80%; margin:auto; display: block; text-align: center;">
-        <img src="/assets/publications/anysat/results.png" alt="Performance across scales" style="margin:auto; display: block;">
-        <figcaption style="text-align: center;">Figure 2: AnySat performance across different spatial scales and resolutions compared to specialized models.</figcaption>
-    </figure>
-</div>
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+    text-align: center;
+}
 
+.stat-item {
+    padding: 1rem;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
 
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+    display: block;
+}
+
+.results-highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.highlight-text {
+    font-size: 1.2rem;
+    color: #2c3e50;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+    .feature-grid, .stats-grid, .results-highlights {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
 
 
