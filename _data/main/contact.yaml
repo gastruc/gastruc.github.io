@@ -1,0 +1,27 @@
+- url: mailto:guillaume.astruc@enpc.fr
+  icon: /assets/icons/mail.png
+  name: E-Mail
+
+- url: https://www.linkedin.com/in/guillaume-astruc-6435b3173/
+  icon: /assets/icons/linkedin.png
+  name: LinkedIn
+
+- url: /assets/about/cv.pdf
+  icon: /assets/icons/cv.png
+  name: CV
+
+- url: https://twitter.com/g_astruc
+  icon: /assets/icons/twitter.png
+  name: Twitter
+  
+- url: https://bsky.app/profile/gastruc.bsky.social
+  icon: /assets/icons/bluesky.png
+  name: Bluesky
+
+- url: https://scholar.google.com/citations?user=YOURID
+  icon: /assets/icons/scholar.png
+  name: Google Scholar
+
+- url: https://github.com/gastruc
+  icon: /assets/icons/github.png
+  name: Github

@@ -1,0 +1,48 @@
+- title: "OpenStreetView-5M: The Many Roads to Global Visual Geolocation"
+  authors: <a href="https://gastruc.github.io/">Guillaume Astruc</a>*, <u>Nicolas Dufour</u>*, <a href="https://imagine.enpc.fr/~siglidii/">Ioannis Siglidis</a>*, Constantin Aronssohn, Nacim Bouia, <a href="https://stephanie-fu.github.io/">Stephanie Fu</a>, <a href="https://romainloiseau.fr/">Romain Loiseau</a>, <a href="https://nv-nguyen.github.io/">Van Nguyen Nguyen</a>, <a href="https://imagine.enpc.fr/~raudec/">Charles Raude</a>, <a href="https://imagine.enpc.fr/~vincente/">Elliot Vincent</a>, Lintao XU, Hongyu Zhou, <a href="https://loiclandrieu.com/">Loic Landrieu</a>
+  date: 2024-06-17
+  year: 2024
+  journal: CVPR 2024
+  pdf: https://arxiv.org/pdf/2404.18873
+  github: https://github.com/gastruc/osv5m
+  website: https://imagine.enpc.fr/~ioannis.siglidis/osv5m/
+  thumbnail: /assets/publications/osv5m/thumbnail.png
+  abstract: Determining the location of an image anywhere on Earth is a complex visual task, which makes it particularly relevant for evaluating computer vision algorithms. Yet, the absence of standard, large-scale, open-access datasets with reliably localizable images has limited its potential. To address this issue, we introduce OpenStreetView-5M, a large-scale, open-access dataset comprising over 5.1 million geo-referenced street view images, covering 225 countries and territories. In contrast to existing benchmarks, we enforce a strict train/test separation, allowing us to evaluate the relevance of learned geographical features beyond mere memorization. To demonstrate the utility of our dataset, we conduct an extensive benchmark of various state-of-the-art image encoders, spatial representations, and training strategies. 
+  bibtex: "@article{astruc2024openstreetview5m, \n
+    &nbsp;&nbsp; title={OpenStreetView-5M: The Many Roads to Global Visual Geolocation}, \n
+    &nbsp;&nbsp; author={Guillaume Astruc and Nicolas Dufour and Ioannis Siglidis \n
+    &nbsp;&nbsp; and Constantin Aronssohn and Nacim Bouia and Stephanie Fu and Romain Loiseau \n
+    &nbsp;&nbsp; and Van Nguyen Nguyen and Charles Raude and Elliot Vincent and Lintao XU \n
+    &nbsp;&nbsp; and Hongyu Zhou and Loic Landrieu}, \n
+    &nbsp;&nbsp; journal={CVPR}, \n
+    &nbsp;&nbsp; year={2024} \n
+  }"
+- title: "OmniSat: Self-Supervised Modality Fusion for Earth Observation"
+  authors: <u>Guillaume Astruc</u>, <a href="https://ngonthier.github.io/">Nicolas Gonthier</a>, <a href="https://www.umr-lastig.fr/clement-mallet/">Clement Mallet</a>, <a href="https://loiclandrieu.com/">Loic Landrieu</a>
+  date: 2024-09-29
+  year: 2024
+  journal: ECCV 2024
+  thumbnail: /assets/publications/omnisat/teaser.png
+  pdf:  https://arxiv.org/pdf/2404.08351
+  github: https://github.com/gastruc/OmniSat
+  website: /omnisat
+  abstract: 'The field of Earth Observations (EO) offers a wealth of data from diverse sensors, presenting a great opportunity for advancing self-supervised multimodal learning. However, current multimodal EO datasets and models focus on a single data type, either mono-date images or time series, which limits their expressivity. We introduce OmniSat, a novel architecture that exploits the spatial alignment between multiple EO modalities to learn expressive multimodal representations without labels. To demonstrate the advantages of combining modalities of different natures, we augment two existing datasets with new modalities. As demonstrated on three downstream tasks: forestry, land cover classification, and crop mapping. OmniSat can learn rich representations in an unsupervised manner, leading to improved performance in the semi- and fully-supervised settings, even when only one modality is available for inference. The code and dataset are available [here](https://github.com/gastruc/OmniSat/).'
+  bibtex: "@inproceedings{astruc2025omnisat, \n
+    &nbsp;&nbsp; title={Omnisat: Self-supervised modality fusion for earth observation}, \n
+    &nbsp;&nbsp; author={Astruc, Guillaume and Gonthier, Nicolas and Mallet, Clement and Landrieu, Loic}, \n
+    &nbsp;&nbsp; booktitle={European Conference on Computer Vision}, \n
+    &nbsp;&nbsp; pages={409--427}, \n
+    &nbsp;&nbsp; year={2025}, \n
+    &nbsp;&nbsp; organization={Springer} \n
+}"
+# - title: "AnySat: An Earth Observation Model for Any Resolutions, Scales, and Modalities"
+#   authors: <u>Guillaume Astruc</u>, <a href="https://ngonthier.github.io/">Nicolas Gonthier</a>, <a href="https://www.umr-lastig.fr/clement-mallet/">Clement Mallet</a>, <a href="https://loiclandrieu.com/">Loic Landrieu</a>
+#   date: 2025-01-01
+#   year: 2025
+#   journal: Arxiv 2025
+#   thumbnail: /assets/publications/anysat/teaser.png
+#   pdf: 
+#   github: https://github.com/gastruc/AnySat
+#   website: /anysat
+#   abstract: 'Geospatial models must adapt to the diversity of Earth observation data in terms of resolutions, scales, and modalities. However, existing approaches expect fixed input configurations, which limits their practical applicability. We propose AnySat, a multimodal model based on joint embedding predictive architecture (JEPA) and resolution-adaptive spatial encoders, allowing us to train a single model on highly heterogeneous data in a self-supervised manner. To demonstrate the advantages of this unified approach, we compile GeoPlex, a collection of $5$ multimodal datasets with varying characteristics and $11$ distinct sensors. We then train a single powerful model on these diverse datasets simultaneously. Once fine-tuned, we achieve better or near state-of-the-art results on the  datasets of GeoPlex and $3$ additional ones for $4$ environment monitoring tasks: land cover mapping, crop type classification, change detection, and forest analysis. '
+#   bibtex: ""
