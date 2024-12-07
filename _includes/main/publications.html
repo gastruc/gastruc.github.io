@@ -1,0 +1,127 @@
+<h2>Publications</h2>
+{% assign sorted_publications = site.data.main.publications | sort: 'date' | reverse %}
+{% assign prev_year = '' %}
+{% for publication in sorted_publications %}
+{% if publication.year != prev_year %}
+{% if forloop.index != 1 %}
+</div>
+{% endif %}
+{% assign prev_year = publication.year %}
+<h3 class="publications-year">{{ publication.year }}</h3>
+<div class="publications-yealy-wrapper">
+    {% endif %}
+    <div class="publication">
+        {% if publication.thumbnail %}
+        {% if publication.website %}
+        <a href="{{ publication.website }}" class="publication-thumbnail-link">
+            <img class="publication-thumbnail" src="{{ publication.thumbnail }}"
+                alt="{{ publication.title }} thumbnail">
+        </a>
+        {% elsif publication.pdf %}
+        <a href="{{ publication.pdf }}" class="publication-thumbnail-link">
+            <img class="publication-thumbnail" src="{{ publication.thumbnail }}"
+                alt="{{ publication.title }} thumbnail">
+        </a>
+        {% else %}
+        <img class="publication-thumbnail" src="{{ publication.thumbnail }}" alt="{{ publication.title }} thumbnail">
+        {% endif %}
+        {% endif %}
+        <div class="publication-content">
+            <div class="publication-title">{{ publication.title }}</div>
+            <div class="publication-authors">{{ publication.authors }}</div>
+            <div class="publication-journal">
+                {{ publication.journal }}
+                {% if publication.award %}
+                <span class="publication-award">{{ publication.award }}</span>
+                {% endif %}
+            </div>
+            <div class="publication-buttons">
+                {% if publication.website %}
+                <a href="{{ publication.website }}">Website</a>
+                {% endif %}
+                <a href="{{ publication.pdf }}">Paper</a>
+                {% if publication.github %}
+                <a href="{{ publication.github }}">Code</a>
+                {% endif %}
+                {% if publication.abstract %}
+                <a class="publication-abstract-toggle" id="abstract-toggle-{{ forloop.index }}">Abstract</a>
+                {% endif %}
+                {% if publication.bibtex %}
+                <a class="publication-bibtex-toggle" id="bibtex-toggle-{{ forloop.index }}">Bibtex</a>
+                {% endif %}
+            </div>
+            <div class="publication-abstract" id="abstract-{{ forloop.index }}" style="display: none;">
+                {{ publication.abstract | markdownify }}
+            </div>
+            <div class="publication-bibtex" id="bibtex-{{ forloop.index }}" style="display: none;">
+                <button class="bibtex-copy-btn" onclick="copyBibtex({{ forloop.index }})">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    <span>Copy</span>
+                </button>
+                <pre>{{ publication.bibtex }}</pre>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <script>
+        const bibtexToggles = document.querySelectorAll('.publication-bibtex-toggle');
+        bibtexToggles.forEach((toggle, index) => {
+            const bibtex = document.querySelector(`#bibtex-${index + 1}`);
+            const abstract = document.querySelector(`#abstract-${index + 1}`);
+            toggle.addEventListener('click', () => {
+                if (bibtex.style.display === 'none') {
+                    bibtex.style.display = 'block';
+                    abstract.style.display = 'none';
+                    abstract.classList.remove('show');
+                    setTimeout(() => bibtex.classList.add('show'), 0);
+                } else {
+                    bibtex.style.display = 'none';
+                    bibtex.classList.remove('show');
+                }
+            });
+        });
+
+        const abstractToggles = document.querySelectorAll('.publication-abstract-toggle');
+        abstractToggles.forEach((toggle, index) => {
+            const abstract = document.querySelector(`#abstract-${index + 1}`);
+            const bibtex = document.querySelector(`#bibtex-${index + 1}`);
+            toggle.addEventListener('click', () => {
+                if (abstract.style.display === 'none') {
+                    abstract.style.display = 'block';
+                    bibtex.style.display = 'none';
+                    bibtex.classList.remove('show');
+                    setTimeout(() => abstract.classList.add('show'), 0);
+                } else {
+                    abstract.style.display = 'none';
+                    abstract.classList.remove('show');
+                }
+            });
+        });
+
+        function copyBibtex(index) {
+            const bibtexContent = document.querySelector(`#bibtex-${index} pre`).textContent;
+            navigator.clipboard.writeText(bibtexContent).then(() => {
+                const btn = document.querySelector(`#bibtex-${index} .bibtex-copy-btn`);
+                btn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>Copied!</span>
+                `;
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                        <span>Copy</span>
+                    `;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+</div>

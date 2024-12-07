@@ -1,0 +1,53 @@
+- course_name: Deep Learning for Remote Sensing
+  start-date: 2024-02-02
+  end-date: 2024-03-03
+  position: Teaching Assistant
+  school: ENSG
+  key-contributions: 
+    - "Intro to Deep Learning"
+    - "Deep Learning for Multispectral Images"
+    - "Deep Learning for 3D Data"
+    - "Deep Learning for Temporal Data"
+
+- course_name: Deep Learning for Remote Sensing
+  start-date: 2025-02-02
+  end-date: 2025-03-03
+  position: Teaching Assistant
+  school: ENSG
+  key-contributions: 
+    - "Intro to Deep Learning"
+    - "Deep Learning for Multispectral Images"
+    - "Deep Learning for 3D Data"
+
+- course_name: Deep Learning for Remote Sensing
+  start-date: 2025-03-05
+  end-date: 2025-03-05
+  position: Teacher
+  school: ENSG
+  key-contributions: 
+    - "Deep Learning for Temporal Data"
+
+- course_name: Introduction to Data Science
+  start-date: 2025-01-27
+  end-date: 2025-03-24
+  position: Teaching Assistant
+  key-contributions: 
+    - "Statistical Inference"
+    - "Linear and Logistic Regression Models"
+    - "PCA"
+    - "Clustering"
+    - "Validation and Regularization"
+    - "Introduction to Deep Learning"
+  school: ENPC
+
+- course_name: Machine Learning
+  start-date: 2024-03-22
+  end-date: 2024-03-22
+  position: Teaching Assistant
+  key-contributions: 
+    - "Supervised Learning"
+    - "Classification"
+  school: ENSG
+
+
+  

@@ -1,0 +1,13 @@
+<h2>Open Source</h2>
+<div class="repo-wrapper">
+    {% assign filtered_projects = site.data.main.open_source | where: 'type', 'own' %}
+    {% for item in filtered_projects %}
+    <div class="repo-row">
+        <div class="repo-title">{{ item.repo_owner }} / {{ item.repo_name }}</div>
+        <a href="https://github.com/{{ item.repo_owner }}/{{ item.repo_name }}">
+            <img alt="GitHub Repo stars" class="repo-star"
+                src="https://img.shields.io/github/stars/{{ item.repo_owner }}/{{ item.repo_name }}?style=social">
+        </a>
+    </div>
+    {% endfor %}
+</div>

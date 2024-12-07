@@ -1,0 +1,11 @@
+- repo_name: osv5m
+  repo_owner: gastruc
+  type: own
+
+- repo_name: OmniSat
+  repo_owner: gastruc
+  type: own
+
+# - repo_name: AnySat
+#   repo_owner: gastruc
+#   type: own
