@@ -167,7 +167,7 @@ bibtex: ""
 }
 
 .stat-label {
-    color: #34495e;
+    color: #2d3748;
     font-weight: 500;
 }
 
