@@ -51,3 +51,6 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
+# Google Analytics
+google_analytics: G-FLNC8B6RH9  # Replace with your actual GA4 ID
