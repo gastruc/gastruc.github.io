@@ -6,7 +6,7 @@ short_name: OmniSat
 author: Guillaume Astruc
 description: This work introduces OmniSat, a novel architecture that exploits the spatial alignment between multiple EO modalities to learn expressive multimodal representations without labels.
 keywords: remote sensing, self-supervised learning, multimodal learning, earth observation, satellite imagery
-analytics: https://www.googletagmanager.com/gtag/js?id=G-EL0NXW8X61
+analytics: https://www.googletagmanager.com/gtag/js?id=G-FLNC8B6RH9
 
 paper_title: "OmniSat: Self-Supervised Modality Fusion for Earth Observation"
 paper_authors: <a href="/">Guillaume Astruc</a>, <a href="https://ngonthier.github.io/">Nicolas Gonthier</a>, <a href="https://www.umr-lastig.fr/clement-mallet/">Clement Mallet</a>, <a href="https://loiclandrieu.com/">Loic Landrieu</a>
