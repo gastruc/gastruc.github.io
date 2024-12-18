@@ -5,14 +5,14 @@
       font-family: 'Arial', sans-serif;
       font-weight: bold;
     }
-    .logo-d {
+    .logo-a {
       fill: #1e3c72;
     }
   </style>
   
-  <!-- N letter -->
-  <path class="logo-letters" d="M25 70V30h10l20 30V30h10v40H55L35 40v30H25z"/>
+  <!-- G letter -->
+  <path class="logo-letters" d="M30 50c0-11 9-20 20-20s20 9 20 20v10H50V50h10c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10c3 0 5.5-1.5 7.5-3.5l7 7C61 77 56 80 50 80c-11 0-20-9-20-20z"/>
   
-  <!-- D letter -->
-  <path class="logo-d" d="M45 30h15c11 0 20 9 20 20s-9 20-20 20H45V30zm10 30h5c5.5 0 10-4.5 10-10s-4.5-10-10-10h-5v30z"/>
+  <!-- A letter -->
+  <path class="logo-a" d="M70 70L60 45 50 70h-5l15-40h5l15 40h-5zm-18-10h16l-8-22z"/>
 </svg> 
