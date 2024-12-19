@@ -1,7 +1,7 @@
 ---
 layout: project
 permalink: /anysat
-title: "AnySat: An Earth Observation Model for Any Resolutions, Scales, and Modalities"
+title: "AnySat: An Earth Observation Model<br>for Any Resolutions, Scales, and Modalities"
 short_name: AnySat
 author: Guillaume Astruc
 description: This work introduces OmniSat, a novel architecture that exploits the spatial alignment between multiple EO modalities to learn expressive multimodal representations without labels.
@@ -46,7 +46,7 @@ acknowledgements: This work was granted access to the HPC resources of IDRIS und
 
 <div class="content-wrapper">
     <section id="model-overview" class="feature-section">
-        <div class="section-icon">🛰️</div>
+        <div class="section-icon"></div>
         <h2>Introducing AnySat</h2>
         <div class="feature-content">
             <p class="highlight-text">
@@ -54,15 +54,15 @@ acknowledgements: This work was granted access to the HPC resources of IDRIS und
             </p>
             <div class="feature-grid">
                 <div class="feature-item">
-                    <h3>Multiple Scales</h3>
+                    <h3>📏 Multiple Scales</h3>
                     <p>From local to global observations</p>
                 </div>
                 <div class="feature-item">
-                    <h3>Various Resolutions</h3>
+                    <h3>🔍 Various Resolutions</h3>
                     <p>Spatial, spectral, and temporal</p>
                 </div>
                 <div class="feature-item">
-                    <h3>Different Modalities</h3>
+                    <h3>🛰️ Different Modalities</h3>
                     <p>Multiple sensor combinations</p>
                 </div>
             </div>
@@ -86,7 +86,7 @@ acknowledgements: This work was granted access to the HPC resources of IDRIS und
             <div class="innovation-card">
                 <div class="innovation-icon">🌐</div>
                 <h3>Universal Compatibility</h3>
-                <p>Handles data from 0.2m to 500m resolution, 3-12 channels, and areas from 0.3 to 150 hectares</p>
+                <p>Handles data from 0.2m to 500m resolution, 3-12 channels, and areas from 0.3 to 2600 hectares</p>
             </div>
         </div>
     </section>
@@ -112,7 +112,7 @@ acknowledgements: This work was granted access to the HPC resources of IDRIS und
                     <span class="stat-label">Resolution Range</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">0.4-16ha</span>
+                    <span class="stat-number">0.4-160ha</span>
                     <span class="stat-label">Sample Areas</span>
                 </div>
             </div>
@@ -146,7 +146,7 @@ acknowledgements: This work was granted access to the HPC resources of IDRIS und
         <div class="section-icon">📊</div>
         <h2>Results</h2>
             <div class="architecture-image" style="max-width: 1100px; margin: 2rem auto; text-align: center;">
-                <img src="assets/publications/anysat/results.png" alt="AnySat Results" class="responsive-image">
+                <img src="assets/publications/anysat/result.png" alt="AnySat Results" class="responsive-image">
             </div>
     </section>
 
@@ -162,9 +162,9 @@ anysat_B = torch.hub.load('gastruc/anysat', 'anysat_B')
 
 # Prepare your data
 data = {
-    's2': torch.randn(B, T, H1, W1),      # Sentinel-2 time series
-    'naip': torch.randn(B, H2, W2),       # NAIP imagery
-    'alos2': torch.randn(B, T, H, W),     # ALOS-2 data
+    'naip':# NAIP single image B, 3, 24*H, 24*W
+    's2':# Sentinel-2 time series B, T1, 10, 3*H, 3*W
+    'alos2':# ALOS-2 time series B, T2, 3, H, W
 }
 
 # Extract features
