@@ -17,7 +17,7 @@ buttons:
     url: https://github.com/gastruc/AnySat
   - type: arxiv
     text: Paper
-    url: https://arxiv.org/abs/2404.08351
+    url: https://arxiv.org/abs/2412.14123
   - type: hugging_face
     text: "Models"
     url: https://huggingface.co/g-astruc/AnySat
@@ -35,12 +35,13 @@ buttons:
 #     url: /assets/publications/omnisat/omni.pdf
 # video:
 #     url: https://www.youtube.com/embed/1JUoog7CWDs?si=dwYRpDAvFl5tkSGj
-bibtex: ""
-# acknowledgements: This work was supported by ANR project READY3D ANR-19-CE23-0007,
-#   and was granted access to the HPC resources of IDRIS under the allocation AD011014719 made
-#   by GENCI. We thank Anatol Garioud and Sebastien Giordano for their help on the creation of ´
-#   TreeSatAI-TS and PASTIS-HD datasets. The SPOT images are opendata thanks to the Dataterra
-#   Dinamis initiative in the case of the "<a href="https://dinamis.data-terra.org/opendata/">Couverture France DINAMIS</a>" program. We thank Jordi Inglada for inspiring discussions and valuable feedback.
+bibtex: "@article{astruc2024anysat,\n
+    &nbsp;&nbsp; title={{AnySat: An Earth} Observation Model for Any Resolutions, Scales, and Modalities},\n
+    &nbsp;&nbsp; author={Astruc, Guillaume and Gonthier, Nicolas and Mallet, Clement and Landrieu, Loic},\n
+    &nbsp;&nbsp; journal={arXiv preprint arXiv:2412.14123},\n
+    &nbsp;&nbsp; year={2024}\n
+}"
+acknowledgements: This work was granted access to the HPC resources of IDRIS under the allocations AD011014719 and AD011014286R1 made by GENCI. We thank Jordi Inglada, Antoine Labatie, Dimitris Samaras, Yohann Perron, Vincent Lepetit for inspiring discussions and valuable feedback.
 ---
 
 <div class="content-wrapper">
