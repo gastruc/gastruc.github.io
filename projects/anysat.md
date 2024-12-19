@@ -164,7 +164,7 @@ anysat_B = torch.hub.load('gastruc/anysat', 'anysat_B')
 data = {
     'naip':# NAIP single image B, 3, 24*H, 24*W
     's2':# Sentinel-2 time series B, T1, 10, 3*H, 3*W
-    'alos2':# ALOS-2 time series B, T2, 3, H, W
+    'alos':# ALOS-2 time series B, T2, 3, H, W
 }
 
 # Extract features
