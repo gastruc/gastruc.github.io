@@ -1,0 +1,407 @@
+\begin{tabular}{c@{}c@{}c@{}c@{}c}
+    \multicolumn{2}{c}{GeoPlex datasets} & \multicolumn{3}{c}{External datasets}\\\greyrule
+    \begin{tikzpicture}[remember picture,overlay]
+        \draw[gray,line width=0.5pt] 
+            ([xshift=2mm]current page.north) -- ++(0,-1.5cm);
+    \end{tikzpicture}%
+    \begin{minipage}[t][4.35cm][t]{.20\textwidth}\vspace{-3mm}
+    \begin{tikzpicture}
+        \begin{axis}[
+            title style={align=center, font=\footnotesize},
+            width=1.2\linewidth,
+            height=1\linewidth,
+            title = {TreeSatAI-TS \\ {\vphantom{\vrule height 4mm width 0.1pt}} classif (weighted F1)},
+            ybar,
+            bar width=15pt,
+            enlargelimits=0.15,
+            symbolic x coords={AnySat, OmniSat, DOFA, PSE+LTAE},
+            xtick={AnySat, OmniSat, DOFA,PSE+LTAE},
+            xticklabels={\textbf{AnySat}, OmniSat, DOFA,PSE+LTAE},
+            x tick label style={rotate=45, anchor=east, font=\footnotesize},
+            y tick label style={font=\footnotesize},
+            ytick={70,75},
+            ymin=70.5,
+            ymax=75,
+            bar shift=-0pt,
+        ] 
+        % ANYSAT
+        \addplot[fill=ANYCOLOR, draw=ANYCOLOR, very thick] coordinates {(AnySat,75.1)};
+        \addplot[fill=white] coordinates {(AnySat,72.6)}; 
+        \addplot[fill=ANYCOLOR!20,draw=ANYCOLOR, very thick] coordinates {(AnySat,72.6)}; 
+    
+        % OMNISAT
+        \addplot[fill=OMNICOLOR,draw=OMNICOLOR, very thick] coordinates {(OmniSat,74.2)};
+        \addplot[fill=white] coordinates {(OmniSat,73.3)};
+        \addplot[fill=OMNICOLOR!20,draw=OMNICOLOR, very thick] coordinates {(OmniSat,73.3)};
+    
+        % DOFA
+        \addplot[fill=DOFACOLOR, draw=DOFACOLOR, very thick] coordinates {(DOFA,71.6)}; 
+    
+        % PSE+LTAE
+        %\addplot[fill=DOFACOLOR] coordinates {(OmniSat,73.3)};
+        \addplot[fill=TAECOLOR!20,draw=TAECOLOR, very thick] coordinates {(PSE+LTAE,71.2)};
+    
+        \end{axis}
+    \end{tikzpicture}
+    \end{minipage}
+    &
+    \begin{minipage}[t][4.35cm][t]{.20\textwidth}\vspace{-3mm}
+    \begin{tikzpicture}
+        \begin{axis}[
+            title style={align=center, font=\footnotesize},    legend style={at={(0.5,-0.15)},          anchor=north,legend columns=-1},,
+            title = {PASTIS-HD\\ {\vphantom{\vrule height 4mm width 0.1pt}} classif (macro F1)},
+            width=1.2\linewidth,      
+            height=1\linewidth,
+            ybar,
+            bar width=15pt,
+            enlargelimits=0.15,
+            symbolic x coords={AnySat, OmniSat, CROMA, DOFA},
+            xtick={AnySat, OmniSat, CROMA, DOFA},
+            xticklabels={\textbf{AnySat},\hphantom{\;}\hphantom{\;}\hphantom{\;} OmniSat, CROMA, DOFA},
+                    x tick label style={rotate=45, anchor=east, font=\footnotesize},         y tick label style={font=\footnotesize},
+            ymin=55.5,
+            ymax=72,
+            ytick={55,60,65,70},
+            bar shift=-0pt,
+        ] 
+    
+        %ANYSAT
+        \addplot[fill=ANYCOLOR, draw=ANYCOLOR, very thick] coordinates {(AnySat,72.8)};
+        \addplot[fill=white] coordinates {(AnySat,65.5)};
+        \addplot[fill=ANYCOLOR!20,draw=ANYCOLOR, very thick] coordinates {(AnySat,65.5)};
+    
+        % OMNISAT
+        \addplot[fill=OMNICOLOR, draw=OMNICOLOR, very thick] coordinates {(OmniSat,69.9)};
+        \addplot[fill=white] coordinates {(OmniSat,59.1)};
+        \addplot[fill=OMNICOLOR!20,draw=OMNICOLOR, very thick] coordinates {(OmniSat,59.1)};
+    
+        % CROMA
+        \addplot[fill=CROMACOLOR, draw=CROMACOLOR, very thick] coordinates {(CROMA,60.1)};
+    
+        % DOFA
+        \addplot[fill=DOFACOLOR, draw=DOFACOLOR, very thick] coordinates {(DOFA,55.7)};
+    
+        \end{axis}
+    \end{tikzpicture}
+    \end{minipage}
+    &
+    \begin{minipage}[t][4.35cm][t]{.20\textwidth}\vspace{-3mm}
+    \begin{tikzpicture}
+        \begin{axis}[
+            title style={align=center, font=\footnotesize},    legend style={at={(0.5,-0.15)},          anchor=north,legend columns=-1},,
+            width=1.2\linewidth,  
+          height=1\linewidth,
+            title = {PLANTED \\ {\vphantom{\vrule height 4mm width 0.1pt}} classif (macro F1)},
+            ybar,
+            bar width=15pt,
+            enlargelimits=0.15,
+            symbolic x coords={ViViTS2, AnySat, ViViTMM},
+            xtick={AnySat, ViViTS2, ViViTMM},
+            xticklabels={\textbf{AnySat}, \textcolor{gray}{$^\star$ViViT-S2}, \textcolor{gray}{$^\star$ViViTS-MM}},
+                    x tick label style={rotate=45, anchor=east, font=\footnotesize},         y tick label style={font=\footnotesize},
+            ymin=55,
+            ymax=65,
+            bar shift=-0pt,
+        ] 
+        % ANYSAT
+         \addplot[fill=ANYCOLOR, draw=ANYCOLOR, very thick] coordinates {(AnySat,61.5)};
+        \addplot[fill=white] coordinates {(AnySat,61.2)}; 
+        \addplot[fill=ANYCOLOR!20, draw=ANYCOLOR, very thick] coordinates {(AnySat,61.2)};
+    
+        % ViViT
+        
+        \addplot[fill=TSVITCOLOR!20,draw=TSVITCOLOR, very thick] coordinates {(ViViTS2,62.2)};
+    
+        \addplot[fill=TSVITCOLOR!20,draw=TSVITCOLOR, very thick] coordinates {(ViViTMM,59.3)};
+    
+        % % OMNISAT
+        % \addplot[fill=OMNICOLOR] coordinates {(OmniSat,74.2)};
+        % \addplot[fill=white] coordinates {(OmniSat,73.3)};
+        % \addplot[pattern color=OMNICOLOR, pattern=north east lines] coordinates {(OmniSat,73.3)};
+    
+        % % DOFA
+        % \addplot[fill=DOFACOLOR] coordinates {(DOFA,71.6)}; 
+    
+        % % PSE+LTAE
+        % %\addplot[fill=DOFACOLOR] coordinates {(OmniSat,73.3)};
+        % \addplot[pattern color=TAECOLOR, pattern=north east lines] coordinates {(PSE+LTAE,71.2)};
+    
+        \end{axis}
+    \end{tikzpicture}
+    \end{minipage}
+    &
+    \begin{minipage}[t][4.35cm][t]{.20\textwidth}\vspace{-3mm}
+    \begin{tikzpicture}
+        \begin{axis}[
+            title style={align=center, font=\footnotesize},    legend style={at={(0.5,-0.15)},          anchor=north,legend columns=-1},,
+            width=1.2\linewidth,  
+          height=1\linewidth,
+            title = {PASTIS-HD\\ {\vphantom{\vrule height 4mm width 0.1pt}} semseg (mIoU)},
+            ybar,
+            bar width=15pt,
+            enlargelimits=0.15,
+            symbolic x coords={AnySat, UTAE-MM, TSViT,UTAE},
+            xtick={AnySat, UTAE-MM, TSViT,UTAE},
+            xticklabels={\textbf{AnySat}, UTAE-MM, TSViT,UTAE},
+                    x tick label style={rotate=45, anchor=east, font=\footnotesize},         y tick label style={font=\footnotesize},
+            ymin=63,
+            ymax=66.55,
+            bar shift=-0pt,
+        ] 
+        % ANYSAT
+        \addplot[fill=ANYCOLOR, draw=ANYCOLOR, very thick] coordinates {(AnySat,66.5)};
+        \addplot[fill=white] coordinates {(AnySat,66.3)}; 
+        \addplot[fill=ANYCOLOR!20,draw=ANYCOLOR, very thick] coordinates {(AnySat,66.5)}; 
+    
+        % UTAE
+        \addplot[fill=TAECOLOR!20, draw=TAECOLOR, very thick] coordinates {(UTAE-MM,66.3)};
+    
+        % TSVITS
+        \addplot[fill=TSVITCOLOR!20, draw=TSVITCOLOR, very thick] coordinates {(TSViT,65.4)};
+    
+         \addplot[fill=TAECOLOR!20, draw=TAECOLOR, very thick] coordinates {(UTAE,63.1)};
+        \end{axis}
+    \end{tikzpicture}
+    \end{minipage}
+    &
+    \begin{minipage}[t][4.75cm][t]{.20\textwidth}\vspace{-3mm}
+    \begin{tikzpicture}
+        \begin{axis}[
+            title style={align=center, font=\footnotesize},    legend style={at={(0.5,-0.15)},          anchor=north,legend columns=-1},,
+            title = {FLAIR\\ {\vphantom{\vrule height 4mm width 0.1pt}} semseg (mIoU)},
+            width=1.2\linewidth,   
+          height=1\linewidth,
+            ybar,
+            bar width=15pt,
+            enlargelimits=0.15,
+            symbolic x coords={UTT, AnySat,UNet, UTAE},
+            xtick={AnySat,UTT, UNet, UTAE},
+            xticklabels={\textbf{AnySat}, $^+$\textcolor{gray}{UT\&T},UNet, $^+$\textcolor{gray}{UTAE}},
+                    x tick label style={rotate=45, anchor=east, font=\footnotesize},         y tick label style={font=\footnotesize},
+            ymin=53,
+            ymax=58,
+            bar shift=-0pt,
+        ] 
+        % AnySat
+        %\addplot[fill=ANYCOLOR, draw=ANYCOLOR, very thick] coordinates {(AnySat,55.6)};
+        \addplot[fill=white] coordinates {(AnySat,55.6)};
+        \addplot[fill=ANYCOLOR!20, draw=ANYCOLOR, very thick] coordinates {(AnySat,55.6)};
+    
+        % UT&T
+        \addplot[fill=UTTCOLOR, draw=UTTCOLOR, very thick] coordinates {(UTT,56.9)};
+    
+        % UT\&T Mit-B2
+        % \addplot[pattern color=UTTB2COLOR, pattern=north east lines] coordinates {(UTTMIT,62.6)};
+    
+        \addplot[draw=UNETCOLOR, fill=UNETCOLOR, very thick] coordinates {(UNet,54.7)};
+    
+        \addplot[fill=none, draw=none] coordinates {(UTAE,54.1)};
+        \node[anchor=south, font=\footnotesize, text=black, inner sep=1pt] at (axis cs:UTAE,52.3) {36.1};
+         
+        \end{axis}
+    \end{tikzpicture}
+    \end{minipage}
+    \\[-10mm]
+    \multicolumn{2}{c}{} & \multicolumn{3}{c}{}\\
+    \begin{minipage}[t][4.75cm][t]{.20\textwidth}\vspace{-3mm}
+    \begin{tikzpicture}
+    \begin{axis}[
+        title style={align=center, font=\footnotesize},    
+        legend style={at={(0.5,-0.15)}, anchor=north, legend columns=-1},
+        title = {SICKLE\\ {\vphantom{\vrule height 4mm width 0.1pt}} semseg (IoU)},
+        width=1.2\linewidth, 
+      height=1\linewidth,
+        ybar,
+        bar width=15pt,
+        enlargelimits=0.15,
+        symbolic x coords={AnySat, THREEDUNET, THREEDUNETS2, UTAE},
+        xtick={AnySat, THREEDUNET, THREEDUNETS2, UTAE},
+        xticklabels={\textbf{AnySat}, 3DUNet-MM, 3DUNet-S2, UTAE},
+        x tick label style={rotate=45, anchor=east, font=\footnotesize},         
+        y tick label style={font=\footnotesize},
+        ymin=71.8,
+        ymax=90, % Tighter y-axis range
+        bar shift=-0pt,
+    ]
+    
+    % ANYSAT
+    \addplot[fill=ANYCOLOR, draw=ANYCOLOR, very thick] coordinates {(AnySat,89.3)};
+    \addplot[fill=white] coordinates {(AnySat,82.0)};
+    \addplot[pattern color=ANYCOLOR, pattern=north east lines, very thick, draw=ANYCOLOR] coordinates {(AnySat,82.0)};
+    \draw[red, very thick] (axis cs:AnySat,82.0) ++ (-7.5pt,0) -- ++ (15pt,0) ++ (-7.5pt,-2pt ) node[above=1.5mm, font=\scriptsize, color=red] {\bf 6.1K};
+    
+    % 3D-MM
+    \addplot[fill=UNETCOLOR!20, draw=UNETCOLOR, very thick] coordinates {(THREEDUNET,82.1)};
+    
+    % 3D-S2
+    \addplot[fill=UNETCOLOR!20, draw=UNETCOLOR, very thick] coordinates {(THREEDUNETS2,71.9)}; 
+    
+    % Add a number instead of a bar for UTAE
+    \addplot[fill=none, draw=none] coordinates {(UTAE,71.9)};
+    \node[anchor=south, font=\footnotesize, text=black, inner sep=1pt] at (axis cs:UTAE,70) {51.4};
+    \end{axis}
+    \end{tikzpicture}
+    \vspace{5cm}
+    \end{minipage}
+    &
+    \begin{minipage}[t][4.75cm][t]{.20\textwidth}\vspace{-3mm}
+    \begin{tikzpicture}
+        \begin{axis}[
+            title style={align=center, font=\footnotesize},    legend style={at={(0.5,-0.15)},          anchor=north,legend columns=-1},,
+            title = {BRADD-S1TS\\ {\vphantom{\vrule height 4mm width 0.1pt}} chgdet  (IoU)},
+            width=1.2\linewidth, 
+          height=1\linewidth,
+            ybar,
+            bar width=15pt,
+            enlargelimits=0.15,
+            %enlargelimits={abs, x=0.15, y=0.15},
+            symbolic x coords={AnySat, UTAE, THREEDU, CONVLSTM},
+            xtick={AnySat, UTAE, THREEDU, CONVLSTM},
+            xticklabels={\textbf{AnySat}, UTAE, 3DUNet, ConvLSTM},
+                    x tick label style={rotate=45, anchor=east, font=\footnotesize},         y tick label style={font=\footnotesize},
+            ymin=62,
+            ymax=81,
+            bar shift=-0pt,
+            ytick={60,70,80},
+        ]
+    
+        %ANYSAT
+        \addplot[fill=ANYCOLOR, draw=ANYCOLOR, very thick] coordinates {(AnySat,80.9)};
+        \addplot[fill=white] coordinates {(AnySat,78.9)};
+        \addplot[pattern color=ANYCOLOR, pattern=north east lines, very thick, draw=ANYCOLOR] coordinates {(AnySat,78.9)};
+        \draw[red, very thick] (axis cs:AnySat,78.9) ++ (-7.5pt,0) -- ++(15pt,0) ++ (+10pt,-2pt ) node[above, font=\scriptsize, color=red] { \bf 6.1K};   
+        
+        % UTAE
+        \addplot[fill=TAECOLOR!20, draw=TAECOLOR, very thick] coordinates {(UTAE,70.7)}; 
+    
+         % UTAE-MM
+        \addplot[fill=UNETCOLOR!20, draw=UNETCOLOR, very thick] coordinates {(THREEDU,68.1)}; 
+    
+        % UTAE-MM
+        \addplot[fill=LSTMCOLOR!20, draw=LSTMCOLOR, very thick] coordinates {(CONVLSTM,63.1)}; 
+    
+        \end{axis}
+    \end{tikzpicture}
+    \vspace{5cm}
+    \end{minipage}
+    &
+    \begin{minipage}[t][4.75cm][t]{.20\textwidth}\vspace{-3mm}
+    \begin{tikzpicture}
+        \begin{axis}[
+            title style={align=center, font=\footnotesize},    legend style={at={(0.5,-0.15)},          anchor=north,legend columns=-1},,
+            title = {TS2Crop\\ {\vphantom{\vrule height 4mm width 0.1pt}} classif (OA)},
+            width=1.2\linewidth,
+          height=1\linewidth,
+            ybar,
+            bar width=15pt,
+            enlargelimits=0.15,
+            symbolic x coords={AnySat, OSCNN, TAE, LSTM},
+            xtick={AnySat, OSCNN, TAE, LSTM},
+            xticklabels={\textbf{AnySat}, OS-CNN, TAE, LSTM},
+                    x tick label style={rotate=45, anchor=east, font=\footnotesize},         y tick label style={font=\footnotesize},
+            ymin=72,
+            ymax=95,
+            bar shift=-0pt,
+        ]
+        %ANYSAT
+        \addplot[fill=ANYCOLOR, draw=ANYCOLOR, very thick] coordinates {(AnySat,92.2)};
+        \addplot[fill=white] coordinates {(AnySat,70.3)};
+        \addplot[pattern color=ANYCOLOR, pattern=north east lines, very thick, draw=ANYCOLOR] coordinates {(AnySat,70.3)};
+        \draw[red, very thick] (axis cs:AnySat,70.3) ++ (-7.5pt,0) -- ++(15pt,0) ++ (-7.5pt,-2pt ) node[above=1.5mm, font=\scriptsize, color=red] {\bf 14K};  
+    
+        
+        % OSCNN
+        \addplot[fill=UNETCOLOR!20, draw=UNETCOLOR, very thick] coordinates {(OSCNN,81.2)}; 
+    
+         % v
+        \addplot[fill=TAECOLOR!20, draw=TAECOLOR, very thick] coordinates {(TAE,80.9)}; 
+    
+         % LSTM
+        \addplot[fill=LSTMCOLOR!20, draw=LSTMCOLOR, very thick] coordinates {(LSTM,78.2)}; 
+    
+        \end{axis}
+    \end{tikzpicture}
+    \vspace{5cm}
+    \end{minipage}
+    &
+    \begin{minipage}[t][4.75cm][t]{.20\textwidth}\vspace{-3mm}
+    \begin{tikzpicture}
+        \begin{axis}[
+            title style={align=center, font=\footnotesize},    legend style={at={(0.5,-0.15)},          anchor=north,legend columns=-1},,
+            title = {Sen1Flood11\\ {\vphantom{\vrule height 4mm width 0.1pt}} semseg (mIoU)},
+            width=1.2\linewidth,
+          height=1\linewidth,
+            ybar,
+            bar width=15pt,
+            enlargelimits=0.15,
+            symbolic x coords={AnySat, CROMA, PRITHVI, SATLAS},
+            xtick={AnySat, CROMA, PRITHVI,SATLAS},
+            xticklabels={\textbf{AnySat}, CROMA, Prithvi, SatlasNet},
+                 x tick label style={rotate=45, anchor=east, font=\footnotesize},         y tick label style={font=\footnotesize},
+            ymin=90,
+            ymax=92,
+            bar shift=-0pt,
+        ]
+        %ANYSAT
+        \addplot[pattern color=ANYCOLOR, pattern=north east lines, very thick, draw=ANYCOLOR] coordinates {(AnySat,91.1)};
+        \draw[red, very thick] (axis cs:AnySat,91.1) ++ (-7.5pt,0) -- ++(15pt,0) ++ (-7.5pt,-2pt ) node[above=1.5mm, font=\scriptsize, color=red] { \bf 6.1K}; 
+    
+         % v
+        \addplot[pattern color=CROMACOLOR, pattern=north east lines, draw=CROMACOLOR, very thick] coordinates {(CROMA,90.9)};
+        \draw[black, very thick] (axis cs:CROMA,90.9) ++ (-7.5pt,0) -- ++(15pt,0) ++ (-7.5pt,-2pt ) node[above=1.5mm, font=\scriptsize, color=black] {47M}; 
+    
+         % PRITHVI
+        \addplot[pattern color=PRITHVICOLOR, pattern=north east lines, draw=PRITHVICOLOR, very thick] coordinates {(PRITHVI,90.4)};
+        \draw[black, very thick] (axis cs:PRITHVI,90.4) ++ (-7.5pt,0) -- ++(15pt,0) ++ (-7.5pt,-2pt ) node[above=1.5mm, font=\scriptsize, color=black] {39M};
+    
+           % SATLAS
+        \addplot[pattern color=SATLASCOLOR, pattern=north east lines, draw=SATLASCOLOR, very thick] coordinates {(SATLAS,90.3)};
+        \draw[black, very thick] (axis cs:SATLAS,90.3) ++ (-7.5pt,0) -- ++(15pt,0) ++ (-7.5pt,-2pt ) node[above=1.5mm, font=\scriptsize, color=black] {33M};
+    
+        \end{axis}
+    \end{tikzpicture}
+    \vspace{5cm}
+    \end{minipage}
+    &
+    \begin{minipage}[t][4.75cm][t]{.20\textwidth}\vspace{-3mm}
+    \raisebox{-2.5cm}{
+    \begin{tabular}{rl}
+    \begin{tikzpicture}[baseline={([yshift={-\ht\strutbox}]current bounding box.north)}]
+         \fill [fill=ANYCOLOR!20, draw=ANYCOLOR, very thick] (0,0) rectangle (0.6,0.4);
+    \end{tikzpicture}
+    &\footnotesize
+    from scratch
+    \\[2mm]
+    \begin{tikzpicture}[baseline={([yshift={-\ht\strutbox}]current bounding box.north)}]
+         \fill [draw=black,fill=ANYCOLOR, draw=ANYCOLOR, very thick] (0,0) rectangle (0.6,0.4);
+    \end{tikzpicture}
+    &\footnotesize
+    fine-tuned
+    \\[2mm]
+    \begin{tikzpicture}[baseline={([yshift={-\ht\strutbox}]current bounding box.north)}]
+        \fill [pattern color=ANYCOLOR, pattern=north east lines, draw=black,draw=ANYCOLOR, very thick] (0,0) rectangle (0.6,0.4);
+         \draw [red, very thick] (0,0.4) -- (0.6,0.4);
+    \end{tikzpicture}
+    &\footnotesize
+    linear probing
+    \\[2mm]
+    \begin{tikzpicture}[baseline={([yshift={-\ht\strutbox}]current bounding box.north)}]
+        \fill [pattern color=PRITHVICOLOR, pattern=north east lines, draw=black,draw=PRITHVICOLOR, very thick] (0,0) rectangle (0.6,0.4);
+         \draw [black, very thick] (0,0.4) -- (0.6,0.4);
+    \end{tikzpicture}
+    &\footnotesize
+    UperNet probing
+    \\[2mm]
+    \begin{tikzpicture}[baseline={([yshift={-0.5*\ht\strutbox}]current bounding box.center)}]
+         \draw [red, very thick] (0,0.0) -- (0.6,0.0);
+         \node [draw=none] at (0.3,0.2) {\small \textcolor{red}{\bf 6.1K}};
+    \end{tikzpicture}
+    &\footnotesize  free parameters
+    \end{tabular}
+    }
+    %\vspace{5cm}
+    \end{minipage}
+    \\[-5mm]
+    \multicolumn{5}{c}{\centering
+    ~\qquad $\star$ \textcolor{gray}{models trained on private external data}\qquad $+$ \textcolor{gray}{access to additional context}}
+\end{tabular}
