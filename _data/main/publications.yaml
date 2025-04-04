@@ -44,6 +44,7 @@
   pdf: https://arxiv.org/pdf/2412.14123
   github: https://github.com/gastruc/AnySat
   website: /anysat
+  award: (Highlight)
   abstract: 'Geospatial models must adapt to the diversity of Earth observation data in terms of resolutions, scales, and modalities. 
   However, existing approaches expect fixed input configurations, which limits their practical applicability. 
   We propose AnySat, a multimodal model based on joint embedding predictive architecture (JEPA) and scale-adaptive spatial encoders, 

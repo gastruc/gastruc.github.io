@@ -10,7 +10,7 @@ analytics: https://www.googletagmanager.com/gtag/js?id=G-FLNC8B6RH9
 
 paper_title: "AnySat: An Earth Observation Model for Any Resolutions, Scales, and Modalities"
 paper_authors: <a href="/">Guillaume Astruc</a>, <a href="https://ngonthier.github.io/">Nicolas Gonthier</a>, <a href="https://www.umr-lastig.fr/clement-mallet/">Clement Mallet</a>, <a href="https://loiclandrieu.com/">Loic Landrieu</a>
-journal: Arxiv 2025
+journal: CVPR 2025 (Highlight)
 buttons:
   - type: github
     text: Code
