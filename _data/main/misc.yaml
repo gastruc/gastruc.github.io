@@ -11,9 +11,16 @@ talks:
 reviewer:
   # - name: <a href="https://cvpr.thecvf.com/Conferences/2025">CVPR 2025</a>
   #   date: 2025-06-15
+  - name:  <a href="https://www.grss-ieee.org/events/earthvision-2025/">EarthVision 2025 (CVPRW)</a>
+    date: 2025-06-15
   - name:  <a href="https://www.grss-ieee.org/events/earthvision-2024/">EarthVision 2024 (CVPRW)</a>
     date: 2024-06-15
      
+awards:
+  - name: CVPR 2025 Highlight Paper (Top 13%)
+    date: 2025-03-04
+    paper: "AnySat: An Earth Observation Model for Any Resolutions, Scales, and Modalities"
+
 # others:
 #   - name: I did nothing for now
 #     date: 2023-06-01
