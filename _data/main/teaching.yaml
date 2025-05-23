@@ -10,22 +10,13 @@
     - "Deep Learning for Temporal Data"
 
 - course_name: Deep Learning for Remote Sensing
-  start-date: 2025-02-02
-  end-date: 2025-03-03
-  position: Teaching Assistant
-  school: ENSG
-  key-contributions: 
-    - "Intro to Deep Learning"
-    - "Deep Learning for Multispectral Images"
-    - "Deep Learning for 3D Data"
-
-- course_name: Deep Learning for Remote Sensing
   start-date: 2025-03-05
   end-date: 2025-03-05
   position: Teacher
   school: ENSG
   key-contributions: 
     - "Deep Learning for Temporal Data"
+    - "Deep Learning for 3D Data"
 
 - course_name: Introduction to Data Science
   start-date: 2025-01-27
