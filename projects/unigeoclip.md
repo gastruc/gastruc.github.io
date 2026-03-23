@@ -277,7 +277,7 @@ journal: EarthVision 2026
 
   .unigeoclip-page .paper-fig-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
     margin: 18px 0 6px;
   }
@@ -469,6 +469,7 @@ journal: EarthVision 2026
     .unigeoclip-page section { padding: 60px 20px; }
     .unigeoclip-page .cards { grid-template-columns: 1fr; }
     .unigeoclip-page .results-grid { grid-template-columns: repeat(2, 1fr); }
+    .unigeoclip-page .paper-fig-grid { grid-template-columns: 1fr; }
   }
 </style>
 
@@ -518,14 +519,6 @@ journal: EarthVision 2026
       <div class="modality-pill"><div class="dot" style="background:#6ecf85"></div> Elevation (DSM)</div>
       <div class="modality-pill"><div class="dot" style="background:#b57bee"></div> Text descriptions</div>
       <div class="modality-pill"><div class="dot" style="background:#e05a5a"></div> GPS coordinates</div>
-    </div>
-
-    <div class="figure-hint">
-      <div class="fig-icon">📌</div>
-      <div>
-        <strong>-> Figure 1</strong>
-        The all-to-all connectivity diagram showing bidirectional arrows between all five modalities.
-      </div>
     </div>
 
     <div class="paper-figure paper-figure-white paper-figure-small">
@@ -578,18 +571,9 @@ journal: EarthVision 2026
     <div class="section-label">Training Data</div>
     <h2>Co-located Five-Modality Data</h2>
     <p>
-      Training spans continental USA metropolitan centers with uniform spatial coverage using S2 cells at level L=16.
-      The paper reports ~800k S2 cells, sampling up to 120 street-level panoramas per cell with a minimum 40m separation.
+      Training spans continental USA metropolitan centers with uniform spatial coverage using ~800k  S2 cells at level L=16.
       To prevent temporal leakage, all data from 2023 is held out for evaluation.
     </p>
-
-    <div class="figure-hint">
-      <div class="fig-icon">🗺️</div>
-      <div>
-        <strong>-> Figure 2</strong>
-        A representative sample showing the five co-registered modalities at the same geographic location.
-      </div>
-    </div>
 
     <div class="paper-figure">
       <img src="/assets/publications/unigeoclip/Figure2.png" alt="UniGeoCLIP Figure 2" />
@@ -602,35 +586,27 @@ journal: EarthVision 2026
   <section class="fade-in">
     <div class="section-label">Architecture</div>
     <h2>A Scaled Coordinate Encoder That Actually Understands Space</h2>
+     <p>
+        Raw latitude/longitude coordinates contain rich geographic structure — but only if the encoder can capture dependencies across multiple spatial scales simultaneously. Prior approaches such as GeoCLIP process each Fourier frequency independently through a separate MLP before averaging, leaving cross-scale interactions unexploited and tying parameter count to the number of frequencies.
+    </p>
     <p>
-      Raw latitude/longitude coordinates contain rich structure, but require an encoder that models geographic dependencies
-      across multiple scales. UniGeoCLIP introduces a scaled latitude-longitude encoder built with:
-      Equal Earth projection, multi-frequency random Fourier features, and cross-scale self-attention over frequency tokens.
+        Our <strong style="color:var(--white)">Scaled Latitude–Longitude Encoder</strong> rethinks this design. Each frequency projection is treated as a token and processed jointly through self-attention blocks, letting every scale communicate with every other. Register tokens act as persistent memory banks, further increasing representational capacity. Crucially, the parameter count is now independent of the number of frequency scales — making the encoder both more expressive and more efficient to scale.
     </p>
 
-    <div class="insight">
-      "At depth 0, the encoder reduces to fixed random Fourier features (coordinate retrieval is low). With 12 self-attention
-      blocks, coordinate retrieval rises and multimodal ensembling improves substantially."
-      <cite>-- Ablation Study, Table 5</cite>
+    <div class="paper-figure">
+      <img src="/assets/publications/unigeoclip/Figure3.png" alt="UniGeoCLIP Figure 3" />
+      <div class="paper-caption">Figure 3: Multi-scale coordinate encoder pipeline (Fourier scales -> tokens -> attention -> pooling).</div>
     </div>
+
+    <p>
+      The depth of the encoder matters significantly. At depth 0, the model reduces to plain fixed Fourier features with no learned interactions. As self-attention blocks are added, all retrieval metrics improve consistently, and the gains extend beyond coordinate retrieval to aerial localization and multimodal ensembling.
+    </p>
 
     <div class="paper-figure">
       <img src="/assets/publications/unigeoclip/Table5.png" alt="UniGeoCLIP Table 5" />
       <div class="paper-caption">Table 5: Ablation on the number of blocks in the location (GPS) encoder.</div>
     </div>
 
-    <div class="figure-hint">
-      <div class="fig-icon">⚙️</div>
-      <div>
-        <strong>-> Figure 3</strong>
-        Multi-scale coordinate encoder: K Fourier projections -> tokens -> self-attention -> pooled embedding.
-      </div>
-    </div>
-
-    <div class="paper-figure">
-      <img src="/assets/publications/unigeoclip/Figure3.png" alt="UniGeoCLIP Figure 3" />
-      <div class="paper-caption">Figure 3: Multi-scale coordinate encoder pipeline (Fourier scales -> tokens -> attention -> pooling).</div>
-    </div>
   </section>
 
   <hr class="divider"/>
@@ -701,14 +677,6 @@ journal: EarthVision 2026
       </tbody>
     </table>
 
-    <div class="figure-hint">
-      <div class="fig-icon">📊</div>
-      <div>
-        <strong>-> Tables 1-4</strong>
-        This page summarizes the key numeric results reported in the paper.
-      </div>
-    </div>
-
     <div class="paper-fig-grid">
       <div class="paper-figure">
         <img src="/assets/publications/unigeoclip/Table1.png" alt="UniGeoCLIP Table 1" />
@@ -743,26 +711,15 @@ journal: EarthVision 2026
       UniGeoCLIP learns what a place means, not just where it is.
     </p>
 
-    <div class="figure-hint">
-      <div class="fig-icon">🎨</div>
-      <div>
-        <strong>-> Figure 5</strong>
-        PCA visualization of coordinate embeddings over Manhattan.
-      </div>
-    </div>
-
     <div class="paper-figure">
       <img src="/assets/publications/unigeoclip/Figure5.png" alt="UniGeoCLIP Figure 5" />
       <div class="paper-caption">Figure 5: PCA projection of coordinate embeddings over Manhattan.</div>
     </div>
 
-    <div class="figure-hint">
-      <div class="fig-icon">🔵</div>
-      <div>
-        <strong>-> Figure 6</strong>
-        t-SNE scatter plot validating co-location of embeddings from all five modalities.
-      </div>
-    </div>
+    <p>
+      The t-SNE visualization (Figure 6) qualitatively checks whether embeddings from the five modalities truly
+      co-localize for the same geographic location in the shared space. Clusters of points correspond to the exact same location.
+    </p>
 
     <div class="paper-figure">
       <img src="/assets/publications/unigeoclip/Figure6.png" alt="UniGeoCLIP Figure 6" />
@@ -780,12 +737,6 @@ journal: EarthVision 2026
       Amsterdam evaluation set under a substantial domain shift. The paper reports consistent performance trends:
       adding modalities helps, and multimodal ensembling remains beneficial.
     </p>
-
-    <div class="insight">
-      "The model trained solely with aerial and street view achieves the strongest OOD performance, while the full multimodal
-      model remains competitive."
-      <cite>-- Section 4.4</cite>
-    </div>
   </section>
 
   <hr class="divider"/>
