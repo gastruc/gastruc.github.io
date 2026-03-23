@@ -268,7 +268,10 @@ journal: EarthVision 2026
 
   /* Tables/Figures that should not be full column width. */
   .unigeoclip-page .paper-figure-reduced img {
-    max-width: 520px;
+    max-width: 380px !important;
+    width: auto !important;
+    display: block;
+    margin: 0 auto;
   }
 
   .unigeoclip-page .paper-caption {
@@ -293,8 +296,9 @@ journal: EarthVision 2026
 
   .unigeoclip-page .modality-grid {
     display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
+    gap: 10px;
+    flex-wrap: nowrap;
+    justify-content: center;
     margin: 32px 0;
   }
 
@@ -305,10 +309,11 @@ journal: EarthVision 2026
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 40px;
-    padding: 8px 18px;
-    font-size: 0.9rem;
+    padding: 8px 14px;
+    font-size: 0.88rem;
     color: var(--text);
     transition: border-color 0.2s;
+    white-space: nowrap; /* keep the pill text on one line (no GPS wrap) */
   }
 
   .unigeoclip-page .modality-pill:hover { border-color: var(--accent); }
@@ -475,6 +480,11 @@ journal: EarthVision 2026
     .unigeoclip-page .cards { grid-template-columns: 1fr; }
     .unigeoclip-page .results-grid { grid-template-columns: repeat(2, 1fr); }
     .unigeoclip-page .paper-fig-grid { grid-template-columns: 1fr; }
+    .unigeoclip-page .modality-grid { flex-wrap: wrap; }
+  }
+
+  @media (max-width: 980px) {
+    .unigeoclip-page .modality-grid { flex-wrap: wrap; }
   }
 </style>
 
