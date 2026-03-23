@@ -266,6 +266,22 @@ journal: EarthVision 2026
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
   }
 
+  /* Figure 1: render smaller with a white background. */
+  .unigeoclip-page .paper-figure-white img {
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .unigeoclip-page .paper-figure-white {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 12px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  }
+
+  .unigeoclip-page .paper-figure-small img {
+    max-width: 760px;
+  }
+
   .unigeoclip-page .paper-caption {
     margin-top: 10px;
     color: var(--muted);
@@ -528,7 +544,7 @@ journal: EarthVision 2026
       </div>
     </div>
 
-    <div class="paper-figure">
+    <div class="paper-figure paper-figure-white paper-figure-small">
       <img src="/assets/publications/unigeoclip/Figure1.png" alt="UniGeoCLIP Figure 1" />
       <div class="paper-caption">Figure 1: Unified contrastive learning of geospatial modalities (all-to-all).</div>
     </div>
