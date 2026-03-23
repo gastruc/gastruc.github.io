@@ -253,6 +253,39 @@ journal: EarthVision 2026
     margin-bottom: 4px;
   }
 
+  .unigeoclip-page .paper-figure {
+    margin: 24px 0 10px;
+    text-align: center;
+  }
+
+  .unigeoclip-page .paper-figure img {
+    width: 100%;
+    max-width: 1100px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  }
+
+  .unigeoclip-page .paper-caption {
+    margin-top: 10px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+
+  .unigeoclip-page .paper-fig-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+    margin: 18px 0 6px;
+  }
+
+  .unigeoclip-page .paper-fig-grid .paper-figure img {
+    max-width: 100%;
+  }
+
   .unigeoclip-page .modality-grid {
     display: flex;
     gap: 12px;
@@ -494,6 +527,11 @@ journal: EarthVision 2026
         The all-to-all connectivity diagram showing bidirectional arrows between all five modalities.
       </div>
     </div>
+
+    <div class="paper-figure">
+      <img src="/assets/publications/unigeoclip/Figure1.png" alt="UniGeoCLIP Figure 1" />
+      <div class="paper-caption">Figure 1: Unified contrastive learning of geospatial modalities (all-to-all).</div>
+    </div>
   </section>
 
   <hr class="divider"/>
@@ -548,6 +586,11 @@ journal: EarthVision 2026
         A representative sample showing the five co-registered modalities at the same geographic location.
       </div>
     </div>
+
+    <div class="paper-figure">
+      <img src="/assets/publications/unigeoclip/Figure2.png" alt="UniGeoCLIP Figure 2" />
+      <div class="paper-caption">Figure 2: Example location represented through aerial, street-level, DSM, text, and GPS.</div>
+    </div>
   </section>
 
   <hr class="divider"/>
@@ -567,12 +610,22 @@ journal: EarthVision 2026
       <cite>-- Ablation Study, Table 5</cite>
     </div>
 
+    <div class="paper-figure">
+      <img src="/assets/publications/unigeoclip/Table5.png" alt="UniGeoCLIP Table 5" />
+      <div class="paper-caption">Table 5: Ablation on the number of blocks in the location (GPS) encoder.</div>
+    </div>
+
     <div class="figure-hint">
       <div class="fig-icon">⚙️</div>
       <div>
         <strong>-> Figure 3</strong>
         Multi-scale coordinate encoder: K Fourier projections -> tokens -> self-attention -> pooled embedding.
       </div>
+    </div>
+
+    <div class="paper-figure">
+      <img src="/assets/publications/unigeoclip/Figure3.png" alt="UniGeoCLIP Figure 3" />
+      <div class="paper-caption">Figure 3: Multi-scale coordinate encoder pipeline (Fourier scales -> tokens -> attention -> pooling).</div>
     </div>
   </section>
 
@@ -651,6 +704,25 @@ journal: EarthVision 2026
         This page summarizes the key numeric results reported in the paper.
       </div>
     </div>
+
+    <div class="paper-fig-grid">
+      <div class="paper-figure">
+        <img src="/assets/publications/unigeoclip/Table1.png" alt="UniGeoCLIP Table 1" />
+        <div class="paper-caption">Table 1: Cross-modal street-view retrieval (Acc@100m).</div>
+      </div>
+      <div class="paper-figure">
+        <img src="/assets/publications/unigeoclip/Table2.png" alt="UniGeoCLIP Table 2" />
+        <div class="paper-caption">Table 2: Aerial/satellite encoder transfer (solar panels + land cover).</div>
+      </div>
+      <div class="paper-figure">
+        <img src="/assets/publications/unigeoclip/Table3.png" alt="UniGeoCLIP Table 3" />
+        <div class="paper-caption">Table 3: Location encoder downstream regression (mean R^2).</div>
+      </div>
+      <div class="paper-figure">
+        <img src="/assets/publications/unigeoclip/Table4.png" alt="UniGeoCLIP Table 4" />
+        <div class="paper-caption">Table 4: DSM encoder evaluation on MDAS (DSM-only segmentation).</div>
+      </div>
+    </div>
   </section>
 
   <hr class="divider"/>
@@ -675,12 +747,22 @@ journal: EarthVision 2026
       </div>
     </div>
 
+    <div class="paper-figure">
+      <img src="/assets/publications/unigeoclip/Figure5.png" alt="UniGeoCLIP Figure 5" />
+      <div class="paper-caption">Figure 5: PCA projection of coordinate embeddings over Manhattan.</div>
+    </div>
+
     <div class="figure-hint">
       <div class="fig-icon">🔵</div>
       <div>
         <strong>-> Figure 6</strong>
         t-SNE scatter plot validating co-location of embeddings from all five modalities.
       </div>
+    </div>
+
+    <div class="paper-figure">
+      <img src="/assets/publications/unigeoclip/Figure6.png" alt="UniGeoCLIP Figure 6" />
+      <div class="paper-caption">Figure 6: t-SNE visualization showing modality embeddings cluster by location.</div>
     </div>
   </section>
 
