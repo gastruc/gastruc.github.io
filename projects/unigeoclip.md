@@ -266,6 +266,11 @@ journal: EarthVision 2026
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
   }
 
+  /* Tables/Figures that should not be full column width. */
+  .unigeoclip-page .paper-figure-reduced img {
+    max-width: 520px;
+  }
+
   .unigeoclip-page .paper-caption {
     margin-top: 10px;
     color: var(--muted);
@@ -488,6 +493,7 @@ journal: EarthVision 2026
 
     <div class="btn-group">
       <a class="btn btn-primary" href="/UniGeoCLIP___EARTHVISION2026-6.pdf" target="_blank" rel="noopener">📄 Paper</a>
+      <a class="btn btn-outline" href="https://github.com/gastruc/unigeoclip" target="_blank" rel="noopener">💻 Code</a>
       <a class="btn btn-outline" href="#citation">Citation</a>
     </div>
 
@@ -602,7 +608,7 @@ journal: EarthVision 2026
       The depth of the encoder matters significantly. At depth 0, the model reduces to plain fixed Fourier features with no learned interactions. As self-attention blocks are added, all retrieval metrics improve consistently, and the gains extend beyond coordinate retrieval to aerial localization and multimodal ensembling.
     </p>
 
-    <div class="paper-figure">
+    <div class="paper-figure paper-figure-reduced">
       <img src="/assets/publications/unigeoclip/Table5.png" alt="UniGeoCLIP Table 5" />
       <div class="paper-caption">Table 5: Ablation on the number of blocks in the location (GPS) encoder.</div>
     </div>
@@ -638,45 +644,6 @@ journal: EarthVision 2026
       </div>
     </div>
 
-    <h3 style="color:var(--white); font-size:1.1rem; margin:36px 0 16px; font-family:'DM Sans',sans-serif;">
-      Cross-View Retrieval vs. Baselines
-    </h3>
-
-    <table class="compare-table">
-      <thead>
-        <tr>
-          <th>Model</th>
-          <th>SV -> Aerial</th>
-          <th>SV -> GPS</th>
-          <th>Multimodal Ens.</th>
-          <th>OOD (Amsterdam)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>GeoCLIP (retrained)</td>
-          <td>--</td>
-          <td>24.6</td>
-          <td>--</td>
-          <td>4.5</td>
-        </tr>
-        <tr>
-          <td>ScalingGeoloc</td>
-          <td>45.8</td>
-          <td>--</td>
-          <td>--</td>
-          <td class="best">56.9</td>
-        </tr>
-        <tr class="ours">
-          <td>UniGeoCLIP</td>
-          <td class="best">88.2</td>
-          <td class="best">69.4</td>
-          <td class="best">91.0</td>
-          <td>41.2</td>
-        </tr>
-      </tbody>
-    </table>
-
     <div class="paper-fig-grid">
       <div class="paper-figure">
         <img src="/assets/publications/unigeoclip/Table1.png" alt="UniGeoCLIP Table 1" />
@@ -690,7 +657,7 @@ journal: EarthVision 2026
         <img src="/assets/publications/unigeoclip/Table3.png" alt="UniGeoCLIP Table 3" />
         <div class="paper-caption">Table 3: Location encoder downstream regression (mean R^2).</div>
       </div>
-      <div class="paper-figure">
+      <div class="paper-figure paper-figure-reduced">
         <img src="/assets/publications/unigeoclip/Table4.png" alt="UniGeoCLIP Table 4" />
         <div class="paper-caption">Table 4: DSM encoder evaluation on MDAS (DSM-only segmentation).</div>
       </div>
@@ -721,7 +688,7 @@ journal: EarthVision 2026
       co-localize for the same geographic location in the shared space. Clusters of points correspond to the exact same location.
     </p>
 
-    <div class="paper-figure">
+    <div class="paper-figure paper-figure-reduced">
       <img src="/assets/publications/unigeoclip/Figure6.png" alt="UniGeoCLIP Figure 6" />
       <div class="paper-caption">Figure 6: t-SNE visualization showing modality embeddings cluster by location.</div>
     </div>
