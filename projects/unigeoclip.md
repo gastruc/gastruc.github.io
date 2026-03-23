@@ -14,27 +14,27 @@ journal: EarthVision 2026
 ---
 
 <script>
-  // Force a consistent visual theme for this page only.
-  document.body.classList.add('dark-theme');
-  document.body.classList.add('unigeoclip-dark');
+  // Force a consistent (light) visual theme for this page only.
+  document.body.classList.remove('dark-theme');
+  document.body.classList.add('unigeoclip-white');
 </script>
 
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
 
   :root {
-    --bg: #0b0f14;
-    --surface: #111820;
-    --card: #141d27;
-    --border: rgba(96, 180, 200, 0.15);
+    --bg: #ffffff;
+    --surface: #f7fafc;
+    --card: #ffffff;
+    --border: rgba(0, 0, 0, 0.08);
     --accent: #3ec9e0;
     --accent2: #e8a23a;
-    --text: #d6e4ed;
-    --muted: #6a8a9a;
-    --white: #f0f8ff;
+    --text: #111827;
+    --muted: #5b7280;
+    --white: #0b1220;
   }
 
-  body.unigeoclip-dark {
+  body.unigeoclip-white {
     background: var(--bg);
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
@@ -44,11 +44,11 @@ journal: EarthVision 2026
   }
 
   /* Hide the template header/footer; we provide our own "hero + sections". */
-  body.unigeoclip-dark .project-header { display: none !important; }
-  body.unigeoclip-dark #abstract { display: none !important; }
-  body.unigeoclip-dark footer:not(.unigeoclip-footer) { display: none !important; }
-  body.unigeoclip-dark #main { padding: 0 !important; margin-bottom: 0 !important; }
-  body.unigeoclip-dark #approach { padding: 0 !important; }
+  body.unigeoclip-white .project-header { display: none !important; }
+  body.unigeoclip-white #abstract { display: none !important; }
+  body.unigeoclip-white footer:not(.unigeoclip-footer) { display: none !important; }
+  body.unigeoclip-white #main { padding: 0 !important; margin-bottom: 0 !important; }
+  body.unigeoclip-white #approach { padding: 0 !important; }
 
   .unigeoclip-page { position: relative; }
 
@@ -264,22 +264,6 @@ journal: EarthVision 2026
     border: 1px solid var(--border);
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-  }
-
-  /* Figure 1: render smaller with a white background. */
-  .unigeoclip-page .paper-figure-white img {
-    border-color: rgba(0, 0, 0, 0.08);
-  }
-
-  .unigeoclip-page .paper-figure-white {
-    background: #ffffff;
-    border-radius: 14px;
-    padding: 12px;
-    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
-  }
-
-  .unigeoclip-page .paper-figure-small img {
-    max-width: 760px;
   }
 
   .unigeoclip-page .paper-caption {
@@ -545,7 +529,11 @@ journal: EarthVision 2026
     </div>
 
     <div class="paper-figure paper-figure-white paper-figure-small">
-      <img src="/assets/publications/unigeoclip/Figure1.png" alt="UniGeoCLIP Figure 1" />
+      <img
+        src="/assets/publications/unigeoclip/Figure1.png"
+        alt="UniGeoCLIP Figure 1"
+        style="max-width: 320px; width: 100%; height: auto; display: inline-block;"
+      />
       <div class="paper-caption">Figure 1: Unified contrastive learning of geospatial modalities (all-to-all).</div>
     </div>
   </section>
