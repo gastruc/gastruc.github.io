@@ -10,12 +10,11 @@ analytics: https://www.googletagmanager.com/gtag/js?id=G-FLNC8B6RH9
 
 paper_title: "UNIGEOCLIP: Unified Geospatial Contrastive Learning"
 paper_authors: "Guillaume Astruc, Eduard Trulls, Jan Hosang, Loic Landrieu, Paul-Edouard Sarlin"
-journal: EarthVision 2026
+journal: EarthVision (CVPRW) 2026
 ---
 
 <script>
   // Force a consistent (light) visual theme for this page only.
-  document.body.classList.remove('dark-theme');
   document.body.classList.add('unigeoclip-white');
 </script>
 
@@ -32,6 +31,20 @@ journal: EarthVision 2026
     --text: #111827;
     --muted: #5b7280;
     --white: #0b1220;
+  }
+
+  /* When the template applies dark mode, keep this page visually consistent. */
+  body.unigeoclip-white.dark-theme {
+    --bg: #0b0f14;
+    --surface: #111820;
+    --card: #141d27;
+    --border: rgba(96, 180, 200, 0.15);
+    --text: #d6e4ed;
+    --muted: #6a8a9a;
+    --white: #f0f8ff;
+
+    background: var(--bg) !important;
+    color: var(--text) !important;
   }
 
   body.unigeoclip-white {
@@ -502,7 +515,7 @@ journal: EarthVision 2026
     </p>
 
     <div class="btn-group">
-      <a class="btn btn-primary" href="/UniGeoCLIP___EARTHVISION2026-6.pdf" target="_blank" rel="noopener">📄 Paper</a>
+      <a class="btn btn-primary" href="https://arxiv" target="_blank" rel="noopener">📄 Paper</a>
       <a class="btn btn-outline" href="https://github.com/gastruc/unigeoclip" target="_blank" rel="noopener">💻 Code</a>
       <a class="btn btn-outline" href="#citation">Citation</a>
     </div>
@@ -711,8 +724,10 @@ journal: EarthVision 2026
     <h2>Trained in the USA. Works in Amsterdam.</h2>
     <p>
       UniGeoCLIP is trained exclusively on US metropolitan areas, yet achieves 41.2% Acc@100m on an out-of-distribution
-      Amsterdam evaluation set under a substantial domain shift. The paper reports consistent performance trends:
+      Amsterdam evaluation set under a substantial domain shift, using an <b>image-to-image retrieval</b> protocol. The paper reports consistent performance trends:
       adding modalities helps, and multimodal ensembling remains beneficial.
+      Note that for the location/coordinate encoder regression benchmark, the paper evaluates only on locations that
+      overlap with the training area.
     </p>
   </section>
 
@@ -725,9 +740,10 @@ journal: EarthVision 2026
     <div class="bibtex-block">
       <button class="copy-btn" onclick="unigeoclipCopyBib()" aria-label="Copy bibtex">Copy BibTeX</button>
       <pre id="bib">@inproceedings{astruc2026unigeoclip,
-  title     = {UNIGEOCLIP: Unified Geospatial Contrastive Learning},
-  author    = {Astruc, Guillaume and Trulls, Eduard and Hosang, Jan and Landrieu, Loic and Sarlin, Paul-Edouard},
-  booktitle = {EarthVision},
+  title     = {UniGeoCLIP: Unified Geospatial Contrastive Learning},
+  author    = {Astruc, Guillaume and Trulls, Eduard and Hosang, Jan
+               and Landrieu, Lo{\"i}c and Sarlin, Paul-Edouard},
+  booktitle = {EarthVision Workshop, CVPR},
   year      = {2026}
 }</pre>
     </div>
