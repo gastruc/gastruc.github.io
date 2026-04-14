@@ -68,7 +68,11 @@
   pdf: https://arxiv.org/pdf/2604.11668
   github: https://github.com/gastruc/UniGeoCLIP
   website: /unigeoclip
-  abstract: 'We introduce UNIGEOCLIP, a unified all-to-all multimodal contrastive framework that aligns aerial imagery, street-level imagery, digital surface models, text, and geographic coordinates in a single embedding space for geospatial retrieval and downstream understanding.'
+  abstract: 'The growing availability of co-located geospatial data spanning aerial imagery, street-level views, elevation models, text, and geographic coordinates offers a unique opportunity for multimodal representation learning.
+  We introduce UNIGEOCLIP, a massively multimodal contrastive framework to jointly align five complementary geospatial modalities in a single unified embedding space.
+  Unlike prior approaches that fuse modalities or rely on a central pivot representation, our method performs all-to-all contrastive alignment, enabling seamless comparison, retrieval, and reasoning across arbitrary combinations of modalities.
+  We further propose a scaled latitude-longitude encoder that improves spatial representation by capturing multi-scale geographic structure.
+  Extensive experiments across downstream geospatial tasks demonstrate that UNIGEOCLIP consistently outperforms single-modality contrastive models and coordinate-only baselines, highlighting the benefits of holistic multimodal geospatial alignment.'
   bibtex: "@inproceedings{astruc2026unigeoclip,\n
     &nbsp;&nbsp; title={UNIGEOCLIP: Unified Geospatial Contrastive Learning},\n
     &nbsp;&nbsp; author={Astruc, Guillaume and Trulls, Eduard and Hosang, Jan and Landrieu, Loic and Sarlin, Paul-Edouard},\n
