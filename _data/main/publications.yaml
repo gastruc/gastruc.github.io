@@ -63,7 +63,7 @@
   authors: <u>Guillaume Astruc</u>, <a href="https://etrulls.github.io/">Eduard Trulls</a>, <a href="https://janhosang.com/">Jan Hosang</a>, <a href="https://loiclandrieu.com/">Loic Landrieu</a>, <a href="https://psarlin.com/">Paul-Edouard Sarlin</a>
   date: 2026-03-23
   year: 2026
-  journal: EarthVision 2026
+  journal: CVPRW, EarthVision 2026
   thumbnail: /assets/publications/unigeoclip/Figure1.png
   pdf: https://arxiv.org/pdf/2604.11668
   github: https://github.com/gastruc/UniGeoCLIP
