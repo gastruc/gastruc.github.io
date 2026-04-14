@@ -9,7 +9,7 @@ keywords: remote sensing, geospatial, contrastive learning, multimodal learning,
 analytics: https://www.googletagmanager.com/gtag/js?id=G-FLNC8B6RH9
 
 paper_title: "UNIGEOCLIP: Unified Geospatial Contrastive Learning"
-paper_authors: "Guillaume Astruc, Eduard Trulls, Jan Hosang, Loic Landrieu, Paul-Edouard Sarlin"
+paper_authors: "<a href=\"/\">Guillaume Astruc</a>, <a href=\"https://etrulls.github.io/\">Eduard Trulls</a>, <a href=\"https://janhosang.com/\">Jan Hosang</a>, <a href=\"https://loiclandrieu.com/\">Loic Landrieu</a>, <a href=\"https://psarlin.com/\">Paul-Edouard Sarlin</a>"
 journal: EarthVision (CVPRW) 2026
 ---
 
@@ -508,14 +508,14 @@ journal: EarthVision (CVPRW) 2026
     <h1>Uni<span>Geo</span>CLIP</h1>
     <p class="subtitle">Unified Geospatial Contrastive Learning</p>
     <p class="authors">
-      Guillaume Astruc&nbsp;&middot;&nbsp;Eduard Trulls&nbsp;&middot;&nbsp;Jan Hosang&nbsp;&middot;&nbsp;Loic Landrieu&nbsp;&middot;&nbsp;Paul-Edouard Sarlin
+      <a href="/">Guillaume Astruc</a>&nbsp;&middot;&nbsp;<a href="https://etrulls.github.io/">Eduard Trulls</a>&nbsp;&middot;&nbsp;<a href="https://janhosang.com/">Jan Hosang</a>&nbsp;&middot;&nbsp;<a href="https://loiclandrieu.com/">Loic Landrieu</a>&nbsp;&middot;&nbsp;<a href="https://psarlin.com/">Paul-Edouard Sarlin</a>
     </p>
     <p class="affiliations">
       LASTIG, Univ Gustave Eiffel&nbsp;|&nbsp;IGN&nbsp;|&nbsp;ENSG&nbsp;|&nbsp;CNES&nbsp;|&nbsp;LIGM, Ecole des Ponts ParisTech&nbsp;|&nbsp;Google Switzerland
     </p>
 
     <div class="btn-group">
-      <a class="btn btn-primary" href="https://arxiv" target="_blank" rel="noopener">📄 Paper</a>
+      <a class="btn btn-primary" href="https://arxiv.org/pdf/2604.11668" target="_blank" rel="noopener">📄 Paper</a>
       <a class="btn btn-outline" href="https://github.com/gastruc/unigeoclip" target="_blank" rel="noopener">💻 Code</a>
       <a class="btn btn-outline" href="#citation">Citation</a>
     </div>

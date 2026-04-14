@@ -59,3 +59,19 @@
     &nbsp;&nbsp; journal={arXiv preprint arXiv:2412.14123},\n
     &nbsp;&nbsp; year={2024}\n
 }"
+- title: "UNIGEOCLIP: Unified Geospatial Contrastive Learning"
+  authors: <u>Guillaume Astruc</u>, <a href="https://etrulls.github.io/">Eduard Trulls</a>, <a href="https://janhosang.com/">Jan Hosang</a>, <a href="https://loiclandrieu.com/">Loic Landrieu</a>, <a href="https://psarlin.com/">Paul-Edouard Sarlin</a>
+  date: 2026-03-23
+  year: 2026
+  journal: EarthVision 2026
+  thumbnail: /assets/publications/unigeoclip/Figure1.png
+  pdf: https://arxiv.org/pdf/2604.11668
+  github: https://github.com/gastruc/UniGeoCLIP
+  website: /unigeoclip
+  abstract: 'We introduce UNIGEOCLIP, a unified all-to-all multimodal contrastive framework that aligns aerial imagery, street-level imagery, digital surface models, text, and geographic coordinates in a single embedding space for geospatial retrieval and downstream understanding.'
+  bibtex: "@inproceedings{astruc2026unigeoclip,\n
+    &nbsp;&nbsp; title={UNIGEOCLIP: Unified Geospatial Contrastive Learning},\n
+    &nbsp;&nbsp; author={Astruc, Guillaume and Trulls, Eduard and Hosang, Jan and Landrieu, Loic and Sarlin, Paul-Edouard},\n
+    &nbsp;&nbsp; booktitle={EarthVision},\n
+    &nbsp;&nbsp; year={2026}\n
+}"
