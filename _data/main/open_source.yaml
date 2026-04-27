@@ -9,3 +9,7 @@
 - repo_name: AnySat
   repo_owner: gastruc
   type: own
+
+- repo_name: UniGeoClip
+  repo_owner: gastruc
+  type: own
