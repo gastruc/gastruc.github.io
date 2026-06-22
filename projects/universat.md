@@ -595,32 +595,12 @@ journal: arXiv preprint, 2026
   <div class="hero">
     <div class="hero-banner">
       <div class="banner-track track-a">
-        <img src="/assets/publications/universat/pca/tile01.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile02.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile03.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile04.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile05.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile06.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile01.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile02.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile03.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile04.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile05.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile06.png" alt="" aria-hidden="true">
+        <img src="/assets/publications/universat/pca/stripA.jpg" alt="" aria-hidden="true">
+        <img src="/assets/publications/universat/pca/stripA.jpg" alt="" aria-hidden="true">
       </div>
       <div class="banner-track track-b">
-        <img src="/assets/publications/universat/pca/tile06.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile05.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile04.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile03.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile02.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile01.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile06.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile05.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile04.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile03.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile02.png" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/tile01.png" alt="" aria-hidden="true">
+        <img src="/assets/publications/universat/pca/stripB.jpg" alt="" aria-hidden="true">
+        <img src="/assets/publications/universat/pca/stripB.jpg" alt="" aria-hidden="true">
       </div>
     </div>
     <div class="hero-scrim"></div>
