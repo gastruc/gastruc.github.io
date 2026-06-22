@@ -853,6 +853,11 @@ highres, _ = model.encode(data, patch_size=<span class="num">40</span>, output_g
     </p>
 
     <div class="paper-figure">
+      <img src="/assets/publications/universat/FigureUPE.png" alt="UniverSat Universal Patch Encoder — progressive Axial Cross-Attention" />
+      <div class="paper-caption">Figure 4: The Universal Patch Encoder. A patch of arbitrary shape <em>C</em> × <em>T</em> × <em>I</em> × <em>S</em> is embedded with Fourier features, then its intra-patch (<em>I</em>), spectral (<em>C</em>), temporal (<em>T</em>) and spatial (<em>S</em>) axes are collapsed one at a time by linear-complexity Axial Cross-Attention (ACA), each with dedicated positional encodings. A sub-patch skip connection branches off before the final spatial collapse to recover fine spatial detail.</div>
+    </div>
+
+    <div class="paper-figure">
       <img src="/assets/publications/universat/Figure5.png" alt="UniverSat full architecture" />
       <div class="paper-caption">Figure 5: A tile is observed by multiple sensors of arbitrary modality and resolution. The shared UPE patchifies and embeds inputs; tokens are fused via Axial Cross-Attention (ACA), processed by self-attention blocks, resampled to the target resolution, and attend to high-resolution sub-patch embeddings via cross-attention (CA) to recover fine spatial details.</div>
     </div>
