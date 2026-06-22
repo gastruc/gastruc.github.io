@@ -595,12 +595,12 @@ journal: arXiv preprint, 2026
   <div class="hero">
     <div class="hero-banner">
       <div class="banner-track track-a">
-        <img src="/assets/publications/universat/pca/stripA.jpg?v=2" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/stripA.jpg?v=2" alt="" aria-hidden="true">
+        <img src="/assets/publications/universat/pca/stripA.jpg?v=3" alt="" aria-hidden="true">
+        <img src="/assets/publications/universat/pca/stripA.jpg?v=3" alt="" aria-hidden="true">
       </div>
       <div class="banner-track track-b">
-        <img src="/assets/publications/universat/pca/stripB.jpg?v=2" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/stripB.jpg?v=2" alt="" aria-hidden="true">
+        <img src="/assets/publications/universat/pca/stripB.jpg?v=3" alt="" aria-hidden="true">
+        <img src="/assets/publications/universat/pca/stripB.jpg?v=3" alt="" aria-hidden="true">
       </div>
     </div>
     <div class="hero-scrim"></div>
@@ -757,8 +757,7 @@ highres, _ = model.encode(data, patch_size=<span class="num">40</span>, output_g
         recovers fine spatial detail at the requested grid — one bilinear resample plus one CA pass.
       </p>
       <p style="font-size: 0.92rem; color: var(--us-muted); margin: 14px 0 0;">
-        See our tutorials on <a href="#" style="color: var(--us-accent); text-decoration: none; font-weight: 500;">probing</a>
-        and <a href="#" style="color: var(--us-accent); text-decoration: none; font-weight: 500;">classification</a>.
+        See our <a href="https://gastruc.github.io/UniverSat/blob/main/demo.ipynb" target="_blank" style="color: var(--us-accent); text-decoration: none; font-weight: 500;">demo notebook</a>.
       </p>
       <p style="font-size: 0.88rem; color: var(--us-muted); margin: 12px 0 0;">
         ⚠️ <strong>Note:</strong> small input patches or very fine output grids can significantly increase memory usage.
@@ -899,7 +898,7 @@ highres, _ = model.encode(data, patch_size=<span class="num">40</span>, output_g
     <h2>Competitive — and broader — than the state of the art</h2>
     <p>
       Despite its flexibility and ability to ingest unseen sensor configurations, UniverSat remains highly competitive on standard
-      benchmarks. We evaluate on <strong>15 datasets</strong> spanning GeoBench, PangaeaBench, and the hyperspectral SpectralEarth benchmark
+      benchmarks. We evaluate on <strong>16 datasets</strong> spanning GeoBench, PangaeaBench, and the hyperspectral SpectralEarth benchmark
       using strict probing protocols (kNN and linear probing).
     </p>
 
@@ -997,7 +996,7 @@ highres, _ = model.encode(data, patch_size=<span class="num">40</span>, output_g
     <ul class="contrib-list">
       <li>A <strong>unified ViT-like architecture</strong> for EO that processes heterogeneous sensors <em>without</em> modality-specific projectors or preprocessing.</li>
       <li>A <strong>multimodal self-supervised training framework</strong> combining cross-modal contrastive and latent multimodal masked modeling (LM₃).</li>
-      <li><strong>Competitive performance</strong> across 15 datasets — from VHR RGB to radar time series to 500-band hyperspectral imagery.</li>
+      <li><strong>Competitive performance</strong> across 16 datasets — from VHR RGB to radar time series to 500-band hyperspectral imagery.</li>
       <li><strong>Demonstrated generalisation</strong> to <em>unseen sensors and modality combinations</em> without input resampling.</li>
     </ul>
   </section>
