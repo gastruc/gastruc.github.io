@@ -618,7 +618,8 @@ journal: arXiv preprint, 2026
     </p>
 
     <div class="btn-group">
-      <a class="btn btn-primary" href="/assets/publications/universat/universat.pdf" target="_blank" rel="noopener">📄 Paper</a>
+      <!-- TODO: set href to the arXiv abstract URL (e.g. https://arxiv.org/abs/XXXX.XXXXX) once available -->
+      <a class="btn btn-primary" href="#" target="_blank" rel="noopener">📄 Paper</a>
       <a class="btn btn-outline" href="https://github.com/gastruc/UniverSat" target="_blank" rel="noopener">💻 Code</a>
       <a class="btn btn-outline" href="#usage">⚡ Quick Start</a>
       <a class="btn btn-outline" href="#citation">Citation</a>
@@ -677,30 +678,25 @@ journal: arXiv preprint, 2026
       <p style="font-size: 0.95rem; color: var(--us-muted); margin: -4px 0 14px;">
         The model is published on the <strong>Hugging Face Hub</strong> with
         <a href="https://huggingface.co/docs/huggingface_hub/package_reference/mixins#huggingface_hub.PyTorchModelHubMixin" target="_blank" rel="noopener"><span class="inline-code">PyTorchModelHubMixin</span></a>.
-        With the repo on your path and <span class="inline-code">huggingface_hub</span> installed:
+        The simplest path is <strong>Torch Hub</strong> — no local checkout needed:
       </p>
       <div class="code-wrapper">
         <button class="copy-code-btn" onclick="universatCopyCode('us-code-load')">Copy</button>
-        <pre id="us-code-load" class="code-block"><span class="k">from</span> hubconf <span class="k">import</span> UniverSat
-
-model = UniverSat.from_pretrained(<span class="s">'g-astruc/UniverSat'</span>).eval()</pre>
-      </div>
-      <p style="font-size: 0.95rem; color: var(--us-muted); margin: 18px 0 12px;">
-        Or, equivalently, through <strong>Torch Hub</strong> — no local checkout needed, same tracked download:
-      </p>
-      <div class="code-wrapper">
-        <button class="copy-code-btn" onclick="universatCopyCode('us-code-load-alt')">Copy</button>
-        <pre id="us-code-load-alt" class="code-block"><span class="k">import</span> torch
+        <pre id="us-code-load" class="code-block"><span class="k">import</span> torch
 
 model = torch.hub.load(<span class="s">'gastruc/UniverSat'</span>, <span class="s">'from_pretrained'</span>).eval()</pre>
       </div>
+      <p style="font-size: 0.95rem; color: var(--us-muted); margin: 18px 0 12px;">
+        Or, equivalently, with the repo on your path and <span class="inline-code">huggingface_hub</span> installed:
+      </p>
+      <div class="code-wrapper">
+        <button class="copy-code-btn" onclick="universatCopyCode('us-code-load-alt')">Copy</button>
+        <pre id="us-code-load-alt" class="code-block"><span class="k">from</span> hubconf <span class="k">import</span> UniverSat
+
+model = UniverSat.from_pretrained(<span class="s">'g-astruc/UniverSat'</span>).eval()</pre>
+      </div>
       <p style="font-size: 0.88rem; color: var(--us-muted); margin: 14px 0 0;">
         Loading requires <span class="inline-code">huggingface_hub</span> (and <span class="inline-code">safetensors</span>). The released checkpoint is a <strong>Base</strong> UniverSat (~201&nbsp;M params).
-      </p>
-      <p style="font-size: 0.88rem; color: var(--us-muted); margin: 10px 0 0;">
-        💡 <strong>Interactive inference?</strong> Disable <span class="inline-code">torch.compile</span> — set
-        <span class="inline-code">torch._dynamo.config.disable = True</span> (or <span class="inline-code">TORCH_COMPILE_DISABLE=1</span>)
-        before the first forward, since the one-off compile cost never amortises over a few varying-shape passes.
       </p>
     </div>
 
@@ -757,7 +753,7 @@ highres, _ = model.encode(data, patch_size=<span class="num">40</span>, output_g
         recovers fine spatial detail at the requested grid — one bilinear resample plus one CA pass.
       </p>
       <p style="font-size: 0.92rem; color: var(--us-muted); margin: 14px 0 0;">
-        See our <a href="https://gastruc.github.io/UniverSat/blob/main/demo.ipynb" target="_blank" style="color: var(--us-accent); text-decoration: none; font-weight: 500;">demo notebook</a>.
+        See our <a href="https://github.com/gastruc/UniverSat/blob/main/demo.ipynb" target="_blank" style="color: var(--us-accent); text-decoration: none; font-weight: 500;">demo notebook</a>.
       </p>
       <p style="font-size: 0.88rem; color: var(--us-muted); margin: 12px 0 0;">
         ⚠️ <strong>Note:</strong> small input patches or very fine output grids can significantly increase memory usage.
