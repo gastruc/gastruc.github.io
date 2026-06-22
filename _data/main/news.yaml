@@ -27,3 +27,6 @@
 
 - date: 2026-04-14
   content: Paper [UniGeoCLIP](https://gastruc.github.io/unigeoclip) is now available and has been accepted to [EarthVision 2026](https://www.grss-ieee.org/events/earthvision-2026/)!
+
+- date: 2026-06-02
+  content: Our new preprint [UniverSat](https://gastruc.github.io/universat) is on arXiv! A resolution- and modality-agnostic transformer backbone for Earth Observation.

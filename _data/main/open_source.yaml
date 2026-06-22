@@ -13,3 +13,7 @@
 - repo_name: UniGeoClip
   repo_owner: gastruc
   type: own
+
+- repo_name: UniverSat
+  repo_owner: gastruc
+  type: own
