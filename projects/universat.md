@@ -115,6 +115,9 @@ journal: arXiv preprint, 2026
   }
   .universat-page .track-a { animation: us-scroll-left 50s linear infinite; }
   .universat-page .track-b { animation: us-scroll-right 66s linear infinite; }
+  /* extra rows shown only on small screens, so mobile tiles stay small */
+  .universat-page .track-c { display: none; animation: us-scroll-left 58s linear infinite; }
+  .universat-page .track-d { display: none; animation: us-scroll-right 74s linear infinite; }
   @keyframes us-scroll-left  { from { transform: translateX(0); }    to { transform: translateX(-50%); } }
   @keyframes us-scroll-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
   @media (prefers-reduced-motion: reduce) {
@@ -324,8 +327,8 @@ journal: arXiv preprint, 2026
     box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
     border: 1px solid var(--us-border);
   }
-  .universat-page .paper-figure-reduced img { max-width: 720px !important; width: auto !important; display: block; margin: 0 auto; }
-  .universat-page .paper-figure-small img { max-width: 480px !important; width: auto !important; display: block; margin: 0 auto; }
+  .universat-page .paper-figure-reduced img { max-width: min(720px, 100%) !important; width: auto !important; display: block; margin: 0 auto; }
+  .universat-page .paper-figure-small img { max-width: min(480px, 100%) !important; width: auto !important; display: block; margin: 0 auto; }
 
   .universat-page .paper-caption {
     margin-top: 12px;
@@ -588,6 +591,7 @@ journal: arXiv preprint, 2026
     .universat-page section { padding: 60px 20px; }
     .universat-page .pillars { grid-template-columns: 1fr; }
     .universat-page .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .universat-page .track-c, .universat-page .track-d { display: flex; }
   }
 </style>
 
@@ -601,6 +605,14 @@ journal: arXiv preprint, 2026
       <div class="banner-track track-b">
         <img src="/assets/publications/universat/pca/stripB.jpg?v=3" alt="" aria-hidden="true">
         <img src="/assets/publications/universat/pca/stripB.jpg?v=3" alt="" aria-hidden="true">
+      </div>
+      <div class="banner-track track-c">
+        <img src="/assets/publications/universat/pca/stripB.jpg?v=3" alt="" aria-hidden="true">
+        <img src="/assets/publications/universat/pca/stripB.jpg?v=3" alt="" aria-hidden="true">
+      </div>
+      <div class="banner-track track-d">
+        <img src="/assets/publications/universat/pca/stripA.jpg?v=3" alt="" aria-hidden="true">
+        <img src="/assets/publications/universat/pca/stripA.jpg?v=3" alt="" aria-hidden="true">
       </div>
     </div>
     <div class="hero-scrim"></div>
