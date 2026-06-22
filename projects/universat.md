@@ -595,26 +595,26 @@ journal: arXiv preprint, 2026
   <div class="hero">
     <div class="hero-banner">
       <div class="banner-track track-a">
-        <img src="/assets/publications/universat/pca/stripA.jpg" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/stripA.jpg" alt="" aria-hidden="true">
+        <img src="/assets/publications/universat/pca/stripA.jpg?v=2" alt="" aria-hidden="true">
+        <img src="/assets/publications/universat/pca/stripA.jpg?v=2" alt="" aria-hidden="true">
       </div>
       <div class="banner-track track-b">
-        <img src="/assets/publications/universat/pca/stripB.jpg" alt="" aria-hidden="true">
-        <img src="/assets/publications/universat/pca/stripB.jpg" alt="" aria-hidden="true">
+        <img src="/assets/publications/universat/pca/stripB.jpg?v=2" alt="" aria-hidden="true">
+        <img src="/assets/publications/universat/pca/stripB.jpg?v=2" alt="" aria-hidden="true">
       </div>
     </div>
     <div class="hero-scrim"></div>
     <div class="venue-tag">arXiv preprint &middot; 2026</div>
     <h1 class="us-title">Univer<span class="accent">Sat</span></h1>
     <p class="tagline">
-      A <strong>resolution-</strong> and <strong>modality-agnostic</strong> transformer backbone for Earth Observation —
-      one set of weights for any sensor, any resolution, any number of bands.
+      A <strong>resolution-</strong> and <strong>modality-agnostic</strong> transformer backbone for Earth Observation:
+      one set of weights for any sensor, any spatial/spectral/temporal resolution and any scale.
     </p>
     <p class="authors">
       <a href="https://yohannperron.github.io/WebPage/">Yohann Perron</a><sup>*</sup>&nbsp;&middot;&nbsp;<a href="/">Guillaume Astruc</a><sup>*</sup>&nbsp;&middot;&nbsp;<a href="https://ngonthier.github.io/">Nicolas Gonthier</a>&nbsp;&middot;&nbsp;<a href="https://www.umr-lastig.fr/clement-mallet/">Clement Mallet</a>&nbsp;&middot;&nbsp;<a href="https://loiclandrieu.com/">Loic Landrieu</a>
     </p>
     <p class="affiliations">
-      <sup>*</sup>Equal contribution &middot; LASTIG, Univ Gustave Eiffel&nbsp;|&nbsp;IGN&nbsp;|&nbsp;ENSG&nbsp;|&nbsp;CNES&nbsp;|&nbsp;LIGM, Ecole des Ponts ParisTech&nbsp;|&nbsp;EFEO
+      <sup>*</sup>Equal contribution &middot; LASTIG, Univ Gustave Eiffel&nbsp;|&nbsp;IGN&nbsp;|&nbsp;ENSG&nbsp;|&nbsp;CNES&nbsp;|&nbsp; LIGM, ENPC, IPP&nbsp;|&nbsp;EFEO
     </p>
 
     <div class="btn-group">
@@ -718,7 +718,7 @@ data = {
     <span class="s">'dsm'</span>:       torch.randn(<span class="num">2</span>, <span class="num">1</span>, <span class="num">12</span>, <span class="num">12</span>),        <span class="c"># 30 m elevation snapshot</span>
 }
 
-features, _ = model.encode(data, scale=<span class="num">4</span>, output_grid=<span class="num">1296</span>)
+features, _ = model.encode(data, patch_size=<span class="num">40</span>, output_grid=<span class="num">36</span>)
 <span class="c"># -> (2, 1296, 768): a 36x36 dense feature grid (register tokens stripped for you)</span></pre>
       </div>
       <p style="font-size: 0.92rem; color: var(--us-muted); margin: 16px 0 0;">
@@ -732,23 +732,36 @@ features, _ = model.encode(data, scale=<span class="num">4</span>, output_grid=<
     </div>
 
     <div class="quickstart-card">
-      <h3><span class="step-num">3</span> Pick <em style="font-style:normal; color:var(--us-accent);">any</em> output resolution — down to pixel level</h3>
+      <h3><span class="step-num">3</span> Control input and output resolutions</h3>
       <p style="font-size: 0.95rem; color: var(--us-muted); margin: -4px 0 14px;">
-        Output resolution is <strong>decoupled from the input patch size</strong> and given as a <strong>token count, not a distance in
-        metres</strong>: <span class="inline-code">output_grid</span> is the <em>total</em> number of output tokens and must be a perfect
-        square <span class="inline-code">G&sup2;</span>, producing a <span class="inline-code">G&times;G</span> feature map (each token then
-        covers <span class="inline-code">tile_extent / G</span> on the ground). Same model, same inputs — only the requested grid changes.
+        With UniverSat, the output resolution is <strong>decoupled from the input patch size</strong>.
+      </p>
+      <p style="font-size: 0.95rem; color: var(--us-muted); margin: 0 0 14px;">
+        First, choose the <span class="inline-code">patch_size</span> used to partition the input data. Smaller patches
+        better capture local, fine-grained processes, while larger patches are more efficient.
+      </p>
+      <p style="font-size: 0.95rem; color: var(--us-muted); margin: 0 0 14px;">
+        Then, choose the <span class="inline-code">output_grid</span>, i.e. the number of output tokens. The model returns a
+        tensor of shape <span class="inline-code">D &times; output_grid &times; output_grid</span> (each token then covers
+        <span class="inline-code">tile_extent / G</span> on the ground). Same model, same inputs — only the requested grid changes.
       </p>
       <div class="code-wrapper">
         <button class="copy-code-btn" onclick="universatCopyCode('us-code-resolution')">Copy</button>
         <pre id="us-code-resolution" class="code-block"><span class="c"># Same model, same inputs — only the requested output grid changes.</span>
-patch, _   = model.encode(data, scale=<span class="num">4</span>, output_grid=<span class="num">81</span>)      <span class="c">#   9x9   patch-level</span>
-dense, _   = model.encode(data, scale=<span class="num">4</span>, output_grid=<span class="num">1296</span>)    <span class="c">#  36x36  dense</span>
-highres, _ = model.encode(data, scale=<span class="num">4</span>, output_grid=<span class="num">32_400</span>)  <span class="c"># 180x180 high-res</span></pre>
+patch, _   = model.encode(data, patch_size=<span class="num">40</span>, output_grid=<span class="num">9</span>)      <span class="c">#   9x9   patch-level</span>
+dense, _   = model.encode(data, patch_size=<span class="num">40</span>, output_grid=<span class="num">36</span>)    <span class="c">#  36x36  dense</span>
+highres, _ = model.encode(data, patch_size=<span class="num">40</span>, output_grid=<span class="num">180</span>)  <span class="c"># 180x180 high-res</span></pre>
       </div>
       <p style="font-size: 0.92rem; color: var(--us-muted); margin: 16px 0 0;">
         Under the hood: the patch-level transformer runs over a coarse spatial grid, then a <em>sub-patch skip cross-attention</em>
         recovers fine spatial detail at the requested grid — one bilinear resample plus one CA pass.
+      </p>
+      <p style="font-size: 0.92rem; color: var(--us-muted); margin: 14px 0 0;">
+        See our tutorials on <a href="#" style="color: var(--us-accent); text-decoration: none; font-weight: 500;">probing</a>
+        and <a href="#" style="color: var(--us-accent); text-decoration: none; font-weight: 500;">classification</a>.
+      </p>
+      <p style="font-size: 0.88rem; color: var(--us-muted); margin: 12px 0 0;">
+        ⚠️ <strong>Note:</strong> small input patches or very fine output grids can significantly increase memory usage.
       </p>
     </div>
 
@@ -784,16 +797,16 @@ highres, _ = model.encode(data, scale=<span class="num">4</span>, output_grid=<s
 
   <section class="fade-in">
     <div class="section-label">Key Properties</div>
-    <h2>Four properties, one architecture.</h2>
+    <h2>One model for all your EO needs.</h2>
     <p>
       Integrated into a transformer that operates over spatialized tokens, the Universal Patch Encoder gives UniverSat
-      four key advantages over rigid ViT-style EO foundation models:
+      three key advantages over rigid ViT-style EO foundation models:
     </p>
 
     <div class="pillars">
       <div class="pillar">
         <div class="pillar-icon">🌐</div>
-        <h3>Universal</h3>
+        <h3>Sensor-agnostic</h3>
         <p>A single set of weights processes <strong>any modality combination</strong> and arbitrary resolutions — no resampling, no channel filtering.</p>
       </div>
       <div class="pillar">
