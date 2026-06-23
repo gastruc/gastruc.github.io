@@ -835,7 +835,7 @@ highres, _ = model.encode(data, patch_size=<span class="num">40</span>, output_g
 
   <hr class="divider"/>
 
-  <section class="fade-in">
+  <section class="fade-in" id="architecture">
     <div class="section-label">Architecture</div>
     <h2>The Universal Patch Encoder</h2>
     <p>
@@ -905,7 +905,7 @@ highres, _ = model.encode(data, patch_size=<span class="num">40</span>, output_g
 
   <hr class="divider"/>
 
-  <section class="fade-in">
+  <section class="fade-in" id="results">
     <div class="section-label">Results</div>
     <h2>Competitive — and broader — than the state of the art</h2>
     <p>
@@ -1038,6 +1038,20 @@ highres, _ = model.encode(data, patch_size=<span class="num">40</span>, output_g
 </div>
 
 <script>
+  // The shared project layout's navbar links (#, #approach) both resolve to the
+  // top of this single-page layout. Rewire them to this page's actual sections.
+  (function () {
+    const navList = document.querySelector('header nav ul');
+    if (!navList) return;
+    navList.innerHTML =
+      '<li><a href="/">Guillaume Astruc</a></li>' +
+      '<li><a href="#top">UniverSat</a></li>' +
+      '<li><a href="#usage">Quick Start</a></li>' +
+      '<li><a href="#architecture">Architecture</a></li>' +
+      '<li><a href="#results">Results</a></li>' +
+      '<li><a href="#citation">Citation</a></li>';
+  })();
+
   const usObserver = new IntersectionObserver((entries) => {
     entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.1 });
