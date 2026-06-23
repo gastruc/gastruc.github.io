@@ -630,8 +630,7 @@ journal: arXiv preprint, 2026
     </p>
 
     <div class="btn-group">
-      <!-- TODO: set href to the arXiv abstract URL (e.g. https://arxiv.org/abs/XXXX.XXXXX) once available -->
-      <a class="btn btn-primary" href="#" target="_blank" rel="noopener">📄 Paper</a>
+      <a class="btn btn-primary" href="https://arxiv.org/abs/2606.23503" target="_blank" rel="noopener">📄 Paper</a>
       <a class="btn btn-outline" href="https://github.com/gastruc/UniverSat" target="_blank" rel="noopener">💻 Code</a>
       <a class="btn btn-outline" href="#usage">⚡ Quick Start</a>
       <a class="btn btn-outline" href="#citation">Citation</a>
@@ -1026,7 +1025,7 @@ highres, _ = model.encode(data, patch_size=<span class="num">40</span>, output_g
   title   = {UniverSat: Resolution- and Modality-Agnostic Transformers for Earth Observation},
   author  = {Perron, Yohann and Astruc, Guillaume and Gonthier, Nicolas
              and Mallet, Clement and Landrieu, Loic},
-  journal = {arXiv preprint},
+  journal = {arXiv preprint arXiv:2606.23503},
   year    = {2026}
 }</pre>
     </div>
