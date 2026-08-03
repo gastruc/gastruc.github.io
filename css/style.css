@@ -728,9 +728,14 @@ main {
 }
 
 #open-source h3 {
-    font-size: 23px;
+    color: #2d3748;
+    font-size: 20px;
     font-weight: bold;
     margin-bottom: 20px;
+}
+
+#open-source .repo-wrapper+h3 {
+    margin-top: 40px;
 }
 
 #misc ul {

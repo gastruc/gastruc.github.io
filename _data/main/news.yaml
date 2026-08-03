@@ -30,3 +30,6 @@
 
 - date: 2026-06-02
   content: Our new preprint [UniverSat](https://gastruc.github.io/universat) is on arXiv! A resolution- and modality-agnostic transformer backbone for Earth Observation.
+
+- date: 2026-08-03
+  content: The code of [UniGeoCLIP](https://gastruc.github.io/unigeoclip) is now released in [google-research/scaling-geoloc](https://github.com/google-research/scaling-geoloc)!
