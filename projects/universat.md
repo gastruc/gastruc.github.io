@@ -10,7 +10,7 @@ analytics: https://www.googletagmanager.com/gtag/js?id=G-FLNC8B6RH9
 
 paper_title: "UniverSat: Resolution- and Modality-Agnostic Transformers for Earth Observation"
 paper_authors: "<a href=\"https://yohannperron.github.io/WebPage/\">Yohann Perron</a>*, <a href=\"/\">Guillaume Astruc</a>*, <a href=\"https://ngonthier.github.io/\">Nicolas Gonthier</a>, <a href=\"https://www.umr-lastig.fr/clement-mallet/\">Clement Mallet</a>, <a href=\"https://loiclandrieu.com/\">Loic Landrieu</a>"
-journal: arXiv preprint, 2026
+journal: NeurIPS 2026
 ---
 
 <script>
@@ -616,7 +616,7 @@ journal: arXiv preprint, 2026
       </div>
     </div>
     <div class="hero-scrim"></div>
-    <div class="venue-tag">arXiv preprint &middot; 2026</div>
+    <div class="venue-tag">NeurIPS 2026</div>
     <h1 class="us-title">Univer<span class="accent">Sat</span></h1>
     <p class="tagline">
       A <strong>resolution-</strong> and <strong>modality-agnostic</strong> transformer backbone for Earth Observation:
@@ -1021,18 +1021,18 @@ highres, _ = model.encode(data, patch_size=<span class="num">40</span>, output_g
 
     <div class="bibtex-block">
       <button class="copy-btn" onclick="universatCopyBib()" aria-label="Copy bibtex">Copy BibTeX</button>
-      <pre id="us-bib">@article{perron2026universat,
-  title   = {UniverSat: Resolution- and Modality-Agnostic Transformers for Earth Observation},
-  author  = {Perron, Yohann and Astruc, Guillaume and Gonthier, Nicolas
-             and Mallet, Clement and Landrieu, Loic},
-  journal = {arXiv preprint arXiv:2606.23503},
-  year    = {2026}
+      <pre id="us-bib">@inproceedings{perron2026universat,
+  title     = {UniverSat: Resolution- and Modality-Agnostic Transformers for Earth Observation},
+  author    = {Perron, Yohann and Astruc, Guillaume and Gonthier, Nicolas
+               and Mallet, Clement and Landrieu, Loic},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2026}
 }</pre>
     </div>
   </section>
 
   <footer class="universat-footer">
-    <p>UniverSat &middot; arXiv preprint 2026</p>
+    <p>UniverSat &middot; NeurIPS 2026</p>
     <p style="margin-top:6px;">Project page &middot; <a href="/" style="color:var(--us-accent); text-decoration:none;">Guillaume Astruc</a></p>
   </footer>
 </div>
