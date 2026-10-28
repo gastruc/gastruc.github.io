@@ -1,6 +1,8 @@
 talks:
+  - name: <a href="https://voxel51.com/events/paris-ai-ml-and-cv-meetup-july-28-2026">Paris AI, ML and Computer Vision Meetup</a> @ Voxel51
+    date: 2026-07-28
   - name: <a href="https://prs.igp.ethz.ch/">Photogrammetry and Remote Sensing</a> Seminar @ ETH Zurich
-    date: 2025-12-06
+    date: 2025-12-04
   - name: <a href="https://www.cesbio.cnrs.fr/">CESBIO</a> Seminar @ CNRS
     date: 2024-09-16
   - name: SIMV (IGN R&D) Seminar @ IGN
@@ -9,6 +11,8 @@ talks:
     date: 2025-02-10
 
 reviewer:
+  - name: <a href="https://iclr.cc/Conferences/2027">ICLR 2027</a>
+    date: 2027-04-26
   - name: <a href="https://cvpr.thecvf.com/Conferences/2026">CVPR 2026</a>
     date: 2026-06-15
   - name: <a href="https://neurips.cc/">NeurIPS 2025 </a>
@@ -23,7 +27,7 @@ reviewer:
 awards:
   - name: CVPR 2025 Highlight Paper (Top 13%)
     date: 2025-03-04
-    paper: "AnySat: An Earth Observation Model for Any Resolutions, Scales, and Modalities"
+    paper: "AnySat: One Earth Observation Model for Many Resolutions, Scales, and Modalities"
 
 # others:
 #   - name: I did nothing for now
