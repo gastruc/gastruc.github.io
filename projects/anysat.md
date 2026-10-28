@@ -1,14 +1,14 @@
 ---
 layout: project
 permalink: /anysat
-title: "AnySat: An Earth Observation Model<br>for Any Resolutions, Scales, and Modalities"
+title: "AnySat: One Earth Observation Model<br>for Many Resolutions, Scales, and Modalities"
 short_name: AnySat
 author: Guillaume Astruc
-description: This work introduces OmniSat, a novel architecture that exploits the spatial alignment between multiple EO modalities to learn expressive multimodal representations without labels.
+description: This work introduces AnySat, a single self-supervised model for Earth observation data of any resolution, scale, and modality.
 keywords: remote sensing, self-supervised learning, multimodal learning, earth observation, satellite imagery, foundation model
 analytics: https://www.googletagmanager.com/gtag/js?id=G-FLNC8B6RH9
 
-paper_title: "AnySat: An Earth Observation Model for Any Resolutions, Scales, and Modalities"
+paper_title: "AnySat: One Earth Observation Model for Many Resolutions, Scales, and Modalities"
 paper_authors: <a href="/">Guillaume Astruc</a>, <a href="https://ngonthier.github.io/">Nicolas Gonthier</a>, <a href="https://www.umr-lastig.fr/clement-mallet/">Clement Mallet</a>, <a href="https://loiclandrieu.com/">Loic Landrieu</a>
 journal: CVPR 2025 (Highlight)
 buttons:
@@ -35,11 +35,12 @@ buttons:
 #     url: /assets/publications/omnisat/omni.pdf
 # video:
 #     url: https://www.youtube.com/embed/1JUoog7CWDs?si=dwYRpDAvFl5tkSGj
-bibtex: "@article{astruc2024anysat,\n
-    &nbsp;&nbsp; title={{AnySat: An Earth} Observation Model for Any Resolutions, Scales, and Modalities},\n
+bibtex: "@inproceedings{astruc2025anysat,\n
+    &nbsp;&nbsp; title={{AnySat}: One {Earth} Observation Model for Many Resolutions, Scales, and Modalities},\n
     &nbsp;&nbsp; author={Astruc, Guillaume and Gonthier, Nicolas and Mallet, Clement and Landrieu, Loic},\n
-    &nbsp;&nbsp; journal={arXiv preprint arXiv:2412.14123},\n
-    &nbsp;&nbsp; year={2024}\n
+    &nbsp;&nbsp; booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},\n
+    &nbsp;&nbsp; pages={19530--19540},\n
+    &nbsp;&nbsp; year={2025}\n
 }"
 acknowledgements: This work was granted access to the HPC resources of IDRIS under the allocations AD011014719 and AD011014286R1 made by GENCI. We thank Jordi Inglada, Antoine Labatie, Dimitris Samaras, Yohann Perron, Vincent Lepetit for inspiring discussions and valuable feedback.
 ---

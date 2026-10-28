@@ -37,13 +37,14 @@ poster:
     url: /assets/publications/omnisat/omni.pdf
 video:
     url: https://www.youtube.com/embed/1JUoog7CWDs?si=dwYRpDAvFl5tkSGj
-bibtex: "@inproceedings{astruc2025omnisat, \n
-    &nbsp;&nbsp; title={Omnisat: Self-supervised modality fusion for earth observation}, \n
+bibtex: "@inproceedings{astruc2024omnisat, \n
+    &nbsp;&nbsp; title={{OmniSat}: Self-Supervised Modality Fusion for {Earth} Observation}, \n
     &nbsp;&nbsp; author={Astruc, Guillaume and Gonthier, Nicolas and Mallet, Clement and Landrieu, Loic}, \n
-    &nbsp;&nbsp; booktitle={European Conference on Computer Vision}, \n
+    &nbsp;&nbsp; booktitle={Computer Vision -- ECCV 2024}, \n
+    &nbsp;&nbsp; series={Lecture Notes in Computer Science}, \n
     &nbsp;&nbsp; pages={409--427}, \n
-    &nbsp;&nbsp; year={2025}, \n
-    &nbsp;&nbsp; organization={Springer} \n
+    &nbsp;&nbsp; year={2024}, \n
+    &nbsp;&nbsp; publisher={Springer} \n
 }"
 acknowledgements: This work was supported by ANR project READY3D ANR-19-CE23-0007,
   and was granted access to the HPC resources of IDRIS under the allocation AD011014719 made

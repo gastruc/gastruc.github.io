@@ -1022,10 +1022,11 @@ highres, _ = model.encode(data, patch_size=<span class="num">40</span>, output_g
     <div class="bibtex-block">
       <button class="copy-btn" onclick="universatCopyBib()" aria-label="Copy bibtex">Copy BibTeX</button>
       <pre id="us-bib">@inproceedings{perron2026universat,
-  title     = {UniverSat: Resolution- and Modality-Agnostic Transformers for Earth Observation},
+  title     = {{UniverSat}: Resolution- and Modality-Agnostic Transformers for {Earth} Observation},
   author    = {Perron, Yohann and Astruc, Guillaume and Gonthier, Nicolas
                and Mallet, Clement and Landrieu, Loic},
-  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  booktitle = {Advances in Neural Information Processing Systems},
+  volume    = {39},
   year      = {2026}
 }</pre>
     </div>
