@@ -740,10 +740,11 @@ journal: EarthVision (CVPRW) 2026
     <div class="bibtex-block">
       <button class="copy-btn" onclick="unigeoclipCopyBib()" aria-label="Copy bibtex">Copy BibTeX</button>
       <pre id="bib">@inproceedings{astruc2026unigeoclip,
-  title     = {UniGeoCLIP: Unified Geospatial Contrastive Learning},
+  title     = &#123;{UniGeoCLIP}: Unified Geospatial Contrastive Learning},
   author    = {Astruc, Guillaume and Trulls, Eduard and Hosang, Jan
                and Landrieu, Lo{\"i}c and Sarlin, Paul-Edouard},
-  booktitle = {EarthVision Workshop, CVPR},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops},
+  pages     = {7847--7856},
   year      = {2026}
 }</pre>
     </div>
