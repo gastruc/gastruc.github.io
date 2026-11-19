@@ -102,7 +102,8 @@
         });
 
         function copyBibtex(index) {
-            const bibtexContent = document.querySelector(`#bibtex-${index} pre`).textContent;
+            // &nbsp; indentation would otherwise reach the clipboard and break BibTeX parsing
+            const bibtexContent = document.querySelector(`#bibtex-${index} pre`).textContent.replace(/ /g, ' ');
             navigator.clipboard.writeText(bibtexContent).then(() => {
                 const btn = document.querySelector(`#bibtex-${index} .bibtex-copy-btn`);
                 btn.innerHTML = `
