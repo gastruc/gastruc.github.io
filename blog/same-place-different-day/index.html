@@ -1,0 +1,1113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Same Place, Different Day</title>
+<meta name="description" content="Satellite-image embeddings encode the pass that imaged each tile almost as much as the landscape. Two regularisations that remove it (acquisition correction and spatial regularisation), with interactive figures on Major-TOM and S2-NAIP.">
+<meta name="author" content="Guillaume Astruc">
+<link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
+<script>
+  // Same preference key as the rest of the site ('theme' = 'light' | 'dark').
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Inter:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --bg2: #f5f7fa;
+  --card: #ffffff;
+  --ink: #0e1726;
+  --ink2: #334155;
+  --muted: #64748b;
+  --line: rgba(14, 23, 38, 0.11);
+  --line2: rgba(14, 23, 38, 0.06);
+  --grid: #e7eaef;
+  --acq: #2a78d6;  --acq-rgb: 42, 120, 214;
+  --nui: #eb6834;  --nui-rgb: 235, 104, 52;
+  --spa: #1baf7a;  --spa-rgb: 27, 175, 122;
+  --c4: #eda100; --c5: #e87ba4; --c6: #6250d6;
+  --neutral: #8b95a4;
+  --scrim: 255, 255, 255;
+  --shadow: 0 1px 2px rgba(14, 23, 38, 0.05), 0 10px 30px rgba(14, 23, 38, 0.07);
+  --code-bg: #eef2f7;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #070a0f; --bg2: #0b1017; --card: #0f151e;
+    --ink: #eef2f7; --ink2: #c3ccd8; --muted: #8793a5;
+    --line: rgba(238, 242, 247, 0.12); --line2: rgba(238, 242, 247, 0.06);
+    --grid: #1c2430;
+    --acq: #3987e5;  --acq-rgb: 57, 135, 229;
+    --nui: #d95926;  --nui-rgb: 217, 89, 38;
+    --spa: #199e70;  --spa-rgb: 25, 158, 112;
+    --c4: #c98500; --c5: #d55181; --c6: #9085e9;
+    --neutral: #7f8a9a;
+    --scrim: 7, 10, 15;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.35);
+    --code-bg: #141c27;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #070a0f; --bg2: #0b1017; --card: #0f151e;
+  --ink: #eef2f7; --ink2: #c3ccd8; --muted: #8793a5;
+  --line: rgba(238, 242, 247, 0.12); --line2: rgba(238, 242, 247, 0.06);
+  --grid: #1c2430;
+  --acq: #3987e5;  --acq-rgb: 57, 135, 229;
+  --nui: #d95926;  --nui-rgb: 217, 89, 38;
+  --spa: #199e70;  --spa-rgb: 25, 158, 112;
+  --c4: #c98500; --c5: #d55181; --c6: #9085e9;
+  --neutral: #7f8a9a;
+  --scrim: 7, 10, 15;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.35);
+  --code-bg: #141c27;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0; background: var(--bg); color: var(--ink2);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 17px; line-height: 1.72;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+a { color: var(--acq); text-decoration: none; }
+a:hover { text-decoration: underline; }
+b, strong { color: var(--ink); font-weight: 600; }
+em { font-style: italic; }
+svg { display: block; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.c-acq { color: var(--acq); } .c-nui { color: var(--nui); } .c-spa { color: var(--spa); } .c-muted { color: var(--muted); }
+
+/* ---------- top bar, progress, section spy ---------- */
+.topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 56px; display: flex; align-items: center;
+  justify-content: space-between; padding: 0 22px; background: rgba(var(--scrim), 0.86);
+  -webkit-backdrop-filter: saturate(1.4) blur(10px); backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid var(--line2); transition: transform 0.35s; }
+.topbar .home { font-family: 'Inter Tight', sans-serif; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+.topbar .home span { color: var(--muted); font-weight: 500; margin-left: 8px; }
+.topbar nav { display: flex; align-items: center; gap: 18px; font-size: 0.9rem; }
+.topbar nav a { color: var(--ink2); }
+.theme-btn { width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink);
+  display: grid; place-items: center; cursor: pointer; }
+.theme-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.theme-btn .moon { display: none; }
+:root[data-theme="dark"] .theme-btn .sun { display: none; } :root[data-theme="dark"] .theme-btn .moon { display: block; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .theme-btn .sun { display: none; } :root:not([data-theme="light"]) .theme-btn .moon { display: block; } }
+@media (max-width: 640px) { .topbar nav .hide-sm { display: none; } .topbar { padding: 0 16px; } }
+
+.progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 101; pointer-events: none; }
+.progress span { display: block; height: 100%; transform-origin: 0 50%; transform: scaleX(0);
+  background: linear-gradient(90deg, var(--nui), var(--acq) 55%, var(--spa)); }
+.spy { position: fixed; right: 22px; top: 50%; transform: translateY(-50%); z-index: 50; display: flex; flex-direction: column; gap: 14px;
+  opacity: 0; pointer-events: none; transition: opacity 0.4s; }
+.spy.on { opacity: 1; pointer-events: auto; }
+.spy a { position: relative; display: block; width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--muted); transition: all 0.25s; }
+.spy a:hover { text-decoration: none; border-color: var(--acq); }
+.spy a.on { background: var(--acq); border-color: var(--acq); transform: scale(1.25); }
+.spy a span { position: absolute; right: 20px; top: 50%; transform: translate(6px, -50%); white-space: nowrap;
+  font: 500 0.72rem/1 'JetBrains Mono', monospace; color: var(--ink); background: var(--card); border: 1px solid var(--line);
+  padding: 5px 8px; border-radius: 6px; opacity: 0; pointer-events: none; transition: all 0.2s; }
+.spy a:hover span { opacity: 1; transform: translate(0, -50%); }
+@media (max-width: 1260px) { .spy { display: none; } }
+
+/* ---------- hero + teaser ---------- */
+.hero { position: relative; text-align: center; padding: 92px 20px 72px; background: var(--bg); }
+.hero-inner { position: relative; max-width: 1000px; min-width: 0; margin: 0 auto; }
+.teaser { max-width: 1100px; margin: 30px auto 0; text-align: left; }
+.teaser .timeline { flex-wrap: wrap; }
+.teaser .timeline input[type=range] { min-width: 160px; }
+.chip { display: inline-flex; align-items: center; gap: 9px; padding: 6px 14px; border-radius: 99px;
+  font: 500 0.72rem/1 'JetBrains Mono', monospace; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink);
+  background: rgba(var(--scrim), 0.9); border: 1px solid var(--line); margin-bottom: 20px; }
+.chip i { width: 7px; height: 7px; border-radius: 50%; background: var(--acq); animation: ping 2.2s infinite; }
+@keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(var(--acq-rgb), 0.55); } 80%, 100% { box-shadow: 0 0 0 9px rgba(var(--acq-rgb), 0); } }
+.hero h1 { font-family: 'Inter Tight', sans-serif; font-weight: 800; font-size: clamp(2.6rem, 6.4vw, 4.5rem); line-height: 1;
+  letter-spacing: -0.045em; color: var(--ink); margin: 0 0 22px; }
+.hero h1 span { background: linear-gradient(100deg, var(--nui) 0%, var(--acq) 75%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero .sub { font-family: 'Inter Tight', sans-serif; font-weight: 600; font-size: clamp(1.08rem, 2.2vw, 1.38rem); line-height: 1.4;
+  color: var(--ink); margin: 0 auto 12px; max-width: 760px; text-wrap: balance; }
+.hero .tag { font-size: clamp(0.98rem, 1.8vw, 1.08rem); line-height: 1.55; margin: 0 auto 16px; max-width: 700px; text-wrap: balance; }
+.byline { font-size: 0.95rem; color: var(--muted); }
+.byline a { color: var(--ink); font-weight: 500; border-bottom: 1px solid var(--line); }
+.byline a:hover { text-decoration: none; border-color: var(--acq); }
+
+/* ---------- article layout ---------- */
+section { position: relative; padding: 92px 22px; }
+section.alt { background: var(--bg2); border-top: 1px solid var(--line2); border-bottom: 1px solid var(--line2); }
+.prose { max-width: 720px; margin: 0 auto; }
+.wide { max-width: 1100px; margin: 0 auto; }
+.kicker { font: 500 0.74rem/1 'JetBrains Mono', monospace; letter-spacing: 0.2em; text-transform: uppercase; color: var(--acq);
+  margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.kicker::before { content: ''; width: 22px; height: 1.5px; background: currentColor; }
+.kicker.nui { color: var(--nui); } .kicker.spa { color: var(--spa); } .kicker.muted { color: var(--muted); }
+h2 { font-family: 'Inter Tight', sans-serif; font-weight: 700; font-size: clamp(1.85rem, 4vw, 2.75rem); line-height: 1.1;
+  letter-spacing: -0.03em; color: var(--ink); margin: 0 0 26px; text-wrap: balance; }
+h3 { font-family: 'Inter Tight', sans-serif; font-weight: 700; font-size: 1.28rem; line-height: 1.3; letter-spacing: -0.01em; color: var(--ink); margin: 44px 0 12px; }
+p { margin: 0 0 18px; }
+.lead { font-size: 1.12rem; color: var(--ink2); }
+ol.stages { list-style: none; padding: 0; margin: -4px 0 20px; display: grid; gap: 7px; }
+ol.stages li { display: flex; gap: 12px; align-items: flex-start; }
+ol.stages b { flex: none; width: 22px; height: 22px; margin-top: 2px; border-radius: 50%; display: grid; place-items: center;
+  font: 600 0.72rem/1 'JetBrains Mono', monospace; background: rgba(var(--acq-rgb), 0.13); color: var(--acq); }
+.small { font-size: 0.86rem; color: var(--muted); line-height: 1.6; }
+.note { font-size: 0.83rem; color: var(--muted); line-height: 1.6; margin: 12px 0 0; }
+.katex { font-size: 1.04em; }
+.eq { margin: 22px 0 24px; padding: 16px 18px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); overflow-x: auto; }
+.eq .katex-display { margin: 0 0 12px; }
+.eq .katex-display:last-of-type { margin-bottom: 0; }
+.eq-legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px 18px; margin-top: 12px; font-size: 0.86rem; line-height: 1.45; }
+.eq-legend div { padding-left: 12px; border-left: 2px solid var(--line); }
+.eq-legend .k-acq { border-color: var(--acq); } .eq-legend .k-spa { border-color: var(--spa); } .eq-legend .k-nui { border-color: var(--nui); } .eq-legend .k-mut { border-color: var(--neutral); }
+
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.8s cubic-bezier(.2,.7,.2,1), transform 0.8s cubic-bezier(.2,.7,.2,1); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+/* ---------- cards & figures ---------- */
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); }
+.fig { margin: 34px auto 40px; padding: 22px; }
+.fig-head { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+.fig-title { font-family: 'Inter Tight', sans-serif; font-weight: 700; font-size: 1.04rem; color: var(--ink); line-height: 1.35; }
+.fig-title small { display: block; font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.84rem; color: var(--muted); margin-top: 2px; }
+.fig-cap { font-size: 0.84rem; line-height: 1.6; color: var(--muted); margin: 14px 0 0; }
+.fig-cap b { color: var(--ink2); }
+.badge { display: inline-flex; align-items: center; gap: 6px; font: 500 0.68rem/1 'JetBrains Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 5px 8px; border-radius: 6px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+.badge.real::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--spa); }
+.badge.toy::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--c4); }
+
+.tldr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 34px 0 0; }
+.tldr .card { padding: 20px 22px 18px; position: relative; overflow: hidden; }
+.tldr .card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--neutral); }
+.tldr .t-nui::before { background: var(--nui); } .tldr .t-acq::before { background: var(--acq); } .tldr .t-spa::before { background: var(--spa); }
+.tldr h4 { margin: 0 0 6px; font: 500 0.72rem/1.2 'JetBrains Mono', monospace; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.tldr p { margin: 0; font-size: 0.97rem; line-height: 1.6; }
+@media (max-width: 760px) { .tldr { grid-template-columns: 1fr; } }
+
+.callout { margin: 28px 0; padding: 18px 22px; border-radius: 14px; background: rgba(var(--acq-rgb), 0.07); border: 1px solid rgba(var(--acq-rgb), 0.22); color: var(--ink2); }
+.callout.nui { background: rgba(var(--nui-rgb), 0.07); border-color: rgba(var(--nui-rgb), 0.25); }
+.callout.spa { background: rgba(var(--spa-rgb), 0.07); border-color: rgba(var(--spa-rgb), 0.25); }
+.callout p:last-child { margin-bottom: 0; }
+.pull { font-family: 'Inter Tight', sans-serif; font-weight: 600; font-size: clamp(1.25rem, 2.6vw, 1.6rem); line-height: 1.35; letter-spacing: -0.015em;
+  color: var(--ink); margin: 38px 0; padding-left: 20px; border-left: 3px solid var(--acq); text-wrap: balance; }
+
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 30px 0; }
+.stat { padding: 16px 16px 14px; }
+.stat .lab { font-size: 0.8rem; color: var(--muted); line-height: 1.35; min-height: 2.2em; }
+.stat .val { font-family: 'Inter Tight', sans-serif; font-weight: 700; font-size: 1.9rem; line-height: 1.1; color: var(--ink); margin-top: 6px; font-variant-numeric: tabular-nums; }
+.stat .val small { font-size: 0.95rem; font-weight: 600; color: var(--muted); }
+.stat .sub { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+@media (max-width: 860px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ---------- controls ---------- */
+.ctrls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; }
+.seg { display: inline-flex; padding: 3px; border-radius: 10px; background: var(--bg2); border: 1px solid var(--line); flex-wrap: wrap; }
+.seg button { font: 500 0.82rem/1 'Inter', sans-serif; color: var(--ink2); background: transparent; border: 0; padding: 8px 12px; border-radius: 7px; cursor: pointer; white-space: nowrap; }
+.seg button[aria-pressed="true"] { background: var(--card); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 0 0 1px var(--line); }
+.btn { font: 600 0.84rem/1 'Inter', sans-serif; color: var(--ink); background: var(--card); border: 1px solid var(--line); padding: 9px 14px; border-radius: 9px;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 7px; transition: border-color 0.2s, transform 0.15s; white-space: nowrap; }
+.btn:hover { border-color: var(--acq); }
+.btn:active { transform: translateY(1px); }
+.btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.btn:disabled { opacity: 0.45; cursor: default; }
+.btn svg { width: 14px; height: 14px; fill: currentColor; }
+.range { display: flex; align-items: center; gap: 10px; font-size: 0.84rem; color: var(--ink2); }
+.range output { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--ink); min-width: 3.2em; }
+input[type=range] { -webkit-appearance: none; appearance: none; width: 150px; height: 22px; background: transparent; cursor: pointer; }
+input[type=range]::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: var(--grid); }
+input[type=range]::-moz-range-track { height: 4px; border-radius: 2px; background: var(--grid); }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--acq); margin-top: -6px; border: 2px solid var(--card); box-shadow: 0 0 0 1px var(--acq); }
+input[type=range]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--acq); border: 2px solid var(--card); }
+.check { display: inline-flex; align-items: center; gap: 8px; font-size: 0.84rem; color: var(--ink2); cursor: pointer; user-select: none; }
+.check input { accent-color: var(--acq); width: 15px; height: 15px; }
+
+/* ---------- charts ---------- */
+.chart text { font-family: 'Inter', sans-serif; fill: var(--muted); font-size: 12px; }
+.chart .ax line, .chart .ax path { stroke: var(--grid); }
+.chart .gridl { stroke: var(--grid); stroke-width: 1; }
+.chart .lab-ink { fill: var(--ink2); }
+.chart .lab-strong { fill: var(--ink); font-weight: 600; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.82rem; color: var(--ink2); }
+.legend span { display: inline-flex; align-items: center; gap: 7px; }
+.legend i { width: 14px; height: 3px; border-radius: 2px; background: var(--neutral); display: inline-block; }
+.legend i.dot { width: 9px; height: 9px; border-radius: 50%; }
+.tip { position: fixed; z-index: 200; pointer-events: none; padding: 8px 10px; border-radius: 8px; font-size: 0.8rem; line-height: 1.45; color: var(--ink2);
+  background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); opacity: 0; transition: opacity 0.12s; max-width: 260px; }
+.tip b { color: var(--ink); }
+.tip .sw { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
+
+/* ---------- duplicate demo ---------- */
+.dup-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 22px; align-items: center; }
+.dup-status { padding: 14px 16px; border-radius: 12px; border: 1px solid var(--line); font-size: 0.92rem; line-height: 1.5; transition: background 0.3s, border-color 0.3s; }
+.dup-status.ok { background: rgba(var(--spa-rgb), 0.08); border-color: rgba(var(--spa-rgb), 0.3); }
+.dup-status.bad { background: rgba(var(--nui-rgb), 0.08); border-color: rgba(var(--nui-rgb), 0.3); }
+.dup-status b { display: block; margin-bottom: 4px; }
+@media (max-width: 760px) { .dup-grid { grid-template-columns: 1fr; } }
+
+/* ---------- PCA viewer ---------- */
+.viewer { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 26px; align-items: start; }
+@media (max-width: 900px) { .viewer { grid-template-columns: 1fr; } }
+.world { position: relative; width: 100%; aspect-ratio: 1326 / 614; }
+.world img { width: 100%; height: 100%; display: block; }
+.world button { position: absolute; padding: 0; border: 2px solid var(--ink); background: transparent; border-radius: 3px; cursor: pointer;
+  box-shadow: 0 0 0 2px rgba(var(--scrim), 0.85); transition: transform 0.2s, border-color 0.2s; }
+.world button span { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 3px; font: 700 0.75rem/1 'Inter Tight', sans-serif; color: var(--ink);
+  text-shadow: 0 0 3px rgba(var(--scrim), 1), 0 0 6px rgba(var(--scrim), 1); }
+.world button:hover { transform: scale(1.15); }
+.world button.on { border-color: var(--acq); box-shadow: 0 0 0 2px rgba(var(--scrim), 0.9), 0 0 0 6px rgba(var(--acq-rgb), 0.35); }
+.wlist { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 18px; }
+.wlist button { text-align: left; font: 500 0.8rem/1.25 'Inter', sans-serif; color: var(--ink2); background: transparent; border: 1px solid var(--line);
+  border-radius: 8px; padding: 7px 9px; cursor: pointer; }
+.wlist button b { font-weight: 600; color: var(--muted); margin-right: 4px; }
+.wlist button.on { border-color: var(--acq); color: var(--ink); background: rgba(var(--acq-rgb), 0.07); }
+.wipe { position: relative; width: 100%; aspect-ratio: 1 / 1; border-radius: 10px; overflow: hidden; user-select: none; touch-action: pan-y; cursor: ew-resize; background: #000; }
+.wipe img { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; pointer-events: none; }
+.wipe .left { position: absolute; inset: 0; clip-path: inset(0 50% 0 0); }
+.wipe .handle { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; margin-left: -1px; background: #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.35); }
+.wipe .knob { position: absolute; top: 50%; left: 50%; width: 38px; height: 38px; margin: -19px 0 0 -19px; border-radius: 50%; background: #fff; color: #111;
+  display: grid; place-items: center; box-shadow: 0 2px 10px rgba(0,0,0,.35); outline: none; }
+.wipe .knob:focus-visible { box-shadow: 0 0 0 3px var(--acq), 0 2px 10px rgba(0,0,0,.35); }
+.wipe .knob svg { width: 20px; height: 20px; fill: none; stroke: #111; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.wipe .tagl, .wipe .tagr { position: absolute; top: 10px; font: 500 0.72rem/1 'JetBrains Mono', monospace; color: #fff; background: rgba(0,0,0,.62);
+  padding: 6px 8px; border-radius: 6px; pointer-events: none; }
+.wipe .tagl { left: 10px; } .wipe .tagr { right: 10px; }
+.scalebar { display: flex; align-items: center; gap: 8px; font: 500 0.74rem/1 'JetBrains Mono', monospace; color: var(--muted); margin-top: 10px; }
+.scalebar i { display: inline-block; height: 4px; width: 20%; background: var(--ink2); border-radius: 2px; }
+
+/* ---------- canvases ---------- */
+.pix { image-rendering: pixelated; width: 100%; display: block; border-radius: 10px; }
+.mosaic-wrap { position: relative; }
+.mosaic-wrap canvas { cursor: crosshair; }
+.mosaic-msg { position: absolute; left: 12px; bottom: 12px; right: 12px; font-size: 0.84rem; line-height: 1.45; color: var(--ink);
+  background: rgba(var(--scrim), 0.9); border: 1px solid var(--line); padding: 9px 12px; border-radius: 10px; pointer-events: none; transition: opacity 0.3s; }
+
+.sandbox { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.sandbox figure { margin: 0; }
+.sandbox figcaption { font: 500 0.74rem/1.3 'JetBrains Mono', monospace; color: var(--muted); margin-bottom: 7px; letter-spacing: 0.03em; }
+.meters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+.meter .ml { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--ink2); margin-bottom: 6px; gap: 8px; }
+.meter .ml span:last-child { font-family: 'JetBrains Mono', monospace; color: var(--ink); }
+.meter .mt { height: 8px; border-radius: 4px; background: var(--grid); overflow: hidden; }
+.meter .mt i { display: block; height: 100%; width: 0; border-radius: 4px; transition: width 0.35s; }
+@media (max-width: 760px) { .sandbox { grid-template-columns: 1fr 1fr; } .sandbox figure:first-child { grid-column: 1 / -1; max-width: 60%; } .meters { grid-template-columns: 1fr; } }
+
+.steps { display: flex; flex-wrap: wrap; gap: 6px; }
+.steps button { font: 500 0.8rem/1 'Inter', sans-serif; color: var(--ink2); background: transparent; border: 1px solid var(--line); border-radius: 99px;
+  padding: 8px 12px 8px 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; }
+.steps button i { font-style: normal; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font: 600 0.7rem/1 'JetBrains Mono', monospace;
+  background: var(--bg2); color: var(--muted); border: 1px solid var(--line); }
+.steps button.on { border-color: var(--acq); color: var(--ink); }
+.steps button.on i { background: var(--acq); color: #fff; border-color: var(--acq); }
+.steps button.done i { background: rgba(var(--acq-rgb), 0.15); color: var(--acq); border-color: transparent; }
+.step-text { min-height: 4.8em; margin-top: 14px; font-size: 0.93rem; line-height: 1.6; }
+.toy-metrics { display: flex; flex-wrap: wrap; gap: 10px 26px; margin-top: 10px; font-size: 0.82rem; color: var(--muted); }
+.toy-metrics b { font-family: 'JetBrains Mono', monospace; font-weight: 500; color: var(--ink); margin-left: 4px; }
+
+.split { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 30px; align-items: start; }
+@media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
+
+/* ---------- grading figure ---------- */
+.grade { font-size: 0.9rem; }
+.g-row { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.7fr) 6.4em; grid-template-areas: "m s v"; gap: 6px 22px; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid var(--line2); }
+.g-m { grid-area: m; } .g-s { grid-area: s; min-width: 0; } .g-v { grid-area: v; text-align: right; }
+.g-s svg { display: block; overflow: visible; }
+.g-head { padding: 0 0 12px; border-bottom: 1px solid var(--line); font: 500 0.72rem/1.3 'JetBrains Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.g-head .legend { font: 0.82rem/1.3 'Inter', sans-serif; letter-spacing: 0; text-transform: none; color: var(--ink2); }
+.g-head .g-dir { margin-left: auto; color: var(--muted); font: 500 0.72rem/1.3 'JetBrains Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase; }
+.g-sep { padding: 18px 0 2px; font: 500 0.7rem/1 'JetBrains Mono', monospace; letter-spacing: 0.12em; text-transform: uppercase; }
+.grade .mname { color: var(--ink); font-weight: 600; display: block; }
+.grade .mdesc { font-size: 0.8rem; color: var(--muted); line-height: 1.4; display: block; margin-top: 2px; }
+.verdict { display: inline-block; font: 600 0.68rem/1 'JetBrains Mono', monospace; padding: 4px 6px; border-radius: 5px; letter-spacing: 0.04em; }
+.verdict.win { color: var(--ink); background: rgba(var(--spa-rgb), 0.18); }
+.verdict.lose { color: var(--ink); background: rgba(var(--nui-rgb), 0.18); }
+@media (max-width: 760px) { .g-row { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "m v" "s s"; gap: 4px 12px; }
+  .g-head { grid-template-areas: "s s"; } .g-head .g-m, .g-head .g-v { display: none; } .g-head .g-dir { margin-left: 0; } .grade { font-size: 0.84rem; } }
+
+.swapbar { display: flex; height: 30px; border-radius: 8px; overflow: hidden; gap: 2px; margin: 10px 0 8px; }
+.swapbar div { display: flex; align-items: center; padding: 0 10px; font: 600 0.78rem/1 'JetBrains Mono', monospace; color: #fff; white-space: nowrap; width: 0; transition: width 1.1s cubic-bezier(.2,.7,.2,1); overflow: hidden; }
+.swapbar .shared { background: var(--neutral); }
+.swapbar .swapped { background: var(--acq); }
+.inout { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; font-size: 0.88rem; line-height: 1.5; }
+.inout div { padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line); }
+.inout h5 { margin: 0 0 4px; font: 500 0.7rem/1.2 'JetBrains Mono', monospace; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+.roadmap { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 30px; }
+.roadmap a { display: grid; grid-template-columns: 34px minmax(0, 1fr); column-gap: 12px; row-gap: 3px; padding: 16px 18px; border-radius: 14px; border: 1px solid var(--line); background: var(--card); color: var(--ink2); transition: border-color 0.2s, transform 0.2s; }
+.roadmap a:hover { text-decoration: none; border-color: var(--acq); transform: translateY(-1px); }
+.roadmap .rm-n { grid-row: span 2; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font: 600 0.8rem/1 'JetBrains Mono', monospace; color: var(--acq); background: rgba(var(--acq-rgb), 0.1); }
+.roadmap b { font: 700 1rem/1.3 'Inter Tight', sans-serif; color: var(--ink); }
+.roadmap span:last-child { font-size: 0.88rem; line-height: 1.5; }
+.roadmap-h { margin: 34px 0 0; font: 500 0.74rem/1 'JetBrains Mono', monospace; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+.part-head { margin: 0 0 52px; padding: 22px 24px 20px; border-radius: 16px; background: rgba(var(--acq-rgb), 0.06); border: 1px solid rgba(var(--acq-rgb), 0.22); }
+.part-head .part-n { font: 600 0.76rem/1 'JetBrains Mono', monospace; letter-spacing: 0.16em; text-transform: uppercase; color: var(--acq); }
+.part-head .part-t { display: block; margin-top: 8px; font: 800 1.7rem/1.15 'Inter Tight', sans-serif; color: var(--ink); letter-spacing: -0.01em; }
+.part-head p { margin: 8px 0 0; color: var(--ink2); font-size: 1rem; }
+.part-head .part-toc { margin-top: 10px; font: 500 0.8rem/1.6 'JetBrains Mono', monospace; color: var(--muted); }
+.part-head .part-toc a { color: var(--muted); }
+.part-head .part-toc a:hover { color: var(--acq); }
+@media (max-width: 640px) { .roadmap { grid-template-columns: 1fr; } .part-head .part-t { font-size: 1.4rem; } }
+.lessons { counter-reset: l; display: grid; gap: 14px; margin-top: 26px; }
+.lessons .card { padding: 20px 22px 18px 64px; position: relative; }
+.lessons .card::before { counter-increment: l; content: counter(l); position: absolute; left: 20px; top: 18px; width: 30px; height: 30px; border-radius: 50%;
+  display: grid; place-items: center; font: 700 0.9rem/1 'Inter Tight', sans-serif; color: var(--acq); background: rgba(var(--acq-rgb), 0.1); }
+.lessons h4 { margin: 0 0 6px; font-family: 'Inter Tight', sans-serif; font-weight: 700; font-size: 1.06rem; color: var(--ink); }
+.lessons p { margin: 0; font-size: 0.95rem; line-height: 1.6; }
+
+footer { padding: 46px 22px 60px; text-align: center; font-size: 0.86rem; color: var(--muted); border-top: 1px solid var(--line2); }
+footer a { color: var(--ink2); }
+
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .fig { overflow-x: auto; }
+  #vg-svg, #meta-svg, #bf-svg, #fr-svg, #sp-svg, #ds-svg { min-width: 620px; }
+  section { padding: 70px 16px; }
+  .fig { padding: 16px 14px; }
+  .hero { padding: 88px 16px 52px; }
+  .teaser { margin-top: 30px; }
+}
+
+/* ---------- real pair ---------- */
+.pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.3fr); gap: 18px; align-items: start; }
+.pair figure { margin: 0; }
+.pair img { width: 100%; aspect-ratio: 1; border-radius: 10px; display: block; object-fit: cover; }
+.pair figcaption { font-size: 0.82rem; color: var(--muted); margin-top: 8px; line-height: 1.45; }
+.pair figcaption b { color: var(--ink); }
+@media (max-width: 860px) { .pair { grid-template-columns: 1fr 1fr; } .pair .pair-chart { grid-column: 1 / -1; } }
+
+/* ---------- real patch ---------- */
+.patch { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 26px; align-items: start; }
+@media (max-width: 860px) { .patch { grid-template-columns: 1fr; } }
+.pgrid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 2px; padding: 2px; border-radius: 10px; background: var(--grid); }
+.pgrid .c { position: relative; aspect-ratio: 1; background-repeat: no-repeat; background-size: 1200% 1200%; cursor: crosshair; transition: opacity 0.2s; }
+.pgrid .c i { position: absolute; inset: 0; opacity: 0; transition: opacity 0.5s ease, background-color 0.5s ease; }
+.pgrid .c.blank { background: repeating-linear-gradient(45deg, var(--grid) 0 3px, var(--card) 3px 7px) !important; }
+.pgrid.dim .c:not(.hl) { opacity: 0.15; }
+.pgrid .c.hl::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 0 0 2px #fff; pointer-events: none; }
+.pside .big { position: relative; width: 100%; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: var(--bg2); }
+.pside .big div { position: absolute; inset: 0; background-repeat: no-repeat; background-size: 1200% 1200%; }
+.pside .rows { display: grid; gap: 6px; margin-top: 12px; font-size: 0.84rem; }
+.pside .rows div { display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--line2); padding-bottom: 5px; }
+.pside .rows span:first-child { color: var(--muted); }
+.pside .rows b { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 7px; }
+.pside .sw2 { display: inline-block; width: 14px; height: 14px; border-radius: 3px; box-shadow: 0 0 0 1px var(--line); }
+
+/* ---------- amazon animation ---------- */
+.amz-wrap { position: relative; border-radius: 10px; overflow: hidden; background: #07080b; }
+.amz-wrap canvas { width: 100%; aspect-ratio: 2.15 / 1; display: block; touch-action: pan-y; }
+.amz-ticker { position: absolute; left: 12px; top: 12px; font: 500 0.76rem/1.35 'JetBrains Mono', monospace; color: #fff; background: rgba(0, 0, 0, 0.62);
+  padding: 7px 10px; border-radius: 7px; pointer-events: none; max-width: calc(100% - 24px); }
+.amz-ticker b { color: #fff; font-weight: 600; }
+.amz-box { position: absolute; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.55); pointer-events: none; }
+.amz-box span { position: absolute; left: 0; top: 100%; margin-top: 3px; font: 600 0.7rem/1 'Inter', sans-serif; color: #fff; text-shadow: 0 0 3px #000, 0 0 6px #000; white-space: nowrap; }
+@media (max-width: 640px) {
+  .amz-ticker { position: static; max-width: none; border-radius: 0; font-size: 0.68rem; padding: 7px 10px 8px; background: #07080b; min-height: 2.7em; }
+}
+.timeline { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
+.timeline input[type=range] { flex: 1; width: auto; min-width: 0; }
+.loading { display: grid; place-items: center; position: absolute; inset: 0; color: #fff; font: 500 0.8rem 'JetBrains Mono', monospace; pointer-events: none; transition: opacity 0.4s; }
+
+/* ---------- complementary comparison ---------- */
+.duo { margin-top: 18px; padding: 6px 20px; display: grid; }
+.duo-r { display: grid; grid-template-columns: 150px minmax(0, 1fr) minmax(0, 1fr); gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--line2); font-size: 0.9rem; line-height: 1.5; }
+.duo-r:last-child { border-bottom: 0; }
+.duo-r > span:first-child { font: 500 0.72rem/1.5 'JetBrains Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding-top: 2px; }
+.duo-h { font: 700 0.86rem/1.3 'Inter Tight', sans-serif; }
+.duo-h.acq { color: var(--acq); } .duo-h.spa { color: var(--spa); } .duo-h.nui { color: var(--nui); }
+.duo-note { margin: 14px 0 0; font-size: 0.95rem; color: var(--ink2); }
+.duo + p:not(.duo-note) { margin-top: 26px; }
+@media (max-width: 640px) {
+  .duo { padding: 4px 14px; }
+  .duo-r { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4px 12px; font-size: 0.84rem; }
+  .duo-r > span:first-child { grid-column: 1 / -1; }
+  .duo-r:first-child > span:first-child { display: none; }
+}
+
+/* ---------- pass-by-pass figure ---------- */
+.amz-wrap.pp-map canvas { aspect-ratio: 1; image-rendering: pixelated; }
+#pp-strip { width: 100%; height: 74px; display: block; margin-top: 10px; cursor: crosshair; touch-action: pan-y; }
+
+/* ---------- Fig. 2 grid ---------- */
+.f2 { display: grid; grid-template-columns: 26px minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+.f2-col { font: 500 0.74rem/1.2 'JetBrains Mono', monospace; color: var(--muted); text-align: center; letter-spacing: 0.03em; padding-bottom: 2px; }
+.f2-row { position: relative; }
+.f2-row span { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-90deg); white-space: nowrap;
+  font: 500 0.74rem/1 'JetBrains Mono', monospace; color: var(--muted); letter-spacing: 0.03em; }
+.f2-p { position: relative; aspect-ratio: 1; border-radius: 8px; overflow: hidden; background: #000; cursor: crosshair; }
+.f2-p canvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+.f2-p b { position: absolute; left: 8px; top: 8px; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center;
+  font: 600 0.72rem/1 'JetBrains Mono', monospace; color: #fff; background: rgba(0, 0, 0, 0.6); }
+.f2-p i { position: absolute; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.7); pointer-events: none; display: none; }
+
+/* ---------- S2-NAIP ---------- */
+.s2n { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.s2n .reg figcaption span:first-child { color: var(--acq); font-weight: 600; }
+.s2n figure { margin: 0; }
+.s2n figcaption { font: 500 0.74rem/1.3 'JetBrains Mono', monospace; color: var(--muted); margin-bottom: 7px; letter-spacing: 0.03em; display: flex; justify-content: space-between; gap: 8px; white-space: nowrap; overflow: hidden; }
+.s2n .frame { position: relative; width: 100%; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: #000; }
+.s2n .frame img, .s2n .frame canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.s2n .frame canvas { image-rendering: pixelated; }
+.datebar { display: flex; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap; }
+.datebar input[type=range] { flex: 1; min-width: 160px; width: auto; }
+.datebar .dlabel { font: 500 0.86rem/1 'JetBrains Mono', monospace; color: var(--ink); min-width: 12.5em; }
+.s2n-strip-wrap { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line2); }
+.s2n-strip-head { font-size: 0.86rem; line-height: 1.5; color: var(--ink2); margin: 0; }
+.s2n-strip-head b { color: var(--ink); }
+.sgroup { margin-top: 12px; }
+.sgroup h5 { margin: 0 0 6px; font: 500 0.68rem/1 'JetBrains Mono', monospace; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.sgrid { display: grid; gap: 3px; align-items: center; }
+.sgrid .rl { font: 500 0.7rem/1 'JetBrains Mono', monospace; color: var(--muted); padding-right: 8px; white-space: nowrap; }
+.sgrid .rl.reg { color: var(--acq); font-weight: 600; }
+.sgrid .rl .sh { display: none; }
+.sgrid .gap { grid-column: 1 / -1; height: 7px; }
+.sgrid canvas { width: 100%; aspect-ratio: 1; display: block; image-rendering: pixelated; border-radius: 3px; cursor: pointer; outline: 2px solid transparent; outline-offset: 1px; }
+.sgrid canvas.on { outline-color: var(--ink); }
+@media (max-width: 640px) { .sgrid .rl .lg { display: none; } .sgrid .rl .sh { display: inline; } }
+@media (max-width: 640px) { .s2n { grid-template-columns: 1fr 1fr; gap: 10px; } .s2n figure:first-child { grid-column: 1 / -1; } .s2n figcaption { font-size: 0.66rem; letter-spacing: 0; } }
+
+</style>
+</head>
+<body>
+
+<div class="progress" aria-hidden="true"><span></span></div>
+
+<header class="topbar" id="topbar">
+  <a class="home" href="/">Guillaume Astruc<span>/ notes</span></a>
+  <nav>
+    <a class="hide-sm" href="/">Home</a>
+    <button class="theme-btn" id="theme-btn" aria-label="Toggle dark mode">
+      <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M1.5 12H4M20 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
+      <svg class="moon" viewBox="0 0 24 24"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z"/></svg>
+    </button>
+  </nav>
+</header>
+
+<div class="spy" aria-label="Sections">
+  <a href="#tldr"><span>In short</span></a>
+  <a href="#setup"><span>I · Setting</span></a>
+  <a href="#static"><span>I · The static</span></a>
+  <a href="#diagnosis"><span>I · Diagnosis</span></a>
+  <a href="#acq"><span>II · Fix 1 · acquisition</span></a>
+  <a href="#spatial"><span>II · Fix 2 · spatial</span></a>
+  <a href="#both"><span>II · Why both</span></a>
+  <a href="#amazon"><span>III · Teaser, step by step</span></a>
+  <a href="#revisits"><span>III · Real revisits</span></a>
+  <a href="#grading"><span>III · Grading</span></a>
+  <a href="#lessons"><span>IV · Lessons</span></a>
+  <a href="#limits"><span>IV · Limitations</span></a>
+</div>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<!-- ============================== HERO ============================== -->
+<header class="hero" id="hero">
+  <div class="hero-inner">
+    <div class="chip"><i></i>Research notes · November 2026</div>
+    <h1>Same place, <span>different day</span></h1>
+    <p class="sub">Removing the acquisition effect from Earth-observation embeddings</p>
+    <p class="tag">Satellite-image embeddings remember <em>when</em> a tile was imaged almost as much as <em>what</em> is on the ground. Here are two ways to make them forget, measured on 2.2 million Sentinel-2 tiles and checked against real revisits.</p>
+    <p class="byline"><a href="/">Guillaume Astruc</a> · ~15 min read</p>
+  </div>
+  <div class="teaser card fig" id="amz-fig">
+    <div class="amz-wrap" id="amz-wrap">
+      <canvas id="amz-cv" aria-label="Animated map: the whole archive, a zoom into the central Amazon, then the two regularisations"></canvas>
+      <div class="amz-ticker" id="amz-ticker">Loading the archive…</div>
+    </div>
+    <div class="timeline">
+      <button class="btn primary" id="amz-play"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg><span>Play</span></button>
+      <input type="range" id="amz-t" min="0" max="1000" value="0" aria-label="Animation progress">
+    </div>
+    <div class="steps" id="amz-steps" style="margin-top:12px">
+      <button data-s="0"><i>•</i>Whole archive</button>
+      <button data-s="1"><i>1</i>Raw</button>
+      <button data-s="2"><i>2</i>Acquisition correction</button>
+      <button data-s="3"><i>3</i>+ Spatial regularisation</button>
+    </div>
+    <p class="fig-cap"><b>The whole archive, then 1,000 km of the central Amazon.</b> UniverSat embeddings of 2.24M Sentinel-2 tiles (real data), first three principal components as RGB; each pixel is one 10&nbsp;km tile. One PCA basis and one colour stretch are used throughout, so any colour change is a real change in the embedding. In the raw field, neighbouring tiles jump between colours because each was imaged on a different day. The two corrections read different metadata. The acquisition correction reads <em>when</em> each tile was imaged: it removes what a satellite pass shares, the acquisition context (satellite, processing software, viewing geometry) and the weather along its strip, and the patchwork goes. The spatial regulariser reads only <em>where</em> each tile is: applied on top, it removes what is left that belongs to a single tile. Once zoomed in, hover the map to see a single pass. Each stage is unpacked <a href="#amazon">further down</a>.</p>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================== TL;DR ============================== -->
+<section id="tldr">
+  <div class="prose">
+    <div class="kicker muted">In short</div>
+    <h2>Two regularisations for embeddings that remember the weather</h2>
+    <p class="lead">To curate a large Earth-observation archive with a frozen foundation model, you compare the embeddings of its tiles. We found that those embeddings encode the satellite pass that imaged each tile about as much as the landscape, and built two regularisations to remove that effect before any comparison. They read <b>different metadata</b>, <em>when</em> each tile was acquired and <em>where</em> it is, and they are <b>complementary</b>. This post walks through both, with interactive figures on real data.</p>
+    <div class="tldr">
+      <div class="card t-nui reveal"><h4>The problem</h4><p>On Major-TOM, <b>92% of the embedding difference between two neighbouring tiles comes from the satellite pass that imaged them</b>, not from what is on the ground. Neighbours are almost never imaged together, so the map becomes a patchwork of acquisition days.</p></div>
+      <div class="card t-acq reveal"><h4>Fix 1 · acquisition correction</h4><p>Reads <b>when</b> each tile was acquired. Two nested offsets are estimated and subtracted: one per <b>pass</b>, which carries the acquisition context (satellite, processing software, viewing geometry), and one per 120&nbsp;km <b>block</b> of that pass, which carries the weather along the strip. Nearly all of the pass effect goes, and local detail stays.</p></div>
+      <div class="card t-spa reveal"><h4>Fix 2 · spatial regularisation</h4><p>Reads only <b>where</b> each tile is. An edge-aware smoother pulls each tile slightly toward neighbours that look like it, removing what belongs to that tile alone, such as a small cloud or a patch of haze. It is a small correction, aimed at the noisy directions rather than the signal.</p></div>
+      <div class="card reveal"><h4>Seen with real revisits</h4><p>On S2-NAIP, where each place is imaged about 25 times in a season, changing the day moves a tile's embedding as far as moving to the next tile, and the acquisition correction removes most of that.</p></div>
+    </div>
+    <div class="duo card reveal" role="table" aria-label="How the two regularisations differ">
+      <div role="row" class="duo-r"><span role="columnheader"></span><span role="columnheader" class="duo-h acq">Fix 1 · acquisition</span><span role="columnheader" class="duo-h spa">Fix 2 · spatial</span></div>
+      <div role="row" class="duo-r"><span role="rowheader">Reads</span><span role="cell"><b>when</b> each tile was acquired: its satellite pass and where it lies along it</span><span role="cell"><b>where</b> each tile is: its coordinates, plus its embedding</span></div>
+      <div role="row" class="duo-r"><span role="rowheader">Pools tiles that share</span><span role="cell">a pass: the same moment, scattered over thousands of km</span><span role="cell">a neighbourhood: the same place, almost always imaged on different days</span></div>
+      <div role="row" class="duo-r"><span role="rowheader">Removes</span><span role="cell">the acquisition context of a pass, and the weather of each stretch of it</span><span role="cell">what belongs to a single tile and none of its look-alike neighbours</span></div>
+      <div role="row" class="duo-r"><span role="rowheader">Cannot see</span><span role="cell">anything smaller than a block, such as one cloud on one tile</span><span role="cell">which pass a tile came from</span></div>
+    </div>
+    <p class="duo-note">Each fix sees an error the other cannot, and the first helps the second: once the pass offsets are gone, neighbours that share a landscape also look alike, so the spatial step has more of them to pool.</p>
+    <p class="roadmap-h">How this post is organised</p>
+    <nav class="roadmap" aria-label="Parts of this post">
+      <a href="#setup"><span class="rm-n">I</span><b>The problem</b><span>Embedding maps look like static up close. The cause is the satellite pass, not the ground.</span></a>
+      <a href="#acq"><span class="rm-n">II</span><b>Two fixes</b><span>Subtract what each pass shares, then let neighbours vote on what is left.</span></a>
+      <a href="#amazon"><span class="rm-n">III</span><b>On real data</b><span>The teaser step by step, a check on real revisits, and how to grade a denoiser.</span></a>
+      <a href="#lessons"><span class="rm-n">IV</span><b>Takeaways</b><span>Three lessons, and when not to use these corrections.</span></a>
+    </nav>
+  </div>
+</section>
+
+<!-- ============================== SETUP ============================== -->
+<section id="setup" class="alt">
+  <div class="prose">
+    <div class="part-head"><span class="part-n">Part I</span><span class="part-t">The problem</span><p>Up close, maps of satellite-image embeddings look like static. Where it comes from: the satellite pass that imaged each tile, not the ground.</p><div class="part-toc"><a href="#setup">The setting</a> · <a href="#static">The static</a> · <a href="#diagnosis">Diagnosis</a></div></div>
+    <div class="kicker">The setting</div>
+    <h2>Curation is a sequence of cosine similarities</h2>
+    <p>The archive is <b>Major-TOM Core-S2L2A</b>: 2.2 million Sentinel-2 tiles of about 10&nbsp;×&nbsp;10&nbsp;km covering the land surface and coasts. We embed each tile once with a frozen encoder (UniverSat, mean-pooled to 768 dimensions and ℓ<sub>2</sub>-normalised). Every later curation step works on those vectors only: clustering, deciding which tiles are near-duplicates, and ranking which to keep under a fixed budget.</p>
+    <p>Major-TOM images <b>each place exactly once</b>: one product per grid cell, picked as the least-cloudy available. A tile's embedding therefore mixes things that cannot be separated tile by tile: the landscape, the <em>context</em> of the acquisition (which satellite, which version of the processing software, the sun and viewing angles), and the <em>weather</em> of that day (haze, thin cloud, moisture). Here is what that looks like for two neighbouring tiles of the same rainforest:</p>
+  </div>
+
+  <div class="wide">
+    <div class="card fig reveal" id="pair-fig">
+      <div class="fig-head">
+        <div class="fig-title">Same forest, 10 km apart, two different passes<small>Two adjacent Major-TOM tiles south-west of Santarém, Pará, Brazil (Sentinel-2 true-colour thumbnails)</small></div>
+        <span class="badge real">Real data</span>
+      </div>
+      <div class="pair">
+        <figure><img src="img/amazon/pair_a.jpg" alt="Sentinel-2 tile of hazy rainforest with small clouds, 6 September 2023" loading="lazy"><figcaption><b>A</b> · 2.65°S 55.25°W · imaged 6 Sep 2023</figcaption></figure>
+        <figure><img src="img/amazon/pair_b.jpg" alt="Sentinel-2 tile of clear dark rainforest with small clouds, 17 August 2021" loading="lazy"><figcaption><b>B</b> · 10 km south of A · imaged 17 Aug 2021</figcaption></figure>
+        <div class="pair-chart">
+          <div class="legend" style="margin-bottom:6px"><span><i class="dot" style="background:var(--nui)"></i>Raw embeddings</span><span><i class="dot" style="background:var(--acq)"></i>After acquisition correction</span></div>
+          <svg id="pair-svg" class="chart" viewBox="0 0 440 250" role="img" aria-label="Similarity of neighbouring forest tiles: same pass 0.99, different passes 0.14 raw and 0.92 corrected; this pair minus 0.25 raw and 0.70 corrected."></svg>
+        </div>
+      </div>
+      <p class="fig-cap">Similarity is the cosine between the two tiles' embeddings after centring on the archive mean (in the 64-D PCA space of the 2.24M embeddings), so <b>0 means no more alike than two random tiles from anywhere on Earth</b>. The first two rows summarise every pair of adjacent forest tiles in the Amazon basin. The haze in A is visible to the eye; to the embedding it is the main thing about the tile.</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>A diversity-seeking selection that sees A and B as unrelated will keep both, spending part of its budget on <em>weather</em> rather than on landscapes. The question that started this work was simple: <b>how big is that effect across the whole archive?</b></p>
+  </div>
+</section>
+
+<!-- ============================== STATIC ============================== -->
+<section id="static">
+  <div class="prose">
+    <div class="kicker nui">Looking at it</div>
+    <h2>Up close, the embedding map looks like static</h2>
+    <p>A good way to see an embedding field is to project all 2.24M vectors onto their first three principal components and paint them as RGB on the Major-TOM grid, one pixel per tile. At world scale (left below), it looks like a well-behaved map: deserts, rainforests, ice caps and the boreal belt each get their own colour.</p>
+    <p>Zoom into a 1000&nbsp;×&nbsp;1000&nbsp;km window, though, and adjacent tiles jump between magenta and teal with no geographic logic. Drag the divider to compare the raw embeddings with the corrected ones; the river network of the central Amazon is hidden under the static.</p>
+  </div>
+
+  <div class="wide">
+    <div class="card fig reveal">
+      <div class="fig-head">
+        <div class="fig-title">UniverSat embeddings of Major-TOM, first three principal components as RGB<small>Pick a window on the map, then drag the divider. All panels share one PCA basis and one colour stretch.</small></div>
+        <span class="badge real">Real data · 2.24M tiles</span>
+      </div>
+      <div class="viewer">
+        <div>
+          <div class="world" id="world">
+            <img src="img/world_raw.webp" alt="World map of UniverSat embeddings, PCA as RGB, sinusoidal projection on the Major-TOM grid" width="1326" height="614">
+          </div>
+          <div class="wlist" id="wlist"></div>
+          <p class="fig-cap" id="wdesc"></p>
+        </div>
+        <div>
+          <div class="seg" id="pair-seg" role="group" aria-label="Which stages to compare" style="margin-bottom:12px">
+            <button aria-pressed="true" data-pair="raw,acq">Raw ↔ acquisition-corrected</button>
+            <button aria-pressed="false" data-pair="acq,eod">+ spatial step</button>
+            <button aria-pressed="false" data-pair="raw,eod">Raw ↔ both</button>
+          </div>
+          <div class="wipe" id="wipe">
+            <img class="under" alt="">
+            <div class="left"><img class="over" alt=""></div>
+            <div class="handle"></div>
+            <div class="knob" tabindex="0" role="slider" aria-label="Comparison divider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+              <svg viewBox="0 0 24 24"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg>
+            </div>
+            <span class="tagl"></span><span class="tagr"></span>
+          </div>
+          <div class="scalebar"><i></i>200 km · one pixel block = one tile · black = no tile</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>The two corrections act at different scales, and it shows. The acquisition correction (middle stage) changes the picture completely: once each pass's context and weather are removed, coastlines, river networks and relief appear in every window. The spatial regularisation only acts on what is left at the scale of single tiles, so on this map it is a gentle polish. The rest of this post explains where the static comes from, and how each method removes it.</p>
+  </div>
+</section>
+
+<!-- ============================== DIAGNOSIS ============================== -->
+<section id="diagnosis" class="alt">
+  <div class="prose">
+    <div class="kicker nui">Diagnosis</div>
+    <h2>It is not the place. It is the pass.</h2>
+    <p>Sentinel-2 images the Earth in long strips. One continuous acquisition, identified by its sensing start time, is what we call a <b>pass</b>. All tiles of a pass share the same acquisition context: the satellite and its calibration, the sun and viewing geometry, and the version of the processing software. Along the strip they also share the weather, which changes from one region to the next. Major-TOM then picks the least-cloudy product <em>independently for each grid cell</em>, so the final mosaic is a patchwork: neighbouring cells usually come from different passes, taken on different days.</p>
+  </div>
+
+  <div class="wide">
+    <div class="card fig reveal">
+      <div class="fig-head">
+        <div class="fig-title">How a cloud-free mosaic is assembled<small>Each day a pass sweeps a strip; every cell keeps the clearest view it has seen so far. Hover the finished mosaic to highlight one pass.</small></div>
+        <div class="ctrls">
+          <div class="seg" id="mos-seg" role="group" aria-label="Colour cells by">
+            <button aria-pressed="true" data-v="pass">Colour by pass</button>
+            <button aria-pressed="false" data-v="emb">Colour by embedding</button>
+          </div>
+          <button class="btn" id="mos-replay"><svg viewBox="0 0 24 24"><path d="M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z"/></svg>Replay</button>
+          <span class="badge toy">Toy model</span>
+        </div>
+      </div>
+      <div class="mosaic-wrap">
+        <canvas id="mos-cv" class="pix" aria-label="Animated mosaic assembly"></canvas>
+        <div class="mosaic-msg" id="mos-msg">Day 1</div>
+      </div>
+      <p class="fig-cap">In the real archive, a typical pass is a sparse trail of about a dozen tiles spread over thousands of kilometres and several climate zones, and fewer than one adjacent pair in twenty shares a pass. Neighbours are almost never imaged together, so every border between two tiles is also a border between two acquisitions.</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>The same thing, on real tiles</h3>
+    <p>Here are 144 real Major-TOM tiles around Santarém, where the Tapajós meets the Amazon. Switch between the satellite images and the colour of each tile's embedding, then hover a tile to light up every other tile imaged by the same pass.</p>
+  </div>
+
+  <div class="wide">
+    <div class="card fig reveal">
+      <div class="fig-head">
+        <div class="fig-title">A 120 × 120 km patch of the archive, tile by tile<small>Major-TOM tiles at 1.8–2.8°S, 55.2–54.2°W. Embedding colours use the same PCA basis and stretch as the maps above.</small></div>
+        <div class="ctrls">
+          <div class="seg" id="patch-seg" role="group" aria-label="Show">
+            <button aria-pressed="true" data-m="img">Satellite images</button>
+            <button aria-pressed="false" data-m="raw">Raw embedding</button>
+            <button aria-pressed="false" data-m="acq">Corrected embedding</button>
+          </div>
+          <span class="badge real">Real data</span>
+        </div>
+      </div>
+      <div class="patch">
+        <div class="pgrid" id="pgrid" aria-label="Grid of 144 Sentinel-2 tiles"></div>
+        <div class="pside" id="pside">
+          <div class="big"><div id="pbig"></div></div>
+          <div class="rows" id="prows"><div><span>Hover a tile</span><b>–</b></div></div>
+        </div>
+      </div>
+      <p class="fig-cap">The patch is stitched from dozens of passes, about two tiles each. In the raw view, neighbouring tiles of the same forest jump between magenta and teal, and the pass predicts the colour better than the ground does: two tiles imaged by the same pass are on average <b>half as far apart</b> as two tiles from different passes, whatever they show. After the correction the pass no longer matters, and the river and floodplain stand out from the forest. Hatched cells have no thumbnail.</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>A control group for free</h3>
+    <p>Because no place is imaged twice, the effect of the acquisition cannot be measured by comparing two images of the same place. However, each pass covers many cells, which gives an equally useful comparison. Take every pair of tiles at a given distance and split the pairs by whether they come from the same pass. Both groups are compared at exactly the same distance, so geography is matched by construction, and any difference between the two curves is the acquisition.</p>
+  </div>
+
+  <div class="wide">
+    <div class="card fig reveal">
+      <div class="fig-head">
+        <div class="fig-title">Semivariance of embeddings vs distance, same pass vs different pass<small>Half the mean squared difference between two tiles' embeddings (64-D PCA space), at matched separations</small></div>
+        <div class="ctrls">
+          <div class="seg" id="vg-seg" role="group" aria-label="Subset of tiles">
+            <button aria-pressed="true" data-k="all">All tiles</button>
+            <button aria-pressed="false" data-k="land">Land</button>
+            <button aria-pressed="false" data-k="water">Open water</button>
+          </div>
+          <span class="badge real">Real data</span>
+        </div>
+      </div>
+      <div class="legend" style="margin-bottom:6px"><span><i style="background:var(--nui)"></i>Different pass</span><span><i style="background:var(--acq)"></i>Same pass</span></div>
+      <svg id="vg-svg" class="chart" viewBox="0 0 860 380" role="img" aria-label="Semivariogram: different-pass curve is high and nearly flat, same-pass curve starts 13 times lower."></svg>
+      <p class="fig-cap">At the shortest distance, two tiles from different passes differ <b>about thirteen times more</b> than two tiles from the same pass. The different-pass curve is almost flat: two neighbours from different passes are nearly as different as two tiles a few hundred kilometres apart.</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p class="pull">92% of the difference between two neighbouring tiles is <em>which pass imaged them</em>. Over open water, where there is almost no landscape to tell apart, it is nearly all of it.</p>
+    <p>The same-pass curve shows the actual geography: it starts low and rises with distance, as a landscape should. The different-pass curve sits above it like a floor, and that floor hides all geographic structure below continental scale. This is the static in the map.</p>
+
+    <h3>What is the offset made of?</h3>
+    <p>If the offset came from known factors such as season or sun angle, we could regress it out. So we tried: twelve metadata covariates, each fitted alone and then jointly, as predictors of the estimated per-pass offsets.</p>
+  </div>
+
+  <div class="wide" style="max-width:880px">
+    <div class="card fig reveal">
+      <div class="fig-head">
+        <div class="fig-title">Share of the pass offsets explained by acquisition metadata<small>R² of each covariate on its own; the last bar is all twelve together</small></div>
+        <span class="badge real">Real data</span>
+      </div>
+      <svg id="meta-svg" class="chart" viewBox="0 0 820 300" role="img" aria-label="Bar chart: acquisition year 13.7%, processing baseline 13.3%, season 2.1%, satellite 0.3%, orbit and hour near zero, all twelve 25.4%."></svg>
+      <p class="fig-cap">Year and processing baseline overlap: older products were made with ESA's earlier processing baseline. The largest identifiable factor in the encoder's output, after geography, is <b>which version of the processing software made the product</b>.</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>Metadata explains only a quarter of the offset, and the split is telling. The covariates describe the acquisition context: when, by which satellite, with which software. None of them describes the weather, which changes along each strip and from one pass to the next. So instead of modelling the offset from metadata, we estimate it directly from the tiles of each pass, at two scales: once for the context shared by the whole pass, once for the weather that drifts along it.</p>
+  </div>
+</section>
+
+<!-- ============================== FIX 1 ============================== -->
+<section id="acq">
+  <div class="prose">
+    <div class="part-head"><span class="part-n">Part II</span><span class="part-t">Two fixes</span><p>Subtract what each pass shares, using when each tile was imaged; then let neighbours vote on what is left, using where it is.</p><div class="part-toc"><a href="#acq">Fix 1 · acquisition</a> · <a href="#spatial">Fix 2 · spatial</a> · <a href="#both">Why both</a></div></div>
+    <div class="kicker">Fix 1 · Acquisition correction</div>
+    <h2>Subtract the pass, not the neighbourhood</h2>
+    <p>We model each embedding as a smooth geographic signal plus two nested acquisition offsets:</p>
+    <div class="eq">
+      \[ f_i \;=\; \htmlClass{c-muted}{s_i} \;+\; \htmlClass{c-acq}{\delta^{\text{pass}}_{p(i)}} \;+\; \htmlClass{c-spa}{\delta^{\text{block}}_{b(i)}} \;+\; \htmlClass{c-nui}{\varepsilon_i} \]
+      <div class="eq-legend">
+        <div class="k-mut"><b>s<sub>i</sub></b> · geography that varies smoothly in space. Used only to fit the offsets, never subtracted.</div>
+        <div class="k-acq"><b>δ<sup>pass</sup></b> · the <b>acquisition context</b>, shared by every tile of a pass: satellite, calibration, sun and viewing geometry, processing software.</div>
+        <div class="k-spa"><b>δ<sup>block</sup></b> · the <b>weather</b>, shared within a 120&nbsp;km piece of the pass: haze and atmosphere that drift along the strip.</div>
+        <div class="k-nui"><b>ε<sub>i</sub></b> · what belongs to this tile alone: its own landscape, and local noise such as a small cloud.</div>
+      </div>
+    </div>
+    <p>The output is the tile minus its two offsets, \( f_i^{\text{corr}} = f_i - \delta^{\text{pass}}_{p(i)} - \delta^{\text{block}}_{b(i)} \). <b>No neighbourhood average is added to a tile's vector</b>: two tiles of the same block receive the same correction, so their difference is preserved exactly. The smooth field \(s\) is needed only to fit the offsets. One honest caveat: a block of one or two tiles has an offset estimated from those tiles alone, which pulls them part of the way toward their surroundings; the shrinkage below bounds this, and the per-tile guardrails in Part III show it does not cost local detail.</p>
+    <p>We fit the model by <b>backfitting</b>: alternately (1) estimate \(s\) by Gaussian smoothing of the current residual (\(\sigma = 6\) km), (2) set each pass offset to the shrunk mean of its tiles' residuals, (3) do the same for blocks. Four rounds are enough. Step through it on a one-dimensional toy:</p>
+  </div>
+
+  <div class="wide">
+    <div class="card fig reveal" id="bf-fig">
+      <div class="fig-head">
+        <div class="fig-title">Backfitting on a 1-D transect<small>100 tiles along 1000&nbsp;km: land, a town, then a coast. Dot colour = the pass that imaged the tile. Hover a dot to see its pass.</small></div>
+        <div class="ctrls">
+          <label class="check"><input type="checkbox" id="bf-truth" checked>Show true geography</label>
+          <span class="badge toy">Toy model</span>
+        </div>
+      </div>
+      <div class="steps" id="bf-steps">
+        <button data-s="0"><i>0</i>Observed</button>
+        <button data-s="1"><i>1</i>Estimate geography</button>
+        <button data-s="2"><i>2</i>Pass offsets</button>
+        <button data-s="3"><i>3</i>Block offsets</button>
+        <button data-s="4"><i>4</i>Repeat ×4</button>
+        <button data-s="5"><i>vs</i>Just blur it</button>
+      </div>
+      <svg id="bf-svg" class="chart" viewBox="0 0 960 360" role="img" aria-label="Toy transect of tile embeddings, before and after acquisition correction." style="margin-top:12px"></svg>
+      <div class="step-text" id="bf-text"></div>
+      <div class="toy-metrics" id="bf-metrics"></div>
+    </div>
+  </div>
+
+  <div class="split prose" style="max-width:1000px">
+    <div>
+      <h3 style="margin-top:8px">How much to trust a small group</h3>
+      <p>A pass with two tiles gives a much noisier mean residual than a pass with two hundred. The offsets are therefore given zero-mean random-effect priors, which turns each estimate into a <em>shrunk</em> mean:</p>
+      <div class="eq">\[ \hat\delta_g \;=\; \underbrace{\frac{n_g}{n_g + \sigma_\varepsilon^2/\sigma_g^2}}_{\text{trust}} \;\cdot\; \overline{\big(f - \hat s - \hat\delta_{\text{other}}\big)}_{g} \]</div>
+      <p>The variances are estimated from the data, so the shrinkage has no free parameter. In the toy above, the two-tile pass is only partly corrected for exactly this reason. Because blocks are fitted <em>within</em> passes, a block only has to explain how it deviates from its own pass, and an under-sampled block falls back toward the pass estimate.</p>
+    </div>
+    <div class="card fig" style="margin:8px 0 0;padding:18px">
+      <div class="fig-title" style="margin-bottom:8px">Trust vs group size<small>Fraction of a group's mean residual that is subtracted</small></div>
+      <svg id="shr-svg" class="chart" viewBox="0 0 400 230" role="img" aria-label="Shrinkage curve n over n plus kappa."></svg>
+      <div class="range" style="margin-top:8px"><label for="shr-k">Noise-to-offset variance ratio</label><input id="shr-k" type="range" min="0.2" max="8" step="0.1" value="1.2"><output id="shr-ko">1.2</output></div>
+      <p class="note" id="shr-note"></p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>Why the blocks matter</h3>
+    <p>A pass offset captures the acquisition context, but not the weather. A strip thousands of kilometres long crosses several climates and weather systems, so a single constant per pass leaves diagonal banding behind and removes only about half of the same-pass vs different-pass gap. Blocks of 120&nbsp;km inside each pass, fitted jointly with it, follow the weather along the strip and bring the removal to <b>94%</b>. The block size is a trade-off with a clear knee. While a block is large, its tiles are spread over many landscapes and their mean residual is the weather. Make it much smaller than 120&nbsp;km and the block shrinks toward a single neighbourhood: its mean starts to contain the landscape, and local detail goes with it.</p>
+    <p>The obvious objection is that, with groups this small, subtracting a group offset is just neighbourhood smoothing under another name. It is not, and the figure below shows why. We measure two things on adjacent land tiles: how much of the same-pass vs different-pass gap is removed (the nuisance), and how much of the genuine difference between neighbours from the same pass survives (the detail).</p>
+  </div>
+
+  <div class="wide" style="max-width:880px">
+    <div class="card fig reveal">
+      <div class="fig-head">
+        <div class="fig-title">Nuisance removed vs local detail kept<small>Adjacent land tiles, absolute semivariances; top right is ideal</small></div>
+        <span class="badge real">Real data</span>
+      </div>
+      <div class="legend" style="margin-bottom:6px"><span><i class="dot" style="background:var(--acq)"></i>Acquisition correction (block size)</span><span><i class="dot" style="background:var(--nui)"></i>Neighbourhood blur (strength λ)</span><span><i class="dot" style="background:var(--neutral)"></i>Raw</span></div>
+      <svg id="fr-svg" class="chart" viewBox="0 0 820 400" role="img" aria-label="Scatter: acquisition correction removes 94% of nuisance keeping 99% detail; Gaussian blur removes up to 89% but keeps only about half the detail."></svg>
+      <p class="fig-cap">The best blur removes almost as much of the gap but loses half of the local detail. A blur cannot tell a pass offset from a real landscape boundary, while the correction only ever subtracts quantities shared by a whole group.</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>What the correction gains shows best on the rare tiles. A built-up tile surrounded by empty land should stand out from its neighbours. In the raw field it does not: ranking tiles by local contrast finds isolated towns barely better than a coin flip, because the offset between two passes swamps the contrast between a town and its fields. After the correction, isolated towns become clearly detectable and islands stand out more sharply. The tiles most worth keeping were not just noisy: they were hidden among their neighbours.</p>
+  </div>
+
+  <div class="wide" style="max-width:1000px">
+    <div class="stats">
+      <div class="card stat reveal"><div class="lab">Same-pass vs different-pass gap removed</div><div class="val" data-count="94">0<small>%</small></div><div class="sub">pass-only model: 52.5%</div></div>
+      <div class="card stat reveal"><div class="lab">Local detail kept (adjacent land pairs)</div><div class="val" data-count="99.1" data-dec="1">0<small>%</small></div><div class="sub">best blur: 49.5%</div></div>
+      <div class="card stat reveal"><div class="lab">Isolated-town detectability (AUC)</div><div class="val"><span data-count="0.77" data-dec="2">0</span></div><div class="sub">raw field: 0.53 (≈ coin flip)</div></div>
+      <div class="card stat reveal"><div class="lab">Cost on 2.24M tiles</div><div class="val">&lt;<span data-count="20">0</span><small> min</small></div><div class="sub">24 CPU cores, no GPU</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== FIX 2 ============================== -->
+<section id="spatial" class="alt">
+  <div class="prose">
+    <div class="kicker spa">Fix 2 · Spatial regularisation</div>
+    <h2>Let the neighbours vote, gently</h2>
+    <p>After the acquisition correction, what remains of the acquisition is what no group of tiles shares: a small cloud, a patch of haze smaller than a block, anything that touched one tile and not the rest of its strip. No metadata points to it, but geography does. The second method reads where each tile is, and nothing about when it was imaged. Neighbours were almost always imaged on different days, so their leftover noise is independent while their landscape is shared. Averaging over neighbours should therefore cancel the noise and keep the landscape.</p>
+    <p>The catch is that averaging also blurs the real signal. A coastal tile gets pulled toward the sea, a town toward the fields around it, an island toward the ocean. That blurred-away detail is exactly the local diversity a curation method should keep. So the averaging has to be <b>gentle and edge-aware</b>. We use three ingredients:</p>
+    <div class="eq">
+      \[ w_{ij} \;=\; \underbrace{\exp\!\Big(\!-\tfrac{d_{\text{hav}}(i,j)^2}{2\sigma_{\text{geo}}^2}\Big)}_{\text{nearby}} \; \underbrace{\exp\!\Big(\!-\tfrac{1-\cos(f_i,f_j)}{\sigma_r}\Big)}_{\text{and alike}} \]
+      \[ H \;=\; \arg\min_Z \; \|Z - F\|^2 \;+\; \mu \sum_{(i,j)} w_{ij}\, \|z_i - z_j\|^2 \]
+      \[ f_i^{\text{smooth}} \;=\; \operatorname{normalize}\big((1-\lambda_i)\, f_i \;+\; \lambda_i\, h_i\big), \qquad \lambda_i = \lambda\,\frac{n_i}{n_i+\kappa} \]
+      <div class="eq-legend">
+        <div class="k-spa"><b>Bilateral weights</b> · 17 neighbours within 25&nbsp;km, σ<sub>geo</sub>&nbsp;=&nbsp;15&nbsp;km. The similarity term cuts edges across land-cover boundaries.</div>
+        <div class="k-spa"><b>Gaussian MRF</b> · solved with 15 Jacobi sweeps; each sweep spreads information one hop further. μ&nbsp;=&nbsp;1, normalised by the mean degree.</div>
+        <div class="k-spa"><b>Partial shrinkage</b> · λ&nbsp;=&nbsp;0.7, and less for tiles with few neighbours (coasts, islands, gaps): κ&nbsp;=&nbsp;4.</div>
+      </div>
+    </div>
+    <p>Try it on a synthetic landscape with a coastline, two land-cover types, an island and a one-tile town. The noise is what remains after the acquisition correction. The meters compare the output with the noise-free truth.</p>
+  </div>
+
+  <div class="wide">
+    <div class="card fig reveal">
+      <div class="fig-head">
+        <div class="fig-title">Edge-aware MRF sandbox<small>64 × 64 tiles. Change the settings and watch the coastline, the island (top right) and the town (bottom left).</small></div>
+        <span class="badge toy">Toy model</span>
+      </div>
+      <div class="ctrls" style="margin-bottom:14px">
+        <div class="seg" id="mrf-pre" role="group" aria-label="Presets">
+          <button aria-pressed="true" data-p="ours">Our setting</button>
+          <button aria-pressed="false" data-p="blur">Plain blur</button>
+          <button aria-pressed="false" data-p="off">Off</button>
+        </div>
+        <div class="range"><label for="mrf-lam">λ</label><input id="mrf-lam" type="range" min="0" max="1" step="0.05" value="0.7"><output id="mrf-lam-o">0.70</output></div>
+        <label class="check"><input type="checkbox" id="mrf-edge" checked>Similarity term</label>
+        <label class="check"><input type="checkbox" id="mrf-supp" checked>Shrink less with few neighbours</label>
+        <button class="btn" id="mrf-play"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg>Watch the sweeps</button>
+      </div>
+      <div class="sandbox">
+        <figure><figcaption>True landscape</figcaption><canvas id="mrf-truth" class="pix" width="64" height="64"></canvas></figure>
+        <figure><figcaption>Observed (noisy)</figcaption><canvas id="mrf-obs" class="pix" width="64" height="64"></canvas></figure>
+        <figure><figcaption id="mrf-out-cap">Regularised</figcaption><canvas id="mrf-out" class="pix" width="64" height="64"></canvas></figure>
+      </div>
+      <div class="meters">
+        <div class="meter"><div class="ml"><span>Noise removed in flat areas</span><span id="m-noise">–</span></div><div class="mt"><i id="m-noise-b" style="background:var(--spa)"></i></div></div>
+        <div class="meter"><div class="ml"><span>Land-cover edges kept</span><span id="m-edge">–</span></div><div class="mt"><i id="m-edge-b" style="background:var(--acq)"></i></div></div>
+        <div class="meter"><div class="ml"><span>Island &amp; town contrast kept</span><span id="m-isl">–</span></div><div class="mt"><i id="m-isl-b" style="background:var(--c6)"></i></div></div>
+      </div>
+      <p class="fig-cap">The <b>plain blur</b> removes the most noise, but the island and the town fade into their surroundings and land-cover edges lose most of their contrast: it averages across boundaries as readily as within them. <b>Our setting</b> removes less and leaves edges, island and town intact, because a tile only borrows from neighbours that look like it, and only part of the way. The toy noise is much larger than the real residual so that the effect is visible.</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>A small effect, aimed at the right directions</h3>
+    <p>On the real archive, the regulariser is mild: it removes a few percent of the embedding variance, and every tile stays very close to where it was. Where that variance is removed matters more than how much. Split by principal direction, the profile looks like a filter acting on a noise floor, not like one that removes signal.</p>
+  </div>
+
+  <div class="wide" style="max-width:900px">
+    <div class="card fig reveal">
+      <div class="fig-head">
+        <div class="fig-title">Fraction of each principal direction's variance removed<small>Principal components of the raw field, ordered by variance (log scale)</small></div>
+        <span class="badge real">Real data</span>
+      </div>
+      <div class="legend" style="margin-bottom:6px"><span><i style="background:var(--acq)"></i>Acquisition correction (64-D PCA, by band)</span><span><i style="background:var(--spa)"></i>Spatial regularisation (λ = 0.4, all 768 directions)</span></div>
+      <svg id="sp-svg" class="chart" viewBox="0 0 860 380" role="img" aria-label="Spectrum: acquisition correction removes 40 to 50% in every direction; spatial regularisation removes 2.6% of the top directions rising to 20% in the tail."></svg>
+      <p class="fig-cap">The <b>acquisition offset is structured</b>: it takes nearly half of the variance in every direction, the leading ones included. A change of software version or of haze alters the whole image, so it moves the embedding along the main directions as much as along minor ones. The <b>spatial regulariser bites least where the signal is</b> and most in the tail, the shape expected from a filter acting on a roughly isotropic noise floor. One caveat: the tail holds little variance, so in absolute terms 90% of what the regulariser removes still comes from PCs 1–25.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== BOTH ============================== -->
+<section id="both">
+  <div class="prose">
+    <div class="kicker">Fix 1 + Fix 2</div>
+    <h2>Complementary, not interchangeable</h2>
+    <p>The two fixes read different metadata, so they pool different tiles and see different errors. Fix 1 groups the tiles that share a pass: imaged at the same moment, scattered along a strip thousands of kilometres long. What they share is the context and the weather, and that is what it removes. Fix 2 groups the tiles that share a place, which on Major-TOM were almost never imaged together. What they share is the landscape, so what it removes is whatever a single tile does not share with its look-alike neighbours.</p>
+    <p>That is why a smoother cannot do fix 1's job. Nothing in a tile's position says which pass imaged it, so the spatial regulariser removes no more of the between-pass variance than of the rest of the map: it cannot aim at the acquisition offset. A smoother strong enough to cancel the offsets anyway, such as a plain 3&nbsp;×&nbsp;3 box mean, takes over a third of the real map with them.</p>
+    <p>In the other direction, fix 1 helps fix 2. Across the whole archive, the same spatial step moves the embeddings <b>1.5 times more</b> after the acquisition correction than before it, even though the corrected field has less left to smooth. That is the edge-aware weight at work: a tile borrows only from neighbours that look like it, and once the pass offsets are gone, the neighbours that share its landscape look like it again. So we run them in that order: time first, then space.</p>
+  </div>
+</section>
+
+<!-- ============================== AMAZON ============================== -->
+<section id="amazon" class="alt">
+  <div class="prose">
+    <div class="part-head"><span class="part-n">Part III</span><span class="part-t">On real data</span><p>Both fixes on the Amazon, a check against real revisits of the same place, and how to tell a denoiser from a blur.</p><div class="part-toc"><a href="#amazon">The teaser, step by step</a> · <a href="#revisits">Real revisits</a> · <a href="#grading">Grading</a></div></div>
+    <div class="kicker">Central Amazon</div>
+    <h2>The teaser, step by step</h2>
+    <p>The teaser at the top of this post applies both regularisations, in order, to a 1,000&nbsp;×&nbsp;1,000&nbsp;km window of the central Amazon, a mosaic stitched from hundreds of passes over eight years. With everything above in hand, here are the four combinations of the two, including the one the teaser skips (b):</p>
+    <ol class="stages">
+      <li><b>a</b><span>the raw field. Neighbouring tiles from different passes jump between colours, and the Amazon itself is barely visible;</span></li>
+      <li><b>b</b><span>the spatial regulariser on its own. It smooths the map, but it cannot see passes, so the patchwork stays in place;</span></li>
+      <li><b>c</b><span>the acquisition correction. Each pass loses its context and each block its weather, and the patchwork goes. The teaser applies it in one go; the figure below replays it pass by pass;</span></li>
+      <li><b>d</b><span>both corrections. The same spatial step as in (b) now brings out the river network: with the offsets gone, neighbours that share a landscape look alike again, and the step can pool them.</span></li>
+    </ol>
+    <p>Stage (c) is where the patchwork goes, so here it is slowed down, following the two levels of the model. First the context: the passes that cross the window are corrected one at a time, in the order they were acquired, each losing the part of the correction that all its tiles share, across the whole archive. Then the weather: each 120&nbsp;km block of a pass loses the remainder, so the last frame is exactly the acquisition-corrected field.</p>
+  </div>
+  <div class="wide" style="max-width:680px">
+    <div class="card fig reveal" id="pp-fig">
+      <div class="fig-head">
+        <div class="fig-title">The acquisition correction, one pass at a time<small>Central Amazon, 1,000 × 1,000 km. Below the map, each tick is one pass at its acquisition date, taller when it covers more tiles of the window.</small></div>
+        <span class="badge real">Real data</span>
+      </div>
+      <div class="amz-wrap pp-map">
+        <canvas id="pp-cv" aria-label="The central Amazon window, corrected one satellite pass at a time"></canvas>
+        <div class="amz-ticker" id="pp-ticker">Loading…</div>
+      </div>
+      <canvas id="pp-strip" aria-label="Acquisition dates of the passes, coloured once corrected"></canvas>
+      <div class="timeline">
+        <button class="btn primary" id="pp-play"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg><span>Play</span></button>
+        <input type="range" id="pp-t" min="0" max="1000" value="0" aria-label="Animation progress">
+      </div>
+      <p class="fig-cap">Each pass touches only a few scattered tiles of this window, so no single pass changes much: the static fades as they accumulate, not at any one date. Hover the map or the dates to pick out one pass.</p>
+    </div>
+  </div>
+  <div class="prose" style="margin-top:56px">
+    <p>Here are the same four fields side by side as a 2&nbsp;×&nbsp;2 grid. Hover a panel to mark the same tile in all four:</p>
+  </div>
+  <div class="wide" style="max-width:880px">
+    <div class="card fig reveal" id="f2-fig">
+      <div class="fig-head">
+        <div class="fig-title">Central Amazon, 3.5°S 56.0°W, 1,000 × 1,000 km<small>Shared PCA basis and colour stretch; black is a missing tile</small></div>
+      </div>
+      <div class="f2">
+        <div></div><div class="f2-col">without spatial step</div><div class="f2-col">with spatial step</div>
+        <div class="f2-row"><span>raw</span></div>
+        <div class="f2-p" data-k="a"><canvas></canvas><b>a</b><i></i></div>
+        <div class="f2-p" data-k="b"><canvas></canvas><b>b</b><i></i></div>
+        <div class="f2-row"><span>acquisition-corrected</span></div>
+        <div class="f2-p" data-k="c"><canvas></canvas><b>c</b><i></i></div>
+        <div class="f2-p" data-k="d"><canvas></canvas><b>d</b><i></i></div>
+      </div>
+      <p class="fig-cap">Reading across a row shows what the spatial step does; reading down a column shows what the acquisition correction does. Across the top row the map gets smoother, but the pass patchwork survives: smoothing cannot tell it from the landscape. Down either column the patchwork disappears. The same spatial step changes (d) more than (b): once time has been accounted for, space has more to work with.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== REVISITS ============================== -->
+<section id="revisits">
+  <div class="prose">
+    <div class="kicker">With real revisits</div>
+    <h2>Same place, different day, literally</h2>
+    <p>Major-TOM never images a place twice, so everything so far infers the acquisition effect, and its correction, from passes. <b>S2-NAIP</b> lets us check both on the same ground: millions of 640&nbsp;m tiles over the continental United States, each imaged by Sentinel-2 about 25 times in a season. Here is one 20&nbsp;×&nbsp;20&nbsp;km block over Albuquerque, New Mexico (the city's street grid, the airport, the green corridor of the Rio Grande and the foothills to the east) on 26 clear days between April and August 2020, with the UniverSat embedding of every tile on every day.</p>
+  </div>
+
+  <div class="wide" style="max-width:980px">
+    <div class="card fig reveal" id="s2n-fig">
+      <div class="fig-head">
+        <div class="fig-title">One block, 26 days<small>Sentinel-2 true colour (top of atmosphere, one shared stretch), then each tile's embedding as RGB, raw and regularised (one PCA basis fitted on this block, one colour stretch).</small></div>
+        <div class="ctrls">
+          <div class="seg" id="s2n-order" role="group" aria-label="Order of the days">
+            <button aria-pressed="true" data-o="date">Date order</button>
+            <button aria-pressed="false" data-o="orbit">Grouped by orbit</button>
+          </div>
+          <span class="badge real">Real data</span>
+        </div>
+      </div>
+      <div class="s2n">
+        <figure><figcaption><span>Sentinel-2</span><span id="s2n-sat"></span></figcaption><div class="frame"><img id="s2n-img" alt="Sentinel-2 mosaic of Albuquerque, New Mexico"></div></figure>
+        <figure><figcaption><span>Raw embedding</span></figcaption><div class="frame"><canvas id="s2n-cv" width="32" height="32" aria-label="Raw embedding map of the block"></canvas></div></figure>
+        <figure class="reg"><figcaption><span>Regularised embedding</span></figcaption><div class="frame"><canvas id="s2n-cv2" width="32" height="32" aria-label="Regularised embedding map of the block"></canvas></div></figure>
+      </div>
+      <div class="datebar">
+        <button class="btn" id="s2n-play"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg><span>Play</span></button>
+        <input type="range" id="s2n-date" min="0" max="25" value="0" aria-label="Acquisition date">
+        <span class="dlabel" id="s2n-label"></span>
+      </div>
+      <div class="s2n-strip-wrap">
+        <p class="s2n-strip-head"><b>Every day side by side.</b> Each tile minus its own average over the season: grey means the tile looks as it usually does, colour means it looks different that day. Raw and regularised share one colour basis and one stretch; click a day to show it above.</p>
+        <div id="s2n-strip"></div>
+      </div>
+      <p class="fig-cap">In the raw panel, the whole block often changes colour at once, city and foothills alike: that is the day's context and weather, shared by every tile, not something on the ground. The regularised panel applies the acquisition correction, adapted to one block with revisits. A 20&nbsp;km block is smaller than one of our 120&nbsp;km blocks, so on a given day it has a single context and a single weather, and the pass and block offsets merge into one offset per day. The revisits allow a second term, one offset per tile and orbit, explained below. In the strip, the raw rows carry a tint that changes from day to day and is shared by the whole block; the regularised rows are mostly grey. What stays coloured is local: small clouds and their shadows on 21 April, a band of cloud shadow on 20 July, and a tint on the first two days of April, probably the spring change. That single-tile leftover is what the spatial step is for. Black tiles were filtered as cloudy that day.</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>Why a second term? This block lies where two Sentinel-2 orbits overlap, so it is seen from two viewing angles that alternate every few days. Switch to <i>Grouped by orbit</i>: the raw rows of the strip split into two tints, one per orbit, and the raw panel plays smoothly, with a single jump where the orbit changes. A change of viewing angle does not move every tile by the same amount, because a street grid, a riverside wood and a mountain slope reflect light differently depending on the angle they are seen from, so no single offset per day can undo it. The per-day offset alone leaves the orbit responsible for half of a tile's day-to-day change. Revisits give a way out: each tile is seen thirteen times from each orbit, enough to learn how that tile shifts between the two viewing angles and to subtract it, while keeping the tile's average untouched. With that term, the orbit explains almost none of what is left.</p>
+  </div>
+
+  <div class="prose">
+    <p>The revisits let us measure "same place, different day" directly, on the same ground. Changing the day moves a tile's embedding <b>as far as</b> moving to the next tile on the same day. And at every separation, pairs from different days sit above pairs from the same day: the same acquisition floor as on Major-TOM, now with the landscape held fixed.</p>
+  </div>
+
+  <div class="wide" style="max-width:880px">
+    <div class="card fig reveal">
+      <div class="fig-head">
+        <div class="fig-title">Embedding distance vs separation, S2-NAIP block<small>Mean cosine distance between two tiles' embeddings (768-D); 0 km = the same tile on two different days</small></div>
+        <span class="badge real">Real data</span>
+      </div>
+      <div class="legend" style="margin-bottom:6px"><span><i style="background:var(--acq)"></i>Same day</span><span><i style="background:var(--nui)"></i>Different days</span><span><i style="background:var(--spa)"></i>Different days, after the acquisition correction</span></div>
+      <svg id="s2v-svg" class="chart" viewBox="0 0 820 340" role="img" aria-label="On S2-NAIP, different-day pairs sit above same-day pairs at every distance; the acquisition correction closes most of the gap."></svg>
+      <p class="fig-cap">The correction cuts the same-tile distance by two-thirds and leaves same-day distances almost unchanged: it removes what the tiles of a day share, and how each tile shifts with the viewing angle, not what tells tiles apart. Over a single block, the per-day offset also absorbs the block-wide seasonal change from April to August, so it overstates the purely acquisition-related share.</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>The effect is real but much smaller than on Major-TOM: the date explains under a tenth of the embedding variance in this block, where the pass explains half of it on Major-TOM. The split between context and weather suggests why. This block sees one season and one granule, almost always through the same version of the processing software, so the parts of the context that change from day to day are mainly the satellite and the viewing angle; the rest is weather. On Major-TOM, neighbours can be years apart and processed by different software versions, the largest identifiable part of the offset. The imagery also differs (smaller tiles, no atmospheric correction), so the comparison is indicative only.</p>
+  </div>
+</section>
+
+<!-- ============================== GRADING ============================== -->
+<section id="grading" class="alt">
+  <div class="prose">
+    <div class="kicker muted">Evaluation</div>
+    <h2>How to grade a denoiser (and how not to)</h2>
+    <p>Every number above needs a way to tell a denoiser from a blur, and the first metrics we wrote down all rewarded the wrong method. Here are three plausible metrics and the two per-tile guardrails we rely on instead, evaluated on all 2.24M Major-TOM tiles for the raw field, an aggressive neighbourhood blur, and the acquisition correction:</p>
+  </div>
+  <div class="wide" style="max-width:980px">
+    <div class="card fig reveal">
+      <div class="grade" id="grade"></div>
+      <p class="fig-cap"><b>Why the first three fail:</b> a blur makes every tile look like its neighbours, which drives neighbour differences to zero, inflates edge-to-flat contrast ratios, and lets a land-cover probe read each tile's label from its neighbourhood (pure leakage). <b>Why the guardrails hold:</b> they are scored per tile from that tile's own vector, on tiles that differ from their surroundings, so copying the neighbourhood is penalised. Blur loses both; the correction improves both.</p>
+    </div>
+  </div>
+  <div class="prose">
+    <p>One implementation trap is worth passing on. An occupancy-normalised neighbourhood mean returns zero for a tile that has no neighbours, which silently zeroed a few thousand lone tiles in our first implementation. Those were exactly the remote islands the exercise was meant to protect; the fix is to fall back on the tile's own value.</p>
+  </div>
+</section>
+
+<!-- ============================== LESSONS ============================== -->
+<section id="lessons">
+  <div class="prose">
+    <div class="part-head"><span class="part-n">Part IV</span><span class="part-t">Takeaways</span><p>What to keep from all this, and when not to use these corrections.</p><div class="part-toc"><a href="#lessons">Lessons</a> · <a href="#limits">Limitations</a></div></div>
+    <div class="kicker">What we keep from it</div>
+    <h2>Three lessons</h2>
+    <div class="lessons">
+      <div class="card reveal"><h4>Check the pass before trusting a neighbourhood</h4><p>If you use frozen EO embeddings as a map (retrieval, change detection, clustering, curation), split your variogram by acquisition. On Major-TOM, most of what separated two neighbouring tiles was the pass, not the ground. When the archive has revisits, as S2-NAIP does, compare a place with itself on another day.</p></div>
+      <div class="card reveal"><h4>Use both kinds of metadata: time first, then space</h4><p>Split the acquisition by scale: the context shared by a whole pass, the weather shared by a stretch of it, and the noise of a single tile. The first two come from when each tile was acquired, and subtracting them removes nearly all of the pass effect for almost none of the detail. The last comes from where each tile is, through a gentle smoother that works better once the first two are gone. A smoother alone cannot target a nuisance it cannot identify.</p></div>
+      <div class="card reveal"><h4>Grade a denoiser per tile, on the tiles that matter</h4><p>Any metric based on neighbour similarity ranks the blurriest method first. Per-tile guardrails, such as land-cover probes on tiles unlike their neighbours and island detectability, are what tell a denoiser from a blur.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== LIMITATIONS ============================== -->
+<section id="limits" class="alt">
+  <div class="prose">
+    <div class="kicker muted">Limitations</div>
+    <h2>When the day is the signal</h2>
+    <p>Both corrections rest on one choice: the conditions of an acquisition are treated as noise. That choice suits only some uses of the embeddings. For many applications, different acquisitions of the same place are exactly what is useful. Change detection, crop and phenology monitoring, and flood or wildfire mapping all live in the difference between two days. A correction that makes every day look alike would erase what they are looking for.</p>
+    <p>Even when the goal is semantics, part of what a pass shares can be real. The model only sees what tiles have in common, so anything uniform over a whole block of a pass is read as weather: a regional flood, a snowfall, the green-up of a season. On S2-NAIP, the per-day correction removes the block's seasonal change along with the acquisition effect. Shrinkage and the block size limit how much of this goes, but by construction the model cannot tell a regional event from the weather over the same stretch.</p>
+    <p>Both fixes also assume that an acquisition shifts every tile of a block by the same amount. Effects that depend on the landscape break that assumption. On S2-NAIP, a change of viewing angle moves a street grid and a mountain slope differently; revisits make it possible to learn that shift tile by tile. In an archive that sees each place once, such as Major-TOM, it survives both fixes: the spatial step cannot remove it, since look-alike neighbours imaged on the same day share it.</p>
+    <div class="duo card reveal" role="table" aria-label="When to correct the acquisition and when to keep it">
+      <div role="row" class="duo-r"><span role="columnheader"></span><span role="columnheader" class="duo-h acq">Acquisition as nuisance</span><span role="columnheader" class="duo-h nui">Acquisition as signal</span></div>
+      <div role="row" class="duo-r"><span role="rowheader">The question</span><span role="cell">What is on the ground here, and where else looks like it?</span><span role="cell">What changed here, and when?</span></div>
+      <div role="row" class="duo-r"><span role="rowheader">Examples</span><span role="cell">retrieval, near-duplicate detection, curation, clustering landscapes across scenes</span><span role="cell">change detection, phenology and crop monitoring, disaster mapping, atmospheric studies</span></div>
+      <div role="row" class="duo-r"><span role="rowheader">The day of imaging</span><span role="cell">an offset to remove before comparing</span><span role="cell">part of the answer</span></div>
+      <div role="row" class="duo-r"><span role="rowheader">Use</span><span role="cell">the corrected embeddings</span><span role="cell">the raw embeddings</span></div>
+    </div>
+    <p>This approach is therefore aimed at one kind of question: comparing the embeddings of a geospatial foundation model on their semantics, the information they capture about the ground. Because both corrections act on the embeddings rather than on the encoder, nothing is lost by applying them: the raw embeddings stay available, and the right version depends on the question being asked.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>Guillaume Astruc · November 2026 · Work done with Nicolas Gonthier, Clément Mallet and Loïc Landrieu.</p>
+  <p>Embedding maps, variograms, spectra and metrics are measured on Major-TOM Core-S2L2A and S2-NAIP with UniverSat embeddings. Satellite images contain modified Copernicus Sentinel data (2016–2024), via Major-TOM and S2-NAIP. Figures marked <em>toy model</em> are synthetic illustrations.</p>
+  <p><a href="/">← Back to the homepage</a></p>
+</footer>
+
+<script src="post.js?v=24"></script>
+</body>
+</html>

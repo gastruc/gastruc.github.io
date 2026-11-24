@@ -45,7 +45,13 @@
                 {% if page.demo %}
                 <li><a href="#demo">Demo</a></li>
                 {% endif %}
+                {% if page.nav %}
+                {% for item in page.nav %}
+                <li><a href="{{ item.href }}">{{ item.title }}</a></li>
+                {% endfor %}
+                {% else %}
                 <li><a href="#approach">Approach</a></li>
+                {% endif %}
                 {% if page.poster %}
                 <li><a href="#poster">Poster</a></li>
                 {% endif %}
@@ -244,7 +250,8 @@
     </script>
     <script>
         function copyBibtex(button) {
-            const bibtexText = button.parentElement.querySelector('code').innerText;
+            // &nbsp; indentation would otherwise reach the clipboard and break BibTeX parsing
+            const bibtexText = button.parentElement.querySelector('code').innerText.replace(/ /g, ' ');
             navigator.clipboard.writeText(bibtexText).then(() => {
                 const span = button.querySelector('span');
                 const originalText = span.textContent;
