@@ -4,7 +4,6 @@
 
   var BASE = '/assets/publications/geoselect/';
   var TILES = BASE + 'tiles/';
-  var RM = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var SVGNS = 'http://www.w3.org/2000/svg';
 
   function $(s, r) { return (r || document).querySelector(s); }
@@ -50,7 +49,6 @@
     .observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
   function tween(dur, step, done) {
-    if (RM) { step(1); if (done) done(); return; }
     var t0 = null;
     function f(now) {
       if (t0 === null) t0 = now;
@@ -119,6 +117,8 @@
     var img = new Image(), ready = false;
     var W = 0, H = 0, dpr = 1, cell = 60, gap = 3, cells = [];
     var raf = 0, t0 = null, pausedAt = null, visible = true, lastTxt = '', lastSt = '';
+    var HC = null;   // hero colours from the theme variables, re-read when the theme changes
+    onTheme(function () { HC = null; });
 
     function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
 
@@ -179,8 +179,8 @@
     function draw(t) {
       if (!ready || !W) return;
       var dark = isDark();
-      var bg = dark ? '5,7,11' : '255,255,255';
-      var kc = dark ? '60,207,120' : '30,154,75';
+      if (!HC) HC = { bg: cssVar('--gs-hero-scrim') || (dark ? '5,7,11' : '255,255,255'), kc: cssVar('--gs-keep-rgb') || (dark ? '60,207,120' : '30,154,75') };
+      var bg = HC.bg, kc = HC.kc;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
       var span = W + cell * 4;
@@ -237,21 +237,19 @@
     }
     function play() { if (!raf && ready && visible) { if (pausedAt !== null && t0 !== null) t0 += performance.now() - pausedAt; pausedAt = null; raf = requestAnimationFrame(frame); } }
     function pause() { if (raf) { cancelAnimationFrame(raf); raf = 0; pausedAt = performance.now(); } }
-    var FINAL = TL.sweep0 + TL.sweepDur + 0.6;
 
     img.onload = function () {
       ready = true; build();
-      if (RM) draw(FINAL); else play();
+      play();
     };
     img.src = BASE + 'hero_atlas.webp?v=20261123e';   // versioned: the tile size and count change with the atlas
-    onVisible(wrap, function (v) { visible = v; if (RM) return; if (v) play(); else pause(); }, { toggle: true, threshold: 0, rootMargin: '0px' });
-    document.addEventListener('visibilitychange', function () { if (RM) return; if (document.hidden) pause(); else play(); });
+    onVisible(wrap, function (v) { visible = v; if (v) play(); else pause(); }, { toggle: true, threshold: 0, rootMargin: '0px' });
+    document.addEventListener('visibilitychange', function () { if (document.hidden) pause(); else play(); });
     var rt;
     window.addEventListener('resize', function () {
       clearTimeout(rt);
-      rt = setTimeout(function () { if (!ready) return; build(); if (RM) draw(FINAL); }, 150);
+      rt = setTimeout(function () { if (ready) build(); }, 150);
     });
-    onTheme(function () { if (RM) draw(FINAL); });
   }
 
   /* ================= overview: every strategy at 1% ================= */
@@ -311,7 +309,7 @@
 
   /* ================= wipe viewer (image vs tokens, or two look-alikes) ================= */
   function Wipe(el) {
-    var self = this, x = 0.5, auto = !RM, drag = false, raf = 0, phase = Math.random() * 6;
+    var self = this, x = 0.5, auto = true, drag = false, raf = 0, phase = Math.random() * 6;
     var a = $('.gs-wipe-a', el), b = $('.gs-wipe-b', el);
     el.tabIndex = 0;
     el.setAttribute('role', 'slider');
@@ -339,7 +337,6 @@
     function swap(img, src) {
       if (img.getAttribute('src') === src) return;
       img.src = src;
-      if (RM) return;
       img.classList.remove('gs-swap'); void img.offsetWidth; img.classList.add('gs-swap');
     }
     self.setImages = function (sa, sb) { swap(a, sa); swap(b, sb); };
@@ -358,7 +355,7 @@
       return s;
     });
     function src(i, tok) { return TILES + 'spec_' + pad(i) + (tok ? '_tok' : '') + '.webp'; }
-    var k = -1, timer = null, auto = !RM;
+    var k = -1, timer = null, auto = true;
     function set(n) {
       if (n === k) return;
       k = n; range.value = n; read.textContent = P[n];
@@ -455,7 +452,7 @@
     function setCls(i, extra) { els[i].setAttribute('class', 'pt' + (pts[i].L > 0.5 ? ' rich' : '') + (extra ? ' ' + extra : '')); }
     function link(i, j, dup, animate) {
       var l = sv('line', { class: 'lnk' + (dup ? ' dup' : ''), x1: pts[i].x, y1: pts[i].y, x2: pts[j].x, y2: pts[j].y }, links);
-      if (animate && !RM) {
+      if (animate) {
         var len = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
         l.style.strokeDasharray = len; l.style.strokeDashoffset = len;
         l.style.transition = 'stroke-dashoffset 0.32s ease-out';
@@ -490,10 +487,6 @@
         summary(res);
       };
       links.style.opacity = 1; marks.style.opacity = 1;
-      if (RM) {
-        res.order.forEach(function (i) { if (res.prev[i] >= 0) link(i, res.prev[i], res.dist[i] < 16, false); });
-        finish(); return;
-      }
       var r = 0, step = 150;
       (function next() {
         if (id !== runId) return;
@@ -543,7 +536,7 @@
         var d = h('div', keep ? 'k' : '', null, tl);
         var im = h('img', null, null, d);
         im.src = TILES + 'alloc_' + idx + '_' + col + '.webp'; im.alt = c.name + (keep ? ', kept' : ', discarded'); im.loading = 'lazy';
-        (function (d, j) { setTimeout(function () { d.classList.add('in'); }, RM ? 0 : 120 + j * 80); })(d, j);
+        (function (d, j) { setTimeout(function () { d.classList.add('in'); }, 120 + j * 80); })(d, j);
       }
     }
     function drawWaffles() {
@@ -733,32 +726,6 @@
     });
   }
 
-  function ablation() {
-    var c = $('#gs-abl .gs-abl');
-    if (!c) return;
-    var R = [
-      { n: 'SemDeDup', d: 'no local filter &middot; lowest <i>m<sub>i</sub></i>', c: 1.0, s: 1.5 },
-      { n: 'SemDeDup + local filter', d: 'top 50% by <i>L<sub>i</sub></i> first &middot; lowest <i>m<sub>i</sub></i>', c: 2.1, s: 2.0 },
-      { n: 'Local ranking', d: 'SemDeDup budgets &middot; highest <i>L<sub>i</sub></i>', c: 2.0, s: 2.3 },
-      { n: 'GeoSelect', d: '<i>L<sub>i</sub></i> orders <i>G<sub>i</sub></i> &middot; highest <i>S<sub>i</sub></i>', c: 2.4, s: 2.2, ours: true }
-    ], MAX = 2.6, bars = [];
-    R.forEach(function (r, i) {
-      var row = h('div', 'gs-abl-row' + (r.ours ? ' ours' : ''), null, c);
-      h('div', 'gs-abl-name', r.n + '<small>' + r.d + '</small>', row);
-      var bs = h('div', 'gs-abl-bars', null, row);
-      [['cls', r.c], ['seg', r.s]].forEach(function (x, j) {
-        var hb = h('div', 'gs-hbar ' + x[0], '<div class="tr"><i></i></div><div class="v">' + signed(x[1], 1) + '</div>', bs);
-        var bar = $('i', hb); bar.dataset.w = (x[1] / MAX * 100).toFixed(1); bar.style.transitionDelay = (i * 160 + j * 80) + 'ms';
-        bars.push(bar);
-      });
-    });
-    onVisible(c, function () { bars.forEach(function (b) { b.style.width = b.dataset.w + '%'; }); }, { threshold: 0.3 });
-    $$('#gs-abl .gs-meter').forEach(function (m, i) {
-      var bar = $('.bar i', m); bar.style.transitionDelay = (i * 150) + 'ms';
-      onVisible(m, function () { bar.style.width = m.dataset.v + '%'; }, { threshold: 0.5 });
-    });
-  }
-
   /* ================= what gets kept: map ================= */
   function map() {
     var card = $('#gs-map');
@@ -778,7 +745,6 @@
         if (kk !== k) { l.style.transition = ''; l.classList.remove('on'); }
       });
       var l = layers[k];
-      if (RM) { l.classList.add('on'); return; }
       l.style.transition = 'none'; l.style.clipPath = 'inset(0 100% 0 0)'; l.classList.add('on');
       void l.offsetWidth;
       l.style.transition = 'clip-path 1.7s cubic-bezier(.5,0,.5,1)'; l.style.clipPath = 'inset(0 0% 0 0)';
@@ -791,7 +757,6 @@
     onVisible(card, function () {
       if (user) return;
       show('random');
-      if (RM) return;
       timers.push(setTimeout(function () { if (!user) show('urban'); }, 4300));
       timers.push(setTimeout(function () { if (!user) show('geoselect'); }, 8600));
     }, { threshold: 0.4 });
@@ -855,36 +820,6 @@
     });
   }
 
-  function flips() {
-    var root = $('#gs-flip');
-    if (!root) return;
-    var rowsEl = $('.gs-flip-rows', root), btn = $('[data-act="flip"]', root), cards = [], on = false, touched = false;
-    [['sdd', 'SemDeDup only', [0, 1, 2, 3, 4, 5]], ['geo', 'GeoSelect only', [6, 7, 8, 9, 10, 11]]].forEach(function (r) {
-      var row = h('div', 'gs-flip-row ' + r[0], null, rowsEl);
-      h('div', 'gs-flip-lbl', r[1], row);
-      r[2].forEach(function (i) {
-        var fc = h('div', 'gs-fc', null, row);
-        fc.setAttribute('role', 'button'); fc.tabIndex = 0; fc.setAttribute('aria-label', r[1] + ' tile ' + (i + 1) + ', toggle patch tokens');
-        fc.innerHTML = '<div class="gs-fc-in"><img loading="lazy" alt="" src="' + TILES + 'sdd_' + pad(i) + '.webp"><img class="bk" loading="lazy" alt="" src="' + TILES + 'sdd_' + pad(i) + '_tok.webp"></div>';
-        var flip = function () { touched = true; fc.classList.toggle('on'); };
-        fc.addEventListener('click', flip);
-        fc.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); } });
-        cards.push(fc);
-      });
-    });
-    function setAll(v) {
-      on = v;
-      $('span', btn).textContent = v ? 'Show images' : 'Show patch tokens';
-      cards.forEach(function (c, i) { setTimeout(function () { c.classList.toggle('on', v); }, RM ? 0 : i * 55); });
-    }
-    btn.addEventListener('click', function () { touched = true; setAll(!on); });
-    onVisible(root, function () {
-      if (RM) return;
-      setTimeout(function () { if (!touched) setAll(true); }, 1400);
-      setTimeout(function () { if (!touched) setAll(false); }, 4600);
-    }, { threshold: 0.5 });
-  }
-
   function dups() {
     var root = $('#gs-dups');
     if (!root) return;
@@ -907,7 +842,7 @@
       b.addEventListener('click', function () { stopAuto(); set(i); });
       return b;
     });
-    var cur = -1, timer = null, auto = !RM;
+    var cur = -1, timer = null, auto = true;
     function set(i) {
       cur = i;
       btns.forEach(function (b, j) { b.classList.toggle('on', j === i); });
@@ -924,15 +859,7 @@
     }, { toggle: true, threshold: 0.4 });
   }
 
-  function randomDraw() {
-    var c = $('#gs-rand .gs-rand');
-    if (!c) return;
-    for (var i = 0; i < 24; i++) tile(c, TILES + 'rand_' + pad(i) + '.webp', '', 'Random tile of the GeoSelect 1% subset');
-    c.classList.add('gs-stag');
-    stagger(c, 35);
-  }
-
-  /* ================= S2-NAIP (supplementary): scale, results, dates ================= */
+  /* ================= S2-NAIP (supplementary): scale, results ================= */
   function naipScale() {
     var root = $('#gs-naip-scale');
     if (!root) return;
@@ -1014,7 +941,7 @@
         }
       }
       if (kept.length) {
-        var ph = RM ? 0.5 : (Math.sin(now / 520) + 1) / 2;
+        var ph = (Math.sin(now / 520) + 1) / 2;
         kept.forEach(function (q) {
           ctx.globalAlpha = 1; ctx.save();
           ctx.shadowColor = 'rgba(' + C.keepRgb + ',0.9)'; ctx.shadowBlur = 10 + 10 * ph * lit;
@@ -1034,9 +961,9 @@
     }
     function loop(now) {
       raf = 0;
-      if (stage >= 0) prog = RM ? 1 : clamp((now - t0) / DUR[stage], 0, 1);
+      if (stage >= 0) prog = clamp((now - t0) / DUR[stage], 0, 1);
       draw(now);
-      if (visible && !RM && (prog < 1 || stage === 2)) raf = requestAnimationFrame(loop);
+      if (visible && (prog < 1 || stage === 2)) raf = requestAnimationFrame(loop);
     }
     function kick() { if (!raf) raf = requestAnimationFrame(loop); }
     function go(s) {
@@ -1044,12 +971,11 @@
       lblEl.textContent = LBL[s];
       steps.forEach(function (li, i) { li.classList.toggle('on', i === s); li.classList.toggle('done', i < s); });
       vs.classList.toggle('on', s === 2);
-      if (RM) { prog = 1; draw(0); } else kick();
+      kick();
     }
     function play() {
       timers.forEach(clearTimeout); timers = [];
       go(0);
-      if (RM) { go(2); return; }
       timers.push(setTimeout(function () { go(1); }, DUR[0] + 900));
       timers.push(setTimeout(function () { go(2); }, DUR[0] + DUR[1] + 1700));
     }
@@ -1120,40 +1046,6 @@
     onVisible(root, function () { setTimeout(show, 150); }, { threshold: 0.3 });
   }
 
-  function naipDates() {
-    var root = $('#gs-naip-dates');
-    if (!root) return;
-    var box = $('.gs-naip-dates', root);
-    // observations retained per selected tile at 1% (S2-NAIP curation report; GeoSelect: full-archive k-means lists); random: a random 3M sample
-    var R = [
-      { n: 'Random sample', s: 'same size', v: 1.09, c: 'unif' },
-      { n: 'UniverSat SemDeDup', s: '', v: 1.87, c: 'sem' },
-      { n: 'GeoSelect', s: '', v: 1.96, c: 'ours' }
-    ];
-    var fills = [], vals = [];
-    R.forEach(function (r, i) {
-      var row = h('div', 'gs-nd-row nd-' + r.c, null, box);
-      h('div', 'gs-nd-name', r.n + (r.s ? '<small>' + r.s + '</small>' : ''), row);
-      var slots = h('div', 'gs-nd-slots', null, row);
-      for (var k = 0; k < 3; k++) {
-        var sl = h('span', 'gs-nd-slot', '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 15l5-5 4 4 3-3 6 6"/></svg><i></i>', slots);
-        var f = $('i', sl);
-        f.dataset.w = (clamp(r.v - k, 0, 1) * 100).toFixed(0);
-        f.style.transitionDelay = (i * 220 + k * 380) + 'ms';
-        fills.push(f);
-      }
-      vals.push({ el: h('div', 'gs-nd-val', '0.00', row), v: r.v });
-    });
-    var ax = h('div', 'gs-nd-axis', '<span>1st date</span><span>2nd date</span><span>3rd date</span>', box);
-    ax.setAttribute('aria-hidden', 'true');
-    onVisible(box, function () {
-      fills.forEach(function (f) { f.style.width = f.dataset.w + '%'; });
-      vals.forEach(function (o, i) {
-        setTimeout(function () { tween(1100, function (p) { o.el.textContent = (o.v * easeOut(p)).toFixed(2); }); }, i * 220);
-      });
-    }, { threshold: 0.4 });
-  }
-
   function bibtex() {
     var b = $('[data-act="copy"]');
     if (!b) return;
@@ -1185,16 +1077,12 @@
     table();
     ssl();
     xmod();
-    ablation();
     map();
     assoc();
     climates();
-    flips();
     dups();
-    randomDraw();
     naipScale();
     naipResults();
-    naipDates();
     bibtex();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

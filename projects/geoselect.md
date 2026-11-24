@@ -7,7 +7,7 @@ author: Guillaume Astruc
 description: "GeoSelect is a simple, training-free semantic curation method for Earth-observation archives. Pretraining on the 1% of Major-TOM it selects beats pretraining on all of it."
 keywords: remote sensing, earth observation, data curation, semantic deduplication, self-supervised learning, foundation model, Sentinel-2, Major-TOM, SemDeDup, GeoSelect
 analytics: https://www.googletagmanager.com/gtag/js?id=G-FLNC8B6RH9
-css: /assets/publications/geoselect/geoselect.css?v=20261124b
+css: /assets/publications/geoselect/geoselect.css?v=20261124f
 nav:
   - { title: "Overview", href: "#overview" }
   - { title: "Idea", href: "#idea" }
@@ -23,7 +23,7 @@ paper_title: "Less Is More: Semantic Curation of Earth Observation Data for Self
 paper_authors: "<a href=\"/\">Guillaume Astruc</a>, <a href=\"https://ngonthier.github.io/\">Nicolas Gonthier</a>, <a href=\"https://www.umr-lastig.fr/clement-mallet/\">Clement Mallet</a>, <a href=\"https://loiclandrieu.com/\">Loic Landrieu</a>"
 journal: arXiv preprint, 2026
 ---
-<!-- TODO before publishing: arXiv link (hero button + BibTeX), public code / keep-list URLs,
+<!-- TODO before publishing: arXiv link (hero button + BibTeX),
      author list and affiliations (copied from the previous version of this page). -->
 <script>document.body.classList.add('gs-body'); document.documentElement.classList.add('gs-js');</script>
 
@@ -59,10 +59,9 @@ journal: arXiv preprint, 2026
         <!-- TODO: arXiv link -->
         <a class="gs-btn gs-btn-primary" href="#" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>Paper</a>
-        <!-- TODO: public code URL -->
-        <a class="gs-btn" href="https://github.com/gastruc/Dedup" target="_blank" rel="noopener">
+        <a class="gs-btn" href="https://github.com/gastruc/GeoSelect" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg>Code</a>
-        <a class="gs-btn" href="#efficiency">
+        <a class="gs-btn" href="https://github.com/gastruc/GeoSelect/tree/main/keeplists" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h12"/></svg>Curated subsets</a>
         <a class="gs-btn" href="#citation">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h4v4H7zM13 7h4v4h-4zM7 11c0 3-1 5-3 6M13 11c0 3-1 5-3 6"/></svg>BibTeX</a>
@@ -82,16 +81,14 @@ journal: arXiv preprint, 2026
     <h2 class="gs-reveal">A hundred times less data. Better representations.</h2>
     <div class="gs-two gs-reveal">
       <p class="gs-lead">
-        Earth-observation foundation models are pretrained on huge satellite archives with substantial redundancy:
-        spatial autocorrelation and vast homogeneous regions such as oceans, ice sheets, deserts and closed forests.
-        These archives are usually sampled with hand-designed geographic or metadata rules, and rarely curated
-        <em>semantically</em>.
+        Earth-observation foundation models are pretrained on huge, highly redundant satellite archives: oceans, ice sheets,
+        deserts and closed forests repeat over thousands of tiles. These archives are sampled with geographic or metadata
+        rules, rarely curated <em>semantically</em>.
       </p>
       <p class="gs-lead">
-        <b>GeoSelect</b> is a simple, training-free curation method. In a single pass over the features of a frozen EO
-        foundation model, it selects a fixed-size subset that is diverse at two levels: <b>across</b> observations, and
-        <b>within</b> each observation. Pretraining on the 1% it keeps beats pretraining on the whole archive, and the same recipe
-        <a href="#s2naip">transfers to a regional, multi-temporal archive of 302M images</a>.
+        <b>GeoSelect</b> is a training-free curation method. In one pass over frozen EO features, it selects a subset that is
+        diverse <b>across</b> and <b>within</b> observations. Pretraining on the 1% it keeps beats the whole archive, and the
+        recipe <a href="#s2naip">scales to an archive of 302M images</a>.
       </p>
     </div>
 
@@ -121,7 +118,7 @@ journal: arXiv preprint, 2026
         <span><i class="c-ours"></i>GeoSelect</span>
       </div>
       <div class="gs-race" aria-label="Bar chart of gains over the full archive"></div>
-      <p class="gs-note">Each subset keeps 1% of Major-TOM (&asymp;22k tiles, 0.2&nbsp;TB of 21&nbsp;TB). A ViT-B is pretrained from scratch with MAE on each subset under the same compute budget, then evaluated frozen by linear probing on 5 classification and 5 segmentation tasks. The zero line is the same model pretrained on all 2.2M tiles.</p>
+      <p class="gs-note">MAE ViT-B pretrained from scratch on each 1% subset with the same compute, then linearly probed on 5 classification and 5 segmentation tasks. Zero: the same model pretrained on all 2.2M tiles.</p>
     </div>
   </section>
 
@@ -134,16 +131,15 @@ journal: arXiv preprint, 2026
         <div class="gs-idea-ico gs-ico-nd">&asymp;</div>
         <div>
           <h4>Global diversity, across observations</h4>
-          <p>Large archives contain many observations with essentially the same content. Keeping all of them spends the
-          budget twice on the same thing. GeoSelect penalises observations that are already represented by a richer one.</p>
+          <p>Many observations show essentially the same content. GeoSelect penalises those already represented by a richer one.</p>
         </div>
       </div>
       <div class="gs-idea">
         <div class="gs-idea-ico gs-ico-un">U</div>
         <div>
           <h4>Local diversity, within each observation</h4>
-          <p>At Sentinel-2 resolution, forests, deserts or fields can look nearly uniform over 10&times;10&nbsp;km. Such
-          tiles give a weak self-supervised signal: two crops of them look alike, and masked regions are easy to inpaint.</p>
+          <p>Forests, deserts or fields can look uniform over 10&times;10&nbsp;km. Such tiles give a weak self-supervised
+          signal: their crops look alike and masked regions are easy to inpaint.</p>
         </div>
       </div>
     </div>
@@ -210,7 +206,7 @@ journal: arXiv preprint, 2026
         <figcaption>Cropland</figcaption>
       </figure>
     </div>
-    <p class="gs-note gs-center gs-reveal">Real Major-TOM tiles. <b class="t-keep">Kept</b> by GeoSelect at 1%; <b class="t-drop">discarded</b>: <b>&asymp;</b> near-duplicate of the kept tile (global redundancy), <b>U</b> similar content but internally uniform (local redundancy). Cosines are between UniverSat embeddings; percentiles are of local diversity over the archive.</p>
+    <p class="gs-note gs-center gs-reveal">Real Major-TOM tiles. <b class="t-keep">Kept</b> by GeoSelect at 1%; <b class="t-drop">discarded</b> as <b>&asymp;</b> near-duplicate or <b>U</b> internally uniform. Cosines between UniverSat embeddings.</p>
   </section>
 
   <!-- ============================== METHOD ============================== -->
@@ -218,9 +214,8 @@ journal: arXiv preprint, 2026
     <div class="gs-kicker gs-reveal">Method</div>
     <h2 class="gs-reveal">Measure both diversities. Select under a budget.</h2>
     <p class="gs-lead gs-reveal gs-narrow">
-      Each observation is embedded once by a frozen EO foundation model (UniverSat) into \(T\) patch tokens; their mean is its
-      global embedding \(f_i\). GeoSelect outputs <em>observation identifiers only</em>: the subset can then pretrain any
-      architecture, with any objective, and even another sensor.
+      A frozen EO model (UniverSat) embeds each observation once into \(T\) patch tokens, averaged into a global embedding
+      \(f_i\). GeoSelect outputs <em>identifiers only</em>: the subset can pretrain any architecture, objective or sensor.
     </p>
 
     <!-- Step 1: local diversity -->
@@ -228,12 +223,11 @@ journal: arXiv preprint, 2026
       <div class="gs-step-text gs-reveal">
         <div class="gs-step-num">1</div>
         <h3>Local diversity: how much the patch tokens vary</h3>
-        <p>We measure the dispersion of the patch tokens with a diagonal approximation of the MCR&sup2; coding rate. Each feature is
-        normalised by its typical variation across the archive, \(\epsilon_d\).</p>
+        <p>The dispersion of the patch tokens, as a diagonal MCR&sup2; coding rate:</p>
         <div class="gs-eq">\[ L_i = \frac{1}{2}\sum_{d=1}^{D}\log\!\left(1+\frac{\sigma_{i,d}^2}{\epsilon_d^2}\right) \]</div>
         <p class="gs-small">\(\sigma_{i,d}^2\): variance of feature \(d\) over the tokens of observation \(i\); \(\epsilon_d\): median of \(\sigma_{j,d}\) over the archive.</p>
-        <p>Drag the slider across the archive: uniform water, sand and closed canopy give near-constant tokens; fields,
-        rivers, reservoirs, coastlines and relief give varied ones.</p>
+        <p>Drag the slider: water, sand and closed canopy give near-constant tokens; fields, rivers, coasts and relief give
+        varied ones.</p>
       </div>
       <div class="gs-step-vis gs-reveal">
         <div class="gs-card gs-spec" id="gs-spec">
@@ -259,7 +253,7 @@ journal: arXiv preprint, 2026
             </div>
             <div class="gs-spec-ticks" aria-hidden="true"><span>0.5</span><span>10</span><span>25</span><span>50</span><span>75</span><span>90</span><span>97</span><span>99.5</span></div>
           </div>
-          <p class="gs-note">Token maps: UniverSat patch tokens (240&nbsp;m patches), normalised by \(\epsilon_d\), centred on each tile's mean token and projected on three principal components with one shared colour scale.</p>
+          <p class="gs-note">UniverSat patch tokens (240&nbsp;m), normalised by \(\epsilon_d\), centred per tile and projected on three shared principal components.</p>
         </div>
       </div>
     </div>
@@ -269,12 +263,10 @@ journal: arXiv preprint, 2026
       <div class="gs-step-text gs-reveal">
         <div class="gs-step-num">2</div>
         <h3>Global diversity: distance to a richer look-alike</h3>
-        <p>We partition the global embeddings into semantic clusters with \(k\)-means and compare observations within a
-        cluster. Like SemDeDup, each observation is compared with those that precede it in an ordering. Unlike SemDeDup,
-        which orders by distance to the cluster centroid, we order by <b>decreasing local diversity</b>:</p>
+        <p>Within each \(k\)-means cluster, each observation is compared with those before it in an ordering. SemDeDup
+        orders by distance to the centroid; we order by <b>decreasing local diversity</b>:</p>
         <div class="gs-eq">\[ G_i = 1-\max_{j:\;c(j)=c(i),\;L_j>L_i}\cos\left(f_i,f_j\right) \]</div>
-        <p>When two observations show essentially the same content, the less locally diverse one gets a small \(G_i\). Run the
-        toy cluster with both orderings to see which member of each look-alike pair survives.</p>
+        <p>Of two look-alikes, the less locally diverse one gets a small \(G_i\). Compare both orderings on the toy cluster.</p>
       </div>
       <div class="gs-step-vis gs-reveal">
         <div class="gs-card gs-toy" id="gs-toy">
@@ -294,7 +286,7 @@ journal: arXiv preprint, 2026
             </div>
             <div class="gs-toy-score" aria-live="polite"></div>
           </div>
-          <p class="gs-note">Toy illustration (synthetic 2-D cluster, Euclidean distance in place of cosine). Both orderings keep the same number of points; the ordering decides which member of each look-alike pair is kept.</p>
+          <p class="gs-note">Synthetic 2-D cluster. Both orderings keep as many points; only which look-alike survives changes.</p>
         </div>
       </div>
     </div>
@@ -304,12 +296,11 @@ journal: arXiv preprint, 2026
       <div class="gs-step-text gs-reveal">
         <div class="gs-step-num">3</div>
         <h3>Allocate the budget across clusters</h3>
-        <p>Clusters full of near-duplicates should receive fewer slots than clusters of distinct observations. We reuse the
-        SemDeDup redundancy \(m_i\) (closest earlier observation, centroid ordering) and pick one global threshold \(\tau_B\)
-        such that exactly \(B\) observations pass it. Each cluster's budget is its count of passing observations:</p>
+        <p>Clusters full of near-duplicates get fewer slots. One threshold \(\tau_B\) on the SemDeDup redundancy \(m_i\) lets
+        exactly \(B\) observations pass; each cluster's budget is its count of passing observations:</p>
         <div class="gs-eq">\[ B_c = \bigl|\{\, i : c(i)=c,\; m_i\le\tau_B \,\}\bigr|,\qquad \textstyle\sum_c B_c = B \]</div>
-        <p>The real clusters on the right are paired by content: one receives a single slot for hundreds of near-identical
-        tiles, its look-alike keeps 18% to 56% of its tiles. Over a third of the budget goes to the tenth of clusters with the largest share.</p>
+        <p>In each real pair on the right, one cluster gets a single slot for hundreds of near-identical tiles; its look-alike
+        keeps 18% to 56% of its tiles.</p>
       </div>
       <div class="gs-step-vis gs-reveal">
         <div class="gs-card gs-alloc" id="gs-alloc">
@@ -333,7 +324,7 @@ journal: arXiv preprint, 2026
               <div class="gs-alloc-tiles"></div>
             </div>
           </div>
-          <p class="gs-note">Real clusters of the 1% GeoSelect run. Each square is one tile of the cluster; lit squares are its budget \(B_c\). Below: left, the single retained tile and four discarded ones; right, five random members, <b class="t-keep">kept</b> or <b class="t-drop">discarded</b>.</p>
+          <p class="gs-note">Each square is one tile of the cluster; lit squares are its budget \(B_c\). Tiles below: <b class="t-keep">kept</b> or <b class="t-drop">discarded</b>.</p>
         </div>
       </div>
     </div>
@@ -343,8 +334,7 @@ journal: arXiv preprint, 2026
       <div class="gs-step-num">4</div>
       <div class="gs-select-body">
         <h3>Select the most diverse observations of each cluster</h3>
-        <p>Both diversities are combined into a single score, each term scaled by its interquartile range over the archive.
-        Each cluster then keeps its \(B_c\) observations with the highest \(S_i\).</p>
+        <p>Each cluster keeps its \(B_c\) observations with the highest combined score:</p>
         <div class="gs-eq">\[ S_i = \frac{\log G_i}{\operatorname{IQR}(\log G)} + \frac{L_i}{\operatorname{IQR}(L)} \]</div>
       </div>
       <div class="gs-select-sum">
@@ -359,32 +349,31 @@ journal: arXiv preprint, 2026
   <section class="gs-section gs-alt" id="protocol">
     <div class="gs-kicker gs-reveal">Evaluation protocol</div>
     <h2 class="gs-reveal">Judge a subset by the model it trains.</h2>
-    <p class="gs-lead gs-reveal gs-narrow">Curation is evaluated independently of the representation used for selection: every method picks a
-    subset of the <em>same</em> archive, a new model is pretrained <em>from scratch</em> on it with the same recipe and step budget,
-    and its frozen features are probed on downstream tasks.</p>
+    <p class="gs-lead gs-reveal gs-narrow">Every method picks a subset of the <em>same</em> archive; a new model is pretrained
+    <em>from scratch</em> on it with the same recipe and steps, then probed frozen.</p>
     <div class="gs-flow gs-reveal" id="gs-flow">
       <div class="gs-flow-node">
         <div class="gs-flow-ico"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M7 24h34M24 7c-6 5-6 29 0 34M24 7c6 5 6 29 0 34M10 15h28M10 33h28"/></svg></div>
         <h4>Archive</h4>
-        <p>Major-TOM Core-S2L2A: 2,238,687 single-date Sentinel-2 tiles of 10&times;10&nbsp;km, every landmass and coastline.</p>
+        <p>Major-TOM Core-S2L2A: 2.24M Sentinel-2 tiles of 10&times;10&nbsp;km, all landmasses and coasts.</p>
       </div>
       <div class="gs-flow-link" aria-hidden="true"><i></i><i></i><i></i></div>
       <div class="gs-flow-node gs-flow-ours">
         <div class="gs-flow-ico"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 10h32l-12 15v11l-8 4V25z"/></svg></div>
         <h4>Curation</h4>
-        <p>Each method keeps the same budget (1% unless stated). Only tile identifiers move on: no curation feature reaches pretraining.</p>
+        <p>Same budget for every method (1% unless stated). Only tile identifiers move on.</p>
       </div>
       <div class="gs-flow-link" aria-hidden="true"><i></i><i></i><i></i></div>
       <div class="gs-flow-node">
         <div class="gs-flow-ico"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="9" y="9" width="30" height="30" rx="4"/><path d="M15 15h6v6h-6zM27 15h6v6h-6zM15 27h6v6h-6zM27 27h6v6h-6z"/></svg></div>
         <h4>Pretraining from scratch</h4>
-        <p>ViT-B with MAE (also DINOv2 and LeJEPA): 180k steps &times; 256 crops for <em>every</em> subset. Small subsets are simply revisited more often.</p>
+        <p>ViT-B with MAE (also DINOv2, LeJEPA): 180k steps &times; 256 crops for <em>every</em> subset.</p>
       </div>
       <div class="gs-flow-link" aria-hidden="true"><i></i><i></i><i></i></div>
       <div class="gs-flow-node">
         <div class="gs-flow-ico"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6v36M8.4 15l31.2 18M8.4 33l31.2-18M19 8l5 5 5-5M19 40l5-5 5 5"/></svg></div>
         <h4>Frozen linear probing</h4>
-        <p>GEO-Bench, 5 classification and 5 segmentation tasks, best probe selected on validation.</p>
+        <p>GEO-Bench: 5 classification and 5 segmentation tasks.</p>
       </div>
     </div>
     <div class="gs-tasks gs-reveal">
@@ -397,34 +386,34 @@ journal: arXiv preprint, 2026
   <section class="gs-section" id="results">
     <div class="gs-kicker gs-reveal">Results</div>
     <h2 class="gs-reveal">Better than the full archive, and than every heuristic.</h2>
-    <p class="gs-lead gs-reveal gs-narrow">Uniformly sampling 1% of the archive loses 0.9 points in classification and 2.2 mIoU in segmentation.
-    Targeted curation closes or reverses this gap, and GeoSelect gives the best mean on both task families.</p>
+    <p class="gs-lead gs-reveal gs-narrow">A random 1% loses 0.9 points in classification and 2.2 mIoU in segmentation.
+    GeoSelect gives the best mean on both.</p>
 
     <div class="gs-card gs-reveal" id="gs-table-card">
       <div class="gs-card-head">
         <div>
           <h3>GEO-Bench, task by task</h3>
-          <p class="gs-card-sub">First row: full-archive pretraining. Other rows: difference with it. Shaded columns: means over the five tasks of each family. Bold: best of each column at 1%.</p>
+          <p class="gs-card-sub">Difference with full-archive pretraining (first row). Shaded: means. Bold: best at 1%.</p>
         </div>
       </div>
       <div class="gs-table-wrap"><table class="gs-table" id="gs-table"></table></div>
-      <p class="gs-note">Classification: accuracy (BigEarthNet: &micro;F1); segmentation: mIoU. SemDeDup is budget-controlled. The official subset (Core-S2L2A-249k, 11%) does not match the budget and is shown for reference.</p>
+      <p class="gs-note">Accuracy (BigEarthNet: &micro;F1) and mIoU. The official subset (Core-S2L2A-249k, 11%) is shown for reference.</p>
     </div>
 
     <div class="gs-grid2">
       <div class="gs-card gs-reveal" id="gs-ssl">
         <div class="gs-card-head gs-card-head-col">
           <h3>Across SSL objectives</h3>
-          <p class="gs-card-sub">Gain over full-archive pretraining when a ViT-B is pretrained with DINOv2 or LeJEPA on the same curated subsets. Classification with a k-NN classifier and linear probing (LP), segmentation with LP.</p>
+          <p class="gs-card-sub">Gain over the full archive with DINOv2 or LeJEPA pretraining, with k-NN and linear probing (LP).</p>
         </div>
         <div class="gs-mini-legend"><span><i class="c-urban"></i>Urban, top-%</span><span><i class="c-sem"></i>UniverSat SemDeDup</span><span><i class="c-ours"></i>GeoSelect</span></div>
         <div class="gs-ssl"></div>
-        <p class="gs-note">All curated subsets beat the full archive, consistent with view-based objectives benefiting from crops of locally diverse tiles containing varied content. GeoSelect is best for both objectives with LP; with k-NN it is best with LeJEPA and on par with urban prioritization with DINOv2, ahead of SemDeDup with both.</p>
+        <p class="gs-note">Every curated subset beats the full archive. GeoSelect is best with LP for both objectives and with k-NN for LeJEPA; it ties urban prioritization with DINOv2 k-NN.</p>
       </div>
       <div class="gs-card gs-reveal" id="gs-xmod">
         <div class="gs-card-head gs-card-head-col">
           <h3>Applied to radar</h3>
-          <p class="gs-card-sub">MAE on Sentinel-1: full archive vs. subsets selected by GeoSelect from Sentinel-1 embeddings or from co-registered Sentinel-2 embeddings. reBEN-S1 classification (&micro;F1) with k-NN and LP; Sen1Floods11 flood segmentation with LP.</p>
+          <p class="gs-card-sub">Sentinel-1 MAE pretrained on subsets curated from Sentinel-1 or co-registered Sentinel-2 embeddings. Gains in reBEN-S1 &micro;F1.</p>
         </div>
         <div class="gs-xmod-ill" aria-hidden="true">
           <span class="gs-xmod-chip s2">GeoSelect on S1 or S2</span>
@@ -439,38 +428,9 @@ journal: arXiv preprint, 2026
         </div>
         <div class="gs-xmod"></div>
         <div class="gs-par"></div>
-        <p class="gs-note gs-bnote" data-k="10" style="display:none">With 10&times; less data, both subsets improve reBEN-S1 classification: Sentinel-1 embeddings give the larger k-NN gain, Sentinel-2 embeddings the larger LP gain. Flood segmentation stays at the full-archive level.</p>
-        <p class="gs-note gs-bnote" data-k="1">With 100&times; less data, curating from Sentinel-1 embeddings improves reBEN-S1 by +2.3 &micro;F1 with k-NN and +1.6 with LP. Sentinel-2 embeddings improve LP (+0.7) but not k-NN: optical embeddings can guide radar curation, but the target modality's own embeddings give larger, more consistent gains. Flood segmentation stays at the full-archive level.</p>
+        <p class="gs-note gs-bnote" data-k="10" style="display:none">Both subsets improve reBEN-S1 classification with 10&times; less data.</p>
+        <p class="gs-note gs-bnote" data-k="1">Optical embeddings can guide radar curation, but Sentinel-1's own embeddings give larger, more consistent gains.</p>
       </div>
-    </div>
-
-    <div class="gs-card gs-reveal" id="gs-abl">
-      <div class="gs-card-head">
-        <div>
-          <h3>Local diversity explains most of the gain over SemDeDup</h3>
-          <p class="gs-card-sub">Gain over the full archive, MAE, 1% budget. Same clusters and cluster budgets for the last two rows.</p>
-        </div>
-        <div class="gs-legend"><span><i class="c-cls"></i>Classification</span><span><i class="c-seg"></i>Segmentation</span></div>
-      </div>
-      <div class="gs-abl"></div>
-      <div class="gs-meters">
-        <div class="gs-meter-block">
-          <div class="gs-meter-t">Share of the selection in the less locally diverse half of the archive</div>
-          <div class="gs-meter" data-v="24"><span class="lbl">SemDeDup</span><span class="bar"><i></i></span><span class="val">24%</span></div>
-          <div class="gs-meter ours" data-v="5"><span class="lbl">GeoSelect</span><span class="bar"><i></i></span><span class="val">5%</span></div>
-        </div>
-        <div class="gs-meter-block">
-          <div class="gs-meter-t">Geographic regions covered, relative to SemDeDup</div>
-          <div class="gs-meter" data-v="55"><span class="lbl">Top \(L_i\) overall</span><span class="bar"><i></i></span><span class="val">55%</span></div>
-          <div class="gs-meter ours" data-v="93"><span class="lbl">GeoSelect</span><span class="bar"><i></i></span><span class="val">93%</span></div>
-        </div>
-        <div class="gs-meter-block">
-          <div class="gs-meter-t">Distance to the nearest kept tile of the same cluster, relative to SemDeDup</div>
-          <div class="gs-meter" data-v="41"><span class="lbl">Local ranking</span><span class="bar"><i></i></span><span class="val">41%</span></div>
-          <div class="gs-meter ours" data-v="61"><span class="lbl">GeoSelect</span><span class="bar"><i></i></span><span class="val">61%</span></div>
-        </div>
-      </div>
-      <p class="gs-note">Ranking by \(L_i\) within the same cluster budgets is on par with GeoSelect here, but keeps near-duplicates when both are locally diverse: at nearly identical local diversity and coverage, the global term \(G_i\) pushes the nearest kept neighbour 50% farther. Explicitly penalising redundancy matters most for multi-temporal archives.</p>
     </div>
   </section>
 
@@ -500,9 +460,9 @@ journal: arXiv preprint, 2026
         <div class="gs-map-legend"><span><i class="m-land"></i>archive</span><span><i class="m-kept"></i>kept tile</span></div>
       </div>
       <div class="gs-map-text" aria-live="polite">
-        <p data-k="random">Random sampling thins every region uniformly: open ocean, ice sheets and rainforest keep their full share of the budget.</p>
-        <p data-k="urban">Prioritising built-up fraction concentrates the budget on dense urban areas in Europe, East and South Asia and North America.</p>
-        <p data-k="geoselect">GeoSelect stays broadly distributed over land and favours coastlines and river networks. It discards open-ocean tiles and strongly downsamples ice caps (to 13% of their archive share) and tropical rainforest (to 33%), whose tiles have low local diversity.</p>
+        <p data-k="random">Random sampling keeps the archive's mix, open ocean and ice sheets included.</p>
+        <p data-k="urban">Urban prioritisation concentrates on dense cities in Europe, Asia and North America.</p>
+        <p data-k="geoselect">GeoSelect spreads over land and favours coasts and rivers. It drops open ocean and downsamples ice caps (to 13% of their share) and rainforest (to 33%).</p>
       </div>
     </div>
 
@@ -510,19 +470,17 @@ journal: arXiv preprint, 2026
       <div class="gs-card gs-reveal" id="gs-assoc">
         <div class="gs-card-head gs-card-head-col">
           <h3>Not a metadata heuristic in disguise</h3>
-          <p class="gs-card-sub">Association between each method's keep/discard decision and metadata attributes (Cram&eacute;r's&nbsp;V; point-biserial for built-up). Outlined: the attribute a handcrafted strategy targets.</p>
+          <p class="gs-card-sub">Association between keep/discard decisions and metadata (Cram&eacute;r's&nbsp;V). Outlined: the attribute a heuristic targets.</p>
         </div>
         <div class="gs-assoc"></div>
       </div>
       <div class="gs-assoc-text gs-reveal">
         <h3>Gains come from distinctions <em>within</em> metadata classes.</h3>
-        <p>Handcrafted strategies are strongly tied to the attribute they target. All feature-based methods are only weakly
-        associated with any attribute (at most 0.10), and they look alike on this table despite very different downstream
-        results.</p>
-        <p>GeoSelect's gains are not geographic matching either: on the European BigEarthNet it gains +2.6 points, while a
-        Europe-only subset gives &minus;0.1. Its gains span Europe, Asia, Africa and North America.</p>
-        <p>It leaves most climate, soil and land-cover distributions close to the archive's, except particularly homogeneous
-        classes. Inside those, it keeps the most structured tiles rather than removing the class:</p>
+        <p>Heuristics are tied to the attribute they target. Feature-based methods are weakly associated with every
+        attribute (at most 0.10) and look alike here, despite very different results.</p>
+        <p>Nor is it geographic matching: on European BigEarthNet, GeoSelect gains +2.6 points and a Europe-only subset
+        &minus;0.1.</p>
+        <p>Inside homogeneous classes, it keeps the most structured tiles rather than removing the class:</p>
       </div>
     </div>
 
@@ -536,41 +494,24 @@ journal: arXiv preprint, 2026
       <div class="gs-clim"></div>
     </div>
 
-
-    <div class="gs-grid2">
-      <div class="gs-card gs-reveal" id="gs-flip">
-        <div class="gs-card-head gs-card-head-col">
-          <h3>Same budget, different picks</h3>
-          <p class="gs-card-sub">Tiles retained by only one method at 1%. SemDeDup can keep internally uniform tiles; GeoSelect keeps tiles mixing several types of content. They share less than a third of their selection.</p>
-        </div>
-        <button class="gs-ghost gs-flip-btn" data-act="flip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg><span>Show patch tokens</span></button>
-        <div class="gs-flip-rows"></div>
+    <div class="gs-card gs-reveal" id="gs-dups">
+      <div class="gs-card-head gs-card-head-col">
+        <h3>Near-duplicates are not automatically neighbours</h3>
+        <p class="gs-card-sub">Same-cluster pairs that ranking by \(L_i\) alone keeps twice. Global diversity keeps one.</p>
       </div>
-      <div class="gs-card gs-reveal" id="gs-dups">
-        <div class="gs-card-head gs-card-head-col">
-          <h3>Near-duplicates are not automatically neighbours</h3>
-          <p class="gs-card-sub">Each pair comes from the same cluster, and ranking by \(L_i\) alone keeps both tiles. Only global diversity leads GeoSelect to keep a single one.</p>
-        </div>
+      <div class="gs-dup-body">
         <div class="gs-wipe gs-wipe-dup">
           <img class="gs-wipe-a" alt="Tile discarded by GeoSelect" width="360" height="360">
           <img class="gs-wipe-b" alt="Its near-duplicate kept by GeoSelect" width="360" height="360">
           <div class="gs-wipe-handle"><span></span></div>
           <span class="gs-wipe-lbl l t-drop-bg">discarded</span><span class="gs-wipe-lbl r t-keep-bg">kept</span>
         </div>
-        <div class="gs-dup-info" aria-live="polite"></div>
-        <div class="gs-dup-pick"></div>
-        <p class="gs-note">Over all such pairs: median distance 1,500&nbsp;km, fewer than 10% within 50&nbsp;km. This redundancy is semantic, not spatial: spatial thinning would not remove it.</p>
-      </div>
-    </div>
-
-    <div class="gs-card gs-reveal" id="gs-rand">
-      <div class="gs-card-head">
-        <div>
-          <h3>A random draw from the 1% subset</h3>
-          <p class="gs-card-sub">24 tiles drawn uniformly at random, shown as drawn. Most combine several types of content; every semantic cluster keeps at least one tile.</p>
+        <div class="gs-dup-side">
+          <div class="gs-dup-info" aria-live="polite"></div>
+          <div class="gs-dup-pick"></div>
+          <p class="gs-note">Median distance 1,500&nbsp;km, under 10% within 50&nbsp;km: spatial thinning would not remove them.</p>
         </div>
       </div>
-      <div class="gs-rand"></div>
     </div>
   </section>
 
@@ -579,10 +520,9 @@ journal: arXiv preprint, 2026
   <section class="gs-section" id="s2naip">
     <div class="gs-kicker gs-reveal">A second archive &middot; S2-NAIP</div>
     <h2 class="gs-reveal">A different archive: one country, many dates.</h2>
-    <p class="gs-lead gs-reveal gs-narrow">Major-TOM is global, with one image per place. AI2-S2-NAIP is the opposite: small
-    640&nbsp;m tiles of the contiguous United States, each observed 16 to 32 times within a few months. After cleaning, it holds
-    302M Sentinel-2 images, 135&times; more than Major-TOM. Far narrower geographically, it mainly tests whether GeoSelect can filter
-    an archive of hundreds of millions of images, with the same recipe.</p>
+    <p class="gs-lead gs-reveal gs-narrow">Major-TOM is global, with one image per place. AI2-S2-NAIP is the opposite:
+    640&nbsp;m tiles of the contiguous US, each seen 16 to 32 times in a few months. It tests whether the same recipe can
+    filter hundreds of millions of images.</p>
 
     <div class="gs-stats">
       <div class="gs-stat gs-reveal"><div class="gs-stat-num"><span class="gs-count" data-to="302" data-dec="0">302</span><small>M</small></div><div class="gs-stat-lbl">observations after cleaning<br><span>135&times; Major-TOM</span></div></div>
@@ -614,19 +554,15 @@ journal: arXiv preprint, 2026
           </div>
         </div>
       </div>
-      <p class="gs-note">Cleaning keeps one observation per satellite pass (a quarter of the images repeat a pass, most often the same
-      acquisition processed twice), removes the offset that ESA processing baseline 04.00 adds to digital numbers, and keeps observations
-      with no missing pixel and at most 5% cloud cover. For curation, each observation is embedded by UniverSat at 20&nbsp;m
-      (4&times;4 patch tokens of 160&nbsp;m), with 96,367 semantic clusters. Curation stays cheap at this scale: about 30 H100
-      GPU-hours to embed all 302M observations, and about six A100 GPU-hours for clustering and selection.</p>
+      <p class="gs-note">Cleaning keeps one observation per pass, with no missing pixel and at most 5% clouds. Curation stays cheap:
+      about 30 H100 GPU-hours to embed all 302M observations, and six A100 GPU-hours to cluster and select.</p>
     </div>
 
     <div class="gs-card gs-reveal" id="gs-naip-res">
       <div class="gs-card-head">
         <div>
           <h3>Full-archive performance from a hundred times fewer images</h3>
-          <p class="gs-card-sub">MAE pretrained on the full S2-NAIP archive or on 1% subsets of it (3.0M images), evaluated frozen on
-          GEO-Bench. Difference with pretraining on the full archive.</p>
+          <p class="gs-card-sub">MAE on 1% subsets (3.0M images): GEO-Bench gain over full-archive pretraining.</p>
         </div>
       </div>
       <div class="gs-race-legend">
@@ -638,29 +574,12 @@ journal: arXiv preprint, 2026
       </div>
       <div class="gs-naip-res"></div>
       <div class="gs-map-text">
-        <p class="on">With 1% of the archive, even a random subset stays close to full-archive pretraining: S2-NAIP is redundant in space
-        and time, with small tiles and many dates per place, and has few large homogeneous regions, unlike Major-TOM, which leaves little room
-        for gains on single-date tasks. Still, GeoSelect is the only subset that preserves segmentation (+0.2 mIoU), stays comparable in
-        classification (&minus;0.1), and <b>performs best with k-NN, +1.4 points</b>.</p>
+        <p class="on">Even a random 1% stays close to the full archive: S2-NAIP is redundant in space and time and has few large
+        homogeneous regions, which leaves little room for gains. Still, GeoSelect is the only subset that preserves segmentation
+        (+0.2 mIoU), stays comparable in classification (&minus;0.1), and <b>performs best with k-NN, +1.4 points</b>.</p>
       </div>
-      <p class="gs-note">k-NN classifies mean- or max-pooled patch tokens, chosen with \(k\) and the distance on each dataset's validation
-      set. Linear probing: means over the 5 classification and 5 segmentation tasks of Table&nbsp;1. Inputs are restricted to the ten bands
-      used for curation. Random draws images uniformly. Every run takes the same 180k steps: 2.4 passes over the full archive, about 240
-      over a 1% subset.</p>
-    </div>
-
-    <div class="gs-card gs-reveal" id="gs-naip-dates">
-      <div class="gs-card-head gs-card-head-col">
-        <h3>Two dates per place, not one</h3>
-        <p class="gs-card-sub">Observations retained per selected tile, at a 1% budget. The archive has 16 to 32 dates per tile.</p>
-      </div>
-      <div class="gs-naip-dates-wrap">
-        <div class="gs-naip-dates"></div>
-        <p class="gs-lead">A random subset of the same size keeps about one observation per tile. Both curated selections keep about two:
-        different dates of the same place are often distinct enough to be retained together, so neither selection reduces the archive to
-        one image per location. Curation thus exploits the temporal diversity of this archive, which Major-TOM, with one image per place,
-        does not offer.</p>
-      </div>
+      <p class="gs-note">k-NN on pooled patch tokens, tuned on validation. Every run takes 180k steps: 2.4 passes over the full
+      archive, about 240 over a 1% subset.</p>
     </div>
   </section>
 
@@ -673,9 +592,9 @@ journal: arXiv preprint, 2026
       <div class="gs-stat gs-reveal"><div class="gs-stat-num">&lt;<span class="gs-count" data-to="1" data-dec="0">1</span><small>min</small></div><div class="gs-stat-lbl">for clustering and selection<br><span>on one GPU</span></div></div>
       <div class="gs-stat gs-reveal"><div class="gs-stat-num"><span class="gs-count" data-from="21" data-to="0.2" data-dec="1">0.2</span><small>TB</small></div><div class="gs-stat-lbl">to store and transfer<br><span>instead of 21 TB, at matched compute</span></div></div>
     </div>
-    <p class="gs-lead gs-reveal gs-narrow">The main cost is a single forward pass of UniverSat over the archive, far less than pretraining a foundation
-    model. Releasing patch-token statistics alongside global embeddings would let anyone curate an EO archive without
-    running the encoder again. We will release the curation pipeline and the curated subsets.</p>
+    <p class="gs-lead gs-reveal gs-narrow">The main cost is one forward pass of UniverSat over the archive, far less than
+    pretraining. The <a href="https://github.com/gastruc/GeoSelect" target="_blank" rel="noopener">curation pipeline</a>
+    and the <a href="https://github.com/gastruc/GeoSelect/tree/main/keeplists" target="_blank" rel="noopener">curated subsets</a> are available on GitHub.</p>
   </section>
 
   <!-- ============================== CITATION ============================== -->
@@ -702,4 +621,4 @@ journal: arXiv preprint, 2026
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
-<script src="/assets/publications/geoselect/geoselect.js?v=20261124c"></script>
+<script src="/assets/publications/geoselect/geoselect.js?v=20261124h"></script>
