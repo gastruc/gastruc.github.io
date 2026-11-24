@@ -642,47 +642,95 @@
   }
 
   /* ================= results: small bar charts ================= */
-  function miniBars(container, groups, klass, max) {
-    var bars = [];
+  // Vertical bars of signed gains, on a shared [min, max] axis (min < 0 draws a zero line).
+  function miniBars(container, groups, klass, max, min) {
+    min = Math.min(0, min || 0);
+    var span = max - min, zero = -min / span * 100, bars = [];
     groups.forEach(function (gr) {
       var m = h('div', 'gs-mini', null, container);
       h('div', 'gs-mini-t', gr.t + '<span>' + gr.s + '</span>', m);
-      var plot = h('div', 'gs-mini-plot', null, m);
+      var plot = h('div', 'gs-mini-plot' + (min < 0 ? ' has-neg' : ''), null, m);
+      if (min < 0) h('div', 'gs-mini-zero', null, plot).style.bottom = zero.toFixed(2) + '%';
       gr.v.forEach(function (v, i) {
-        var b = h('div', 'gs-vbar ' + klass[i], '<span>' + signed(v, 1) + '</span>', plot);
-        b.dataset.h = (Math.max(0, v) / max * 100).toFixed(1);
+        var col = h('div', 'gs-vcol', null, plot);
+        var b = h('div', 'gs-vbar ' + klass[i] + (v < 0 ? ' neg' : ''), '<span>' + signed(v, 1) + '</span>', col);
+        if (v < 0) b.style.top = (100 - zero).toFixed(2) + '%'; else b.style.bottom = zero.toFixed(2) + '%';
+        b.dataset.h = (Math.abs(v) / span * 100).toFixed(1);
         b.style.transitionDelay = (i * 120) + 'ms';
         bars.push(b);
       });
     });
     onVisible(container, function () {
       container.classList.add('is-in');
-      bars.forEach(function (b) { b.style.height = 'calc(' + b.dataset.h + '% - 0px)'; });
+      bars.forEach(function (b) { b.style.height = b.dataset.h + '%'; });
     }, { threshold: 0.35 });
+  }
+
+  // "1% subsets / 10% subsets" tabs of a card (opening on 1%): re-render its chart and show the matching note.
+  function budgetTabs(card, render) {
+    var tabs = $$('.gs-budget button', card), notes = $$('.gs-bnote', card), cur = null;
+    function set(k) {
+      if (k === cur) return;
+      cur = k;
+      tabs.forEach(function (b) { b.setAttribute('aria-selected', b.dataset.k === k ? 'true' : 'false'); });
+      notes.forEach(function (p) { p.style.display = p.dataset.k === k ? '' : 'none'; });
+      render(k);
+    }
+    tabs.forEach(function (b) { b.addEventListener('click', function () { set(b.dataset.k); }); });
+    set('1');
   }
 
   function ssl() {
     var c = $('#gs-ssl .gs-ssl');
     if (!c) return;
-    // 1% subsets (supplementary per-dataset table): UniverSat SemDeDup, GeoSelect
-    miniBars(c, [
-      { t: 'DINOv2 &middot; cls.', s: 'full archive 63.8', v: [2.1, 3.4] },
-      { t: 'DINOv2 &middot; seg.', s: 'full archive 48.6', v: [1.7, 3.1] },
-      { t: 'LeJEPA &middot; cls.', s: 'full archive 63.3', v: [1.8, 3.4] },
-      { t: 'LeJEPA &middot; seg.', s: 'full archive 48.4', v: [1.2, 2.6] }
-    ], ['sem', 'ours'], 4.0);
+    // Main-paper Table 3 (tables/ssl_transfer_knn.tex), i.e. the 10% subsets; the page does not state the budget here
+    // (user, 2026-11-24). Gains = printed value - printed full-archive value (arXiv convention).
+    // [label, full archive, [Urban top-%, UniverSat SemDeDup, GeoSelect]]
+    [
+      { n: 'DINOv2', g: [['k-NN &middot; cls.', 57.3, [3.7, 2.9, 3.8]], ['LP &middot; cls.', 63.8, [3.5, 1.9, 3.8]], ['LP &middot; seg.', 48.6, [3.2, 2.2, 3.4]]] },
+      { n: 'LeJEPA', g: [['k-NN &middot; cls.', 55.6, [3.0, 3.2, 4.5]], ['LP &middot; cls.', 63.3, [2.4, 1.2, 4.0]], ['LP &middot; seg.', 48.4, [1.8, 1.4, 2.6]]] }
+    ].forEach(function (o) {
+      h('div', 'gs-ssl-obj', o.n, c);
+      miniBars(h('div', 'gs-ssl-row', null, c), o.g.map(function (g) {
+        return { t: g[0], s: 'full ' + g[1].toFixed(1), v: g[2] };
+      }), ['urban', 'sem', 'ours'], 5.0);
+    });
   }
 
   function xmod() {
-    var c = $('#gs-xmod .gs-xmod');
+    var card = $('#gs-xmod'), c = card && $('.gs-xmod', card), par = card && $('.gs-par', card);
     if (!c) return;
     var lg = h('div', 'gs-mini-legend', '<span><i></i>curated from Sentinel-1</span><span><i></i>curated from Sentinel-2</span>');
     c.parentNode.insertBefore(lg, c);
     $$('i', lg)[0].style.background = 'var(--gs-unif)'; $$('i', lg)[1].style.background = 'var(--gs-keep)';
-    // 1% subsets, linear probing (supplementary Sentinel-1 table)
-    miniBars(c, [
-      { t: 'reBEN-S1', s: 'linear probe, &micro;F1 &middot; full archive 59.6', v: [1.6, 0.7] }
-    ], ['s1', 's2'], 2.0);
+    // MAE on Core-S1RTC. 1%: main-paper Table 4 (tables/modality_transfer.tex); 10%: Table S4 (tables/modality_transfer_1pct.tex).
+    // Gains = printed value - printed full-archive value, as in Table 4 (Table S4 prints unrounded differences: +2.7, -0.4).
+    // Full archive: reBEN-S1 k-NN 54.0, LP 59.6, Sen1Floods11 79.0. [from Sentinel-1, from Sentinel-2]
+    var D = {
+      '10': { knn: [2.6, 0.8], lp: [1.2, 1.8], seg: ['79.1', '79.1'], x: 10 },
+      '1': { knn: [2.3, -0.5], lp: [1.6, 0.7], seg: ['79.0', '79.1'], x: 100 }
+    };
+    budgetTabs(card, function (k) {
+      var d = D[k];
+      c.innerHTML = '';
+      miniBars(c, [
+        { t: 'reBEN-S1 &middot; k-NN', s: 'full archive 54.0', v: d.knn },
+        { t: 'reBEN-S1 &middot; LP', s: 'full archive 59.6', v: d.lp }
+      ], ['s1', 's2'], 3.0, -1.0);
+      if (!par) return;
+      // Flood segmentation is flat (within 0.1 mIoU), so it is shown as absolute mIoU next to the data each model saw.
+      par.innerHTML = '<div class="gs-par-t">Sen1Floods11 &middot; flood segmentation<span>linear probe, mIoU</span></div>' +
+        '<div class="gs-par-row gs-par-hd"><span></span><span>pretraining data</span><span>mIoU</span></div>';
+      var fills = [['Full archive', 100, '79.0', 'full'], ['From Sentinel-1', +k, d.seg[0], 's1'], ['From Sentinel-2', +k, d.seg[1], 's2']]
+        .map(function (r, i) {
+          var row = h('div', 'gs-par-row ' + r[3], '<span class="n">' + r[0] + '<small>' + r[1] + '%</small></span>' +
+            '<span class="tr"><i></i></span><span class="v">' + r[2] + '</span>', par);
+          var f = $('i', row); f.dataset.w = r[1]; f.style.transitionDelay = (i * 150) + 'ms';
+          return f;
+        });
+      h('div', 'gs-par-tag', 'Full-archive mIoU with ' + d.x + '&times; less data', par);
+      onVisible(par, function () { fills.forEach(function (f) { f.style.width = 'max(3px, ' + f.dataset.w + '%)'; }); }, { threshold: 0.4 });
+    });
   }
 
   function ablation() {

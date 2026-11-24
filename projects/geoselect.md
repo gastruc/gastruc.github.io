@@ -7,7 +7,7 @@ author: Guillaume Astruc
 description: "GeoSelect is a simple, training-free semantic curation method for Earth-observation archives. Pretraining on the 1% of Major-TOM it selects beats pretraining on all of it."
 keywords: remote sensing, earth observation, data curation, semantic deduplication, self-supervised learning, foundation model, Sentinel-2, Major-TOM, SemDeDup, GeoSelect
 analytics: https://www.googletagmanager.com/gtag/js?id=G-FLNC8B6RH9
-css: /assets/publications/geoselect/geoselect.css?v=20261123b
+css: /assets/publications/geoselect/geoselect.css?v=20261124b
 nav:
   - { title: "Overview", href: "#overview" }
   - { title: "Idea", href: "#idea" }
@@ -415,24 +415,32 @@ journal: arXiv preprint, 2026
       <div class="gs-card gs-reveal" id="gs-ssl">
         <div class="gs-card-head gs-card-head-col">
           <h3>Across SSL objectives</h3>
-          <p class="gs-card-sub">Gain over full-archive pretraining when a ViT-B is pretrained with DINOv2 or LeJEPA on the same 1% subsets as MAE.</p>
+          <p class="gs-card-sub">Gain over full-archive pretraining when a ViT-B is pretrained with DINOv2 or LeJEPA on the same curated subsets. Classification with a k-NN classifier and linear probing (LP), segmentation with LP.</p>
         </div>
-        <div class="gs-mini-legend"><span><i class="c-sem"></i>UniverSat SemDeDup</span><span><i class="c-ours"></i>GeoSelect</span></div>
+        <div class="gs-mini-legend"><span><i class="c-urban"></i>Urban, top-%</span><span><i class="c-sem"></i>UniverSat SemDeDup</span><span><i class="c-ours"></i>GeoSelect</span></div>
         <div class="gs-ssl"></div>
-        <p class="gs-note">View-based objectives gain even more than MAE: +3.4 points in classification with both (MAE: +2.4), consistent with crops of locally diverse tiles containing varied content.</p>
+        <p class="gs-note">All curated subsets beat the full archive, consistent with view-based objectives benefiting from crops of locally diverse tiles containing varied content. GeoSelect is best for both objectives with LP; with k-NN it is best with LeJEPA and on par with urban prioritization with DINOv2, ahead of SemDeDup with both.</p>
       </div>
       <div class="gs-card gs-reveal" id="gs-xmod">
         <div class="gs-card-head gs-card-head-col">
           <h3>Applied to radar</h3>
-          <p class="gs-card-sub">MAE on Sentinel-1: full archive vs. 1% subsets selected by GeoSelect from Sentinel-1 embeddings or from co-registered Sentinel-2 embeddings.</p>
+          <p class="gs-card-sub">MAE on Sentinel-1: full archive vs. subsets selected by GeoSelect from Sentinel-1 embeddings or from co-registered Sentinel-2 embeddings. reBEN-S1 classification (&micro;F1) with k-NN and LP; Sen1Floods11 flood segmentation with LP.</p>
         </div>
         <div class="gs-xmod-ill" aria-hidden="true">
           <span class="gs-xmod-chip s2">GeoSelect on S1 or S2</span>
           <span class="gs-xmod-arrow"><i></i></span>
-          <span class="gs-xmod-chip s1">1% Sentinel-1 pretraining</span>
+          <span class="gs-xmod-chip s1">Sentinel-1 pretraining</span>
+        </div>
+        <div class="gs-budget">
+          <div class="gs-seg" role="tablist" aria-label="Curation budget">
+            <button role="tab" aria-selected="true" data-k="1">1% subsets</button>
+            <button role="tab" aria-selected="false" data-k="10">10% subsets</button>
+          </div>
         </div>
         <div class="gs-xmod"></div>
-        <p class="gs-note">Both 1% subsets beat the full Sentinel-1 archive on reBEN-S1 with 100&times; less data. Optical embeddings remain useful for radar curation, while the target modality's own embeddings give the larger gain at this budget.</p>
+        <div class="gs-par"></div>
+        <p class="gs-note gs-bnote" data-k="10" style="display:none">With 10&times; less data, both subsets improve reBEN-S1 classification: Sentinel-1 embeddings give the larger k-NN gain, Sentinel-2 embeddings the larger LP gain. Flood segmentation stays at the full-archive level.</p>
+        <p class="gs-note gs-bnote" data-k="1">With 100&times; less data, curating from Sentinel-1 embeddings improves reBEN-S1 by +2.3 &micro;F1 with k-NN and +1.6 with LP. Sentinel-2 embeddings improve LP (+0.7) but not k-NN: optical embeddings can guide radar curation, but the target modality's own embeddings give larger, more consistent gains. Flood segmentation stays at the full-archive level.</p>
       </div>
     </div>
 
@@ -694,4 +702,4 @@ journal: arXiv preprint, 2026
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
-<script src="/assets/publications/geoselect/geoselect.js?v=20261123g"></script>
+<script src="/assets/publications/geoselect/geoselect.js?v=20261124c"></script>
