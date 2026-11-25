@@ -837,7 +837,7 @@
     var groups = h('div', 'gs-dup-groups', '<span>Neighbouring (&lt;30 km)</span><span>Distant (&gt;300 km)</span>');
     pick.parentNode.insertBefore(groups, pick);
     var btns = P.map(function (p, i) {
-      var b = h('button', null, '<img loading="lazy" alt="" src="' + TILES + 'dup_' + i + '_b.webp"><span>' + p[1] + '</span>', pick);
+      var b = h('button', null, '<img loading="lazy" alt="" src="' + TILES + 'dup_' + i + '_t.webp"><span>' + p[1] + '</span>', pick);
       b.setAttribute('aria-label', 'Pair ' + (i + 1) + ', ' + p[1].replace('&deg;', '') + ' apart');
       b.addEventListener('click', function () { stopAuto(); set(i); });
       return b;

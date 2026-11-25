@@ -400,6 +400,10 @@ body.gs-body nav ul li a.gs-on::after { width: 100%; background-color: var(--gs-
   background: rgba(var(--gs-ours-rgb), 0.06); border: 1px solid var(--gs-line); }
 .gs-select .gs-step-num { margin: 0; align-self: start; }
 .gs-select .gs-eq { background: var(--gs-card); margin-bottom: 0; }
+.gs-terms { list-style: none; margin: 14px 0 10px; padding: 0; display: grid; gap: 8px; font-size: 0.93rem; line-height: 1.55; color: var(--gs-ink2); }
+.gs-terms li { position: relative; padding-left: 18px; }
+.gs-terms li::before { content: ''; position: absolute; left: 0; top: 0.62em; width: 7px; height: 7px; background: var(--gs-keep); }
+.gs-select .gs-small { margin: 0 !important; }
 .gs-select-sum { display: grid; gap: 12px; font-size: 0.92rem; color: var(--gs-ink2); }
 .gs-pill { display: inline-block; font: 600 0.74rem/1 var(--gs-mono); padding: 5px 9px; border-radius: 99px; margin-right: 6px;
   background: rgba(var(--gs-drop-rgb), 0.12); color: var(--gs-drop); border: 1px solid rgba(var(--gs-drop-rgb), 0.25); }

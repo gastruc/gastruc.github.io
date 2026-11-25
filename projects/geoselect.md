@@ -7,7 +7,7 @@ author: Guillaume Astruc
 description: "GeoSelect is a simple, training-free semantic curation method for Earth-observation archives. Pretraining on the 1% of Major-TOM it selects beats pretraining on all of it."
 keywords: remote sensing, earth observation, data curation, semantic deduplication, self-supervised learning, foundation model, Sentinel-2, Major-TOM, SemDeDup, GeoSelect
 analytics: https://www.googletagmanager.com/gtag/js?id=G-FLNC8B6RH9
-css: /assets/publications/geoselect/geoselect.css?v=20261124f
+css: /assets/publications/geoselect/geoselect.css?v=20261125a
 nav:
   - { title: "Overview", href: "#overview" }
   - { title: "Idea", href: "#idea" }
@@ -336,6 +336,14 @@ journal: arXiv preprint, 2026
         <h3>Select the most diverse observations of each cluster</h3>
         <p>Each cluster keeps its \(B_c\) observations with the highest combined score:</p>
         <div class="gs-eq">\[ S_i = \frac{\log G_i}{\operatorname{IQR}(\log G)} + \frac{L_i}{\operatorname{IQR}(L)} \]</div>
+        <ul class="gs-terms">
+          <li><b>\(L_i\), local diversity</b>: the spread of the observation's patch tokens. It ranks tiles by how much their
+          content varies within the 10&times;10&nbsp;km footprint.</li>
+          <li><b>\(G_i\), global diversity</b>: the distance to the most similar, more locally diverse observation of the cluster.
+          Through the logarithm, it heavily penalises near-duplicates of a richer tile but barely separates tiles that are already distinct.</li>
+        </ul>
+        <p class="gs-small">Scaled by their interquartile ranges over the archive, the two terms weigh alike: \(G_i\) pushes the
+        copies down, \(L_i\) orders the remaining tiles by richness.</p>
       </div>
       <div class="gs-select-sum">
         <div><span class="gs-pill">redundancy \(m_i\)</span> decides <b>how many</b> tiles each cluster keeps</div>
@@ -621,4 +629,4 @@ journal: arXiv preprint, 2026
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
-<script src="/assets/publications/geoselect/geoselect.js?v=20261124h"></script>
+<script src="/assets/publications/geoselect/geoselect.js?v=20261125a"></script>
